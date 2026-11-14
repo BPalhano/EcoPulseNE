@@ -1,3 +1,5 @@
+@import "leaflet/dist/leaflet.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,7 +18,8 @@ body {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
   background: #050B14;
@@ -29,25 +32,35 @@ body {
   background: #00E5FF;
 }
 
-/* Radar Scan Animation */
-@keyframes radar-sweep {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+/* Leaflet Dark Map Tweaks */
+.leaflet-container {
+  background: #050B14 !important;
+  font-family: inherit;
 }
-
-.radar-sweep {
-  animation: radar-sweep 4s linear infinite;
-  transform-origin: center center;
+.leaflet-bar a {
+  background-color: #0F172A !important;
+  color: #00E5FF !important;
+  border-color: #334155 !important;
+}
+.leaflet-bar a:hover {
+  background-color: #1E293B !important;
+  color: #FFFFFF !important;
+}
+.leaflet-popup-content-wrapper {
+  background: #091322 !important;
+  color: #F8FAFC !important;
+  border: 1px solid #00E5FF40;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 229, 255, 0.2);
+}
+.leaflet-popup-tip {
+  background: #091322 !important;
 }
 
 /* Glowing text */
 .glow-cyan {
-  text-shadow: 0 0 12px rgba(0, 229, 255, 0.45);
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
 }
-.glow-rose {
-  text-shadow: 0 0 12px rgba(244, 63, 94, 0.45);
+.glow-amber {
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
 }
