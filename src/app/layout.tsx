@@ -1,0 +1,28 @@
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "EcoPulse NE | The Drought & Tidal Waltz",
+  description: "NASA Space Apps Challenge 2026 - Tracking extreme droughts in Caatinga and coastal mangrove transformation using NISAR SAR radar remote sensing.",
+  keywords: ["NISAR", "SAR", "Caatinga", "Mangrove", "Space Apps Challenge", "NASA", "Remote Sensing", "Carcinicultura", "Jaguaribe"],
+  authors: [{ name: "EcoPulse NE Team" }],
+  openGraph: {
+    title: "EcoPulse NE - The Drought & Tidal Waltz",
+    description: "Multi-sensor radar observatory bridging Caatinga megadroughts and coastal mangrove crises.",
+    type: "website",
+  }
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="pt-BR" className="scroll-smooth">
+      <body className="min-h-screen bg-[#050B14] text-slate-100 antialiased selection:bg-cyan-500 selection:text-black">
+        {children}
+      </body>
+    </html>
+  );
+}
