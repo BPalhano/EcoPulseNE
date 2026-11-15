@@ -13,8 +13,119 @@ import {
   TrendingUp, 
   Waves, 
   Flame,
-  CheckCircle2
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+  ArrowRight,
+  Compass,
+  Mountain,
+  Fish,
+  Eye,
+  Sliders,
+  ShieldCheck,
+  Zap
 } from "lucide-react";
+
+// DAMS SPECIFICATION FOR DAM SELECTOR & RIGIDITY VS DECORRELATION
+const DAMS_DATA = {
+  castanhao: {
+    id: "castanhao",
+    name: "Açude Castanhão (Padre Cícero)",
+    river: "Rio Jaguaribe",
+    location: "Alto Santo / Jaguaribara (Médio Jaguaribe)",
+    capacityMm3: 6700,
+    crestLengthM: 30000,
+    crestHeightM: 60,
+    damTypeEn: "Zoned earthfill dam with concrete gated spillway",
+    damTypePt: "Barragem de terra zoneada com vertedouro de concreto e comportas",
+    insarCoherence: 0.92,
+    deformationMmYr: -2.4,
+    rigidityScore: "Rigid Armor (γ = 0.92)",
+    rigidityScorePt: "Enrocamento Rígido (γ = 0,92)",
+    geologyEn: "Precambrian gneiss bedrock with weathered granite abutments",
+    geologyPt: "Embasamento gnáissico pré-cambriano com ombreiras de granito alterado",
+    physicsEn: "Riprap rock armor on the upstream face preserves stable microwave phase between 12-day repeat passes. InSAR captures millimeter crest settlement under drought decompression.",
+    physicsPt: "O enrocamento de pedras na face de montante preserva a fase de micro-ondas entre passagens orbitais de 12 dias. O InSAR mede assentamento milimétrico por descompressão hidrostática."
+  },
+  oros: {
+    id: "oros",
+    name: "Açude Orós (Pres. Juscelino Kubitschek)",
+    river: "Rio Jaguaribe",
+    location: "Orós / Iguatu (Alto/Médio Jaguaribe)",
+    capacityMm3: 1940,
+    crestLengthM: 1980,
+    crestHeightM: 54,
+    damTypeEn: "Curved rockfill embankment with masonry core",
+    damTypePt: "Aterro de enrocamento curvo com núcleo de alvenaria de pedra",
+    insarCoherence: 0.95,
+    deformationMmYr: -0.6,
+    rigidityScore: "Ultra-Rigid Bedrock (γ = 0.95)",
+    rigidityScorePt: "Rocha Maciça Ultrarrígida (γ = 0,95)",
+    geologyEn: "Massive crystalline quartz-diorite canyon gorge",
+    geologyPt: "Boqueirão cristalino de quartzo-diorito maciço",
+    physicsEn: "Anchored directly into a steep crystalline canyon gorge. Extremely high temporal coherence makes Orós an exceptional geodetic ground calibration target for SAR satellites.",
+    physicsPt: "Ancorado diretamente no boqueirão de rocha cristalina. A altíssima coerência temporal torna o Orós um alvo de calibração geodésica perfeito para satélites SAR."
+  },
+  banabuiu: {
+    id: "banabuiu",
+    name: "Açude Banabuiú (Arrojado Lisboa)",
+    river: "Rio Banabuiú",
+    location: "Banabuiú (Sertão Central)",
+    capacityMm3: 1600,
+    crestLengthM: 1040,
+    crestHeightM: 48,
+    damTypeEn: "Rockfill with central clay core and side spillway",
+    damTypePt: "Enrocamento com núcleo central de argila e vertedouro lateral",
+    insarCoherence: 0.88,
+    deformationMmYr: -1.2,
+    rigidityScore: "Stable Embankment (γ = 0.88)",
+    rigidityScorePt: "Aterro Estável (γ = 0,88)",
+    geologyEn: "Biotite-gneiss crystalline basement",
+    geologyPt: "Embasamento cristalino biotita-gnaisse",
+    physicsEn: "Coherence remains well above 0.85 along the rock crest, allowing clear separation between rigid structural movement and surrounding decorrelated water.",
+    physicsPt: "A coerência se mantém bem acima de 0,85 ao longo da crista de pedras, permitindo separar movimentos estruturais da água adjacente que se descorrela."
+  },
+  arneiroz: {
+    id: "arneiroz",
+    name: "Açude Arneiroz II",
+    river: "Alto Jaguaribe",
+    location: "Arneiroz / Tauá (Sertão dos Inhamuns)",
+    capacityMm3: 197,
+    crestLengthM: 1420,
+    crestHeightM: 32,
+    damTypeEn: "Homogeneous earthfill dam with riprap protection",
+    damTypePt: "Barragem de terra homogênea com enrocamento de proteção",
+    insarCoherence: 0.86,
+    deformationMmYr: -0.9,
+    rigidityScore: "Headwater Retention (γ = 0.86)",
+    rigidityScorePt: "Retenção de Cabeceira (γ = 0,86)",
+    geologyEn: "Schistose and migmatitic bedrock",
+    geologyPt: "Embasamento xistoso e migmatítico",
+    physicsEn: "Controls flash flood surges from the dry Inhamuns uplands. Phase stability on the crest confirms embankment integrity during heavy seasonal flash fills.",
+    physicsPt: "Controla enxurradas torrenciais dos Inhamuns. A estabilidade de fase na crista confirma a integridade do aterro durante recargas bruscas."
+  },
+  trussu: {
+    id: "trussu",
+    name: "Açude Roberto Costa (Trussu)",
+    river: "Rio Trussu (Afluente do Jaguaribe)",
+    location: "Iguatu (Centro-Sul Cearense)",
+    capacityMm3: 300,
+    crestLengthM: 1100,
+    crestHeightM: 38,
+    damTypeEn: "Zoned earthfill dam with morning-glory shaft spillway",
+    damTypePt: "Barragem de terra zoneada com vertedouro tipo tulipa",
+    insarCoherence: 0.89,
+    deformationMmYr: -0.7,
+    rigidityScore: "Rigid Structural Crest (γ = 0.89)",
+    rigidityScorePt: "Crista Estrutural Rígida (γ = 0,89)",
+    geologyEn: "Metasedimentary crystalline basement",
+    geologyPt: "Embasamento metassedimentar cristalino",
+    physicsEn: "Critical regulatory dam for the Iguatu agricultural floodplain. Constant high InSAR coherence enables precise structural monitoring of the morning-glory shaft.",
+    physicsPt: "Açude regulador vital para a várzea agrícola de Iguatu. Alta coerência contínua permite monitorar a integridade estrutural do vertedouro tipo tulipa."
+  }
+};
+
+type DamKey = keyof typeof DAMS_DATA;
 
 export default function SARBiophysicalDashboard() {
   const { t } = useLanguage();
@@ -22,6 +133,16 @@ export default function SARBiophysicalDashboard() {
   // Active analysis preset: Drought Peak (2016) vs Wet Recovery (2024) vs Pre-Dam Baseline (1985)
   const [selectedScenario, setSelectedScenario] = useState<"drought" | "recovery" | "baseline">("drought");
   const [activeTab, setActiveTab] = useState<"polarimetry" | "dielectric" | "insar" | "estuary">("polarimetry");
+
+  // Tab 1 Sub-states: Tidal simulation (High vs Low)
+  const [tidalState, setTidalState] = useState<"high" | "low">("high");
+
+  // Tab 3 Sub-states: Selected Dam for InSAR analysis
+  const [selectedDam, setSelectedDam] = useState<DamKey>("castanhao");
+
+  // Tab 4 Sub-states: River Flow & Effluent Modes
+  const [riverFlowMode, setRiverFlowMode] = useState<"drought" | "strong">("drought");
+  const [effluentView, setEffluentView] = useState<"worst" | "best" | "comparison">("comparison");
 
   const scenarios = {
     baseline: {
@@ -50,11 +171,11 @@ export default function SARBiophysicalDashboard() {
       dielectric: 3.4,
       penetrationCm: 28,
       moistureVolPct: 4,
-      insarCoherence: 0.94, // High coherence on bare dehydrated ground & dam
-      damDeformationMm: -4.8, // Settlement under low hydrostatic pressure
-      surfaceScattering: 48, // Specular dry flats & pond beds
-      doubleBounce: 14, // Root-water contact drastically decreased
-      volumeScattering: 38, // Dormant leafless Caatinga branches
+      insarCoherence: 0.94,
+      damDeformationMm: -4.8,
+      surfaceScattering: 48,
+      doubleBounce: 14,
+      volumeScattering: 38,
       salinityKm: 32.0,
       effluentLoad: "Elevated Biological Load",
       effluentLoadPt: "Carga Biológica Elevada",
@@ -84,6 +205,7 @@ export default function SARBiophysicalDashboard() {
   };
 
   const curr = scenarios[selectedScenario];
+  const activeDamData = DAMS_DATA[selectedDam];
 
   return (
     <section id="biophysical-dashboard" className="py-16 lg:py-24 border-b border-slate-800 bg-[#060D19]">
@@ -266,20 +388,20 @@ export default function SARBiophysicalDashboard() {
           
           {/* Navigation Tabs */}
           <div className="flex flex-wrap items-center justify-between border-b border-slate-800 pb-4 mb-6 gap-3">
-            <div className="flex items-center space-x-2 text-sm">
+            <div className="flex items-center space-x-2 text-sm overflow-x-auto pb-1 max-w-full">
               <button
                 onClick={() => setActiveTab("polarimetry")}
-                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all ${
+                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 ${
                   activeTab === "polarimetry"
                     ? "bg-rose-500/20 text-rose-300 border border-rose-500/40"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                {t("1. Pauli Polarimetric Decomposition", "1. Decomposição Polarimétrica de Pauli")}
+                {t("1. Double-Bounce & Mangrove Roots", "1. Double-Bounce & Raízes de Mangue")}
               </button>
               <button
                 onClick={() => setActiveTab("dielectric")}
-                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all ${
+                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 ${
                   activeTab === "dielectric"
                     ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
                     : "text-slate-400 hover:text-white"
@@ -289,23 +411,23 @@ export default function SARBiophysicalDashboard() {
               </button>
               <button
                 onClick={() => setActiveTab("insar")}
-                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all ${
+                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 ${
                   activeTab === "insar"
                     ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                {t("3. InSAR Coherence & Dam Geodesy", "3. Coerência InSAR & Geodésia de Barragens")}
+                {t("3. InSAR Coherence: Rigid vs Decorrelated", "3. Coerência InSAR: Rígido vs Decorrelacionado")}
               </button>
               <button
                 onClick={() => setActiveTab("estuary")}
-                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all ${
+                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 ${
                   activeTab === "estuary"
                     ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                {t("4. Estuarine Dilution & Aquaculture", "4. Diluição Estuarina & Carcinicultura")}
+                {t("4. River Flow & Biological Effluents", "4. Vazão Fluvial & Efluentes Biológicos")}
               </button>
             </div>
 
@@ -314,112 +436,191 @@ export default function SARBiophysicalDashboard() {
             </span>
           </div>
 
-          {/* TAB 1: POLARIMETRY */}
+          {/* TAB 1: POLARIMETRY & CORRELATED DOUBLE-BOUNCE VS MANGROVE TIDAL FLOODING */}
           {activeTab === "polarimetry" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-4">
-                <div className="flex items-center space-x-2 text-rose-400 text-xs font-bold uppercase tracking-wider">
-                  <Radio className="h-4 w-4" />
-                  <span>{t("Full-Polarimetric SAR (Quad-Pol L-Band)", "SAR Totalmente Polarimétrico (Quad-Pol Banda L)")}</span>
-                </div>
-                <h3 className="text-2xl font-bold text-white">
-                  {t(
-                    "Pauli RGB Decomposition: Unraveling Structural Canopy Geometry",
-                    "Decomposição Pauli RGB: Revelando a Geometria Estrutural da Vegetação"
-                  )}
-                </h3>
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  {t(
-                    "Optical sensors see leaf greenness (NDVI), which plummets to near zero during Caatinga dry dormancy. NISAR L-band penetrates through foliage, interacting with the actual trunk and root architectures via 3 orthogonal scattering mechanisms:",
-                    "Sensores ópticos enxergam a clorofila foliar (NDVI), que zera na dormência seca da Caatinga. A banda L do NISAR penetra a folhagem e mede a estrutura real dos troncos e raízes através de 3 mecanismos ortogonais de espalhamento:"
-                  )}
-                </p>
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="flex items-center space-x-2 text-rose-400 text-xs font-bold uppercase tracking-wider">
+                    <Radio className="h-4 w-4" />
+                    <span>{t("Full-Polarimetric Decomposition (NISAR L-Band / Sentinel-1 C-SAR)", "Decomposição Polarimétrica (NISAR Banda L / Sentinel-1 C-SAR)")}</span>
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold text-white">
+                    {t(
+                      "Double-Bounce Dihedral Physics: Correlating Tidal Flooding with Mangrove Stilt Roots",
+                      "Física do Diedro (Double-Bounce): Correlacionando Inundação de Maré com Raízes Escora de Mangue"
+                    )}
+                  </h3>
 
-                {/* Pauli RGB Explanatory Bars */}
-                <div className="space-y-3 pt-2">
-                  <div className="rounded-xl border border-rose-500/30 bg-rose-950/20 p-3.5 flex items-center justify-between">
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <span className="h-3 w-3 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
-                        <span className="font-bold text-rose-300 text-sm">
-                          {t("Red Channel: Double-Bounce |HH - VV|²", "Canal Vermelho: Reflexão Dupla |HH - VV|²")}
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-300 mt-1">
-                        {t(
-                          "Interactions between flooded water surface and vertical tree trunks/stilt roots (e.g. Rhizophora mangle in high tide).",
-                          "Interação entre espelho d'água inundado e troncos/raízes escora verticais (ex: Rhizophora mangle na preamar)."
-                        )}
-                      </p>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    {t(
+                      "Double-bounce scattering requires an orthogonal 90° corner reflector (diedro). In coastal wetlands like Aracati, this geometric condition occurs when the horizontal specular water mirror meets the vertical stilt roots of Rhizophora mangle or pneumatophores of Avicennia germinans during high tide.",
+                      "O espalhamento por reflexão dupla (double-bounce) exige um refletor de canto ortogonal de 90° (diedro). No estuário de Aracati, essa condição geométrica ocorre quando a lâmina d'água especular horizontal encontra as raízes-escora verticais do mangue-vermelho (Rhizophora mangle) ou pneumatóforos de Avicennia germinans na preamar."
+                    )}
+                  </p>
+
+                  {/* Why Optical Satellites Fail vs SAR Penetration */}
+                  <div className="rounded-2xl border border-rose-500/30 bg-rose-950/20 p-4 space-y-3">
+                    <div className="flex items-center space-x-2 text-rose-300 font-bold text-xs">
+                      <Zap className="h-4 w-4 text-rose-400" />
+                      <span>{t("Why Optical Satellites Fail Beneath Canopies", "Por Que Sensores Ópticos Falham sob o Dossel")}</span>
                     </div>
-                    <span className="text-xl font-mono font-extrabold text-rose-400 ml-4">{curr.doubleBounce}%</span>
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      {t(
+                        "Optical sensors (Sentinel-2, Landsat) cannot penetrate dense leafy canopies (LAI > 3.5). The green canopy umbrella reflects visible and NIR photons, reporting 'dry forest' even when the forest floor is submerged under 1.5 meters of water. In contrast, active microwaves (NISAR L-band λ = 24.2 cm and Sentinel-1 C-band λ = 5.6 cm) pierce canopy gaps, reflect off the flooded water sheet onto vertical roots, and return directly to the antenna.",
+                        "Sensores ópticos (Sentinel-2, Landsat) não penetram o dossel foliar denso (IAF > 3,5). A copa funciona como um guarda-chuva que reflete luz visível e IVP, indicando 'floresta seca' mesmo com 1,5 metro de maré inundando o chão. Já as micro-ondas ativas (NISAR Banda L λ = 24,2 cm e Sentinel-1 Banda C λ = 5,6 cm) penetram as folhas, refletem na água contra as raízes verticais e retornam diretamente à antena."
+                      )}
+                    </p>
                   </div>
 
-                  <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-3.5 flex items-center justify-between">
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <span className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                        <span className="font-bold text-emerald-300 text-sm">
-                          {t("Green Channel: Volume Scattering 4|HV|²", "Canal Verde: Espalhamento Volumétrico 4|HV|²")}
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-300 mt-1">
-                        {t(
-                          "Cross-polarized returns from randomly oriented dry branches and dense mangrove crowns.",
-                          "Retorno cruzado despolarizado de galhos secos ramificados e copas densas de manguezal."
-                        )}
-                      </p>
+                  {/* Polarimetric Pauli Red Channel Formulation */}
+                  <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4 font-mono text-xs text-slate-300 space-y-2">
+                    <div className="flex justify-between items-center text-rose-300 font-bold border-b border-slate-800 pb-2">
+                      <span>{t("Pauli Red Channel (Dihedral Reflection):", "Canal Vermelho de Pauli (Reflexão Diédrica):")}</span>
+                      <span>Pd = ½ |S_HH - S_VV|²</span>
                     </div>
-                    <span className="text-xl font-mono font-extrabold text-emerald-400 ml-4">{curr.volumeScattering}%</span>
+                    <p className="text-[11px] text-slate-400 pt-1">
+                      {t(
+                        "Two consecutive Fresnel reflections (water surface → tree trunk) produce a 180° (π radian) phase shift between horizontal (HH) and vertical (VV) electric field vectors. This destructive interference in HH+VV and constructive reinforcement in HH-VV concentrates double-bounce power strictly into the Pauli Red channel.",
+                        "Duas reflexões consecutivas de Fresnel (lâmina d'água → tronco) geram uma mudança de fase de 180° (π radianos) entre os vetores de campo HH e VV. Esse reforço construtivo em HH-VV concentra a energia do diedro exclusivamente no canal Vermelho de Pauli."
+                      )}
+                    </p>
                   </div>
+                </div>
 
-                  <div className="rounded-xl border border-blue-500/30 bg-blue-950/20 p-3.5 flex items-center justify-between">
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <span className="h-3 w-3 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
-                        <span className="font-bold text-blue-300 text-sm">
-                          {t("Blue Channel: Surface Scattering |HH + VV|²", "Canal Azul: Espalhamento Superficial |HH + VV|²")}
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-300 mt-1">
-                        {t(
-                          "Single-bounce reflections on smooth open water, mudflats, and empty aquaculture basins.",
-                          "Reflexão simples em águas calmas abertas, planícies lodosas e tanques de carcinicultura vazios."
-                        )}
-                      </p>
+                {/* Interactive Tidal Simulator Box */}
+                <div className="lg:col-span-5 rounded-2xl bg-black/60 border border-slate-800 p-6 flex flex-col justify-between space-y-6">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-xs font-mono text-rose-300 uppercase tracking-wider font-bold">
+                        {t("Tidal Flooding Phase Switcher", "Simulador da Fase da Maré")}
+                      </span>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                        Aracati Estuary
+                      </span>
                     </div>
-                    <span className="text-xl font-mono font-extrabold text-blue-400 ml-4">{curr.surfaceScattering}%</span>
+
+                    {/* High vs Low Tide Buttons */}
+                    <div className="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl border border-slate-800 mb-5">
+                      <button
+                        onClick={() => setTidalState("high")}
+                        className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center space-x-1.5 ${
+                          tidalState === "high"
+                            ? "bg-rose-600 text-white shadow-lg shadow-rose-900/50"
+                            : "text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        <Waves className="h-3.5 w-3.5" />
+                        <span>{t("Preamar / High Tide (+3.0 m)", "Preamar / Maré Alta (+3,0 m)")}</span>
+                      </button>
+                      <button
+                        onClick={() => setTidalState("low")}
+                        className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center space-x-1.5 ${
+                          tidalState === "low"
+                            ? "bg-amber-600 text-white shadow-lg shadow-amber-900/50"
+                            : "text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        <Droplet className="h-3.5 w-3.5" />
+                        <span>{t("Baixa-mar / Low Tide (+0.2 m)", "Baixa-mar / Maré Baixa (+0,2 m)")}</span>
+                      </button>
+                    </div>
+
+                    {/* Dynamic Diagram Representation */}
+                    <div className="rounded-xl border border-slate-700 bg-slate-950/80 p-4 space-y-3">
+                      {tidalState === "high" ? (
+                        <>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-rose-400 flex items-center space-x-1">
+                              <span className="h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse" />
+                              <span>{t("Active Dihedral Resonance", "Ressonância Diédrica Ativa")}</span>
+                            </span>
+                            <span className="text-xs font-mono text-rose-300 font-bold">+8.4 dB Backscatter Spike</span>
+                          </div>
+                          
+                          {/* Visual ASCII / SVG Representation of Corner Reflector */}
+                          <div className="h-28 w-full rounded-lg bg-gradient-to-b from-slate-900 to-rose-950/30 border border-rose-500/20 relative flex items-center justify-center overflow-hidden">
+                            <div className="absolute top-2 left-4 text-[10px] font-mono text-cyan-300">
+                              Radar Beam (λ = 24 cm) ↘
+                            </div>
+                            <div className="absolute bottom-2 left-0 right-0 h-4 bg-cyan-600/40 border-t border-cyan-400/60 flex items-center px-3">
+                              <span className="text-[9px] font-mono text-cyan-200">
+                                {t("Specular Water Sheet (ε ≈ 80)", "Lâmina D'água Especular (ε ≈ 80)")}
+                              </span>
+                            </div>
+                            <div className="absolute bottom-4 right-12 w-6 h-16 bg-amber-800/80 rounded-t border-l-2 border-rose-400 flex items-center justify-center">
+                              <span className="text-[8px] font-mono text-white -rotate-90">Root / Tronco</span>
+                            </div>
+                            <div className="absolute bottom-4 right-16 text-rose-400 text-xs font-bold">
+                              90° Diedro ↗
+                            </div>
+                          </div>
+
+                          <div className="text-[11px] text-slate-300 leading-relaxed">
+                            <strong className="text-rose-300">{t("Sub-canopy flood detected:", "Inundação sob o dossel detectada:")}</strong>{" "}
+                            {t(
+                              "The water acts as a mirror with reflection coefficient R ≈ 0.85, directing the microwave into stilt roots and bouncing it directly back to the satellite. Pauli Red channel lights up intensely.",
+                              "A água atua como espelho com coeficiente R ≈ 0,85, direcionando o feixe para as raízes escora e de volta ao satélite. O canal Vermelho de Pauli acende com intensidade máxima."
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-amber-400 flex items-center space-x-1">
+                              <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+                              <span>{t("Corner Reflector Collapsed", "Refletor de Canto Colapsado")}</span>
+                            </span>
+                            <span className="text-xs font-mono text-slate-400 font-bold">-7.2 dB Signal Loss</span>
+                          </div>
+
+                          {/* Visual ASCII / SVG Representation of Low Tide Mud */}
+                          <div className="h-28 w-full rounded-lg bg-gradient-to-b from-slate-900 to-amber-950/20 border border-slate-700 relative flex items-center justify-center overflow-hidden">
+                            <div className="absolute top-2 left-4 text-[10px] font-mono text-slate-400">
+                              Radar Beam ↘ Diffuse Scatter
+                            </div>
+                            <div className="absolute bottom-2 left-0 right-0 h-4 bg-amber-950 border-t border-amber-800 flex items-center px-3">
+                              <span className="text-[9px] font-mono text-amber-300">
+                                {t("Rough Exposed Mudflat (No Specular Mirror)", "Lamaçais Rugosos Expostos (Sem Espelho)")}
+                              </span>
+                            </div>
+                            <div className="absolute bottom-4 right-12 w-6 h-16 bg-amber-900/60 rounded-t flex items-center justify-center">
+                              <span className="text-[8px] font-mono text-slate-400 -rotate-90">Root / Tronco</span>
+                            </div>
+                          </div>
+
+                          <div className="text-[11px] text-slate-300 leading-relaxed">
+                            <strong className="text-amber-300">{t("Exposed tidal mudflats:", "Lamaçais de maré expostos:")}</strong>{" "}
+                            {t(
+                              "Tidal water receded. Substrate roughness causes diffuse single scattering and attenuation into saturated silts. Dihedral reflection vanishes, extinguishing the Pauli Red response.",
+                              "A maré recuou. A rugosidade da lama gera espalhamento difuso simples e atenuação nos sedimentos. A reflexão diédrica cessa, extinguindo o sinal Vermelho de Pauli."
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 3 Polarimetric Pauli Channels Breakdown */}
+                  <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
+                    <div className="p-2 rounded-lg bg-rose-950/40 border border-rose-500/30">
+                      <span className="text-rose-400 font-bold block">{t("Red Channel", "Canal Vermelho")}</span>
+                      <span className="text-white text-xs">{tidalState === "high" ? "52%" : "14%"}</span>
+                      <span className="text-slate-400 block mt-0.5">{t("Double Bounce", "Reflexão Dupla")}</span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-emerald-950/40 border border-emerald-500/30">
+                      <span className="text-emerald-400 font-bold block">{t("Green Channel", "Canal Verde")}</span>
+                      <span className="text-white text-xs">34%</span>
+                      <span className="text-slate-400 block mt-0.5">{t("Canopy Volume", "Volume Copa")}</span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-blue-950/40 border border-blue-500/30">
+                      <span className="text-blue-400 font-bold block">{t("Blue Channel", "Canal Azul")}</span>
+                      <span className="text-white text-xs">{tidalState === "high" ? "14%" : "52%"}</span>
+                      <span className="text-slate-400 block mt-0.5">{t("Surface Mud", "Lama Difusa")}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Visual Polarimetric Triangle Synthesizer */}
-              <div className="lg:col-span-5 flex flex-col items-center justify-center p-6 rounded-2xl bg-black/60 border border-slate-800">
-                <div className="text-xs font-mono text-slate-400 mb-4 uppercase tracking-widest text-center">
-                  {t("Pauli RGB Polarization Signature", "Assinatura Polarimétrica Pauli RGB")}
-                </div>
-                
-                {/* Simulated Pauli RGB Disk */}
-                <div className="relative w-48 h-48 rounded-full flex items-center justify-center border-4 border-slate-700 shadow-2xl overflow-hidden"
-                  style={{
-                    background: `radial-gradient(circle, rgb(${Math.round(curr.doubleBounce * 2.5)}, ${Math.round(curr.volumeScattering * 2.5)}, ${Math.round(curr.surfaceScattering * 2.5)}) 0%, #03070E 100%)`
-                  }}
-                >
-                  <div className="absolute inset-0 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px] opacity-20" />
-                  <div className="relative text-center p-4 bg-black/70 backdrop-blur-md rounded-xl border border-white/10">
-                    <span className="text-xs text-slate-400 block">{t("Composite Color", "Cor Composta")}</span>
-                    <span className="font-mono text-sm font-bold text-white">
-                      R:{curr.doubleBounce}% G:{curr.volumeScattering}% B:{curr.surfaceScattering}%
-                    </span>
-                  </div>
-                </div>
-
-                <p className="text-[11px] text-slate-400 text-center mt-4 max-w-xs leading-relaxed">
-                  {t(
-                    "In 2016 drought, volume and double-bounce dropped 60% in dry riverbed fringes, exposing bare ground with strong surface backscatter.",
-                    "Na seca de 2016, volume e dupla reflexão caíram 60% nas margens secas, expondo solo nu com espalhamento de superfície."
-                  )}
-                </p>
               </div>
             </div>
           )}
@@ -503,170 +704,452 @@ export default function SARBiophysicalDashboard() {
             </div>
           )}
 
-          {/* TAB 3: INSAR COHERENCE */}
+          {/* TAB 3: INSAR COHERENCE: RIGID VS DECORRELATED + INTERACTIVE DAM SELECTOR */}
           {activeTab === "insar" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-4">
-                <div className="flex items-center space-x-2 text-emerald-400 text-xs font-bold uppercase tracking-wider">
-                  <ShieldAlert className="h-4 w-4" />
-                  <span>{t("Interferometric SAR Geodesy (DInSAR)", "Geodésia por Interferometria SAR (DInSAR)")}</span>
+            <div className="space-y-8">
+              
+              {/* Interactive Dam Selector Strip */}
+              <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                  <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center space-x-1.5">
+                    <ShieldCheck className="h-4 w-4" />
+                    <span>{t("Select Reservoir Dam for InSAR Geodesy:", "Selecione o Açude para Geodésia InSAR:")}</span>
+                  </span>
+                  <span className="text-[11px] text-slate-400 font-mono">
+                    {t("5 Major Jaguaribe Basin Mega-Dams", "5 Grandes Açudes da Bacia do Jaguaribe")}
+                  </span>
                 </div>
-                <h3 className="text-2xl font-bold text-white">
-                  {t(
-                    "Millimeter Structural Stability Monitoring: Castanhão & Orós Mega-Dams",
-                    "Monitoramento de Estabilidade Estrutural Milimétrica: Açudes Castanhão e Orós"
-                  )}
-                </h3>
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  {t(
-                    "Castanhão (6.7 billion m³) is Latin America's largest earthen dam. During multi-year droughts, hydrostatic unloading causes micro-subsidence in the crest; subsequent rapid refills create hydraulic thrust. Repeat-pass InSAR interferometry measures phase difference (Δφ) to millimeter accuracy:",
-                    "O Castanhão (6,7 bilhões de m³) é o maior reservatório público de terra da América Latina. Em megassecas, o esvaziamento gera descompressão hidrostática com micro-assentamento; a recarga brusca gera empuxo. A interferometria InSAR mede a diferença de fase (Δφ) com precisão milimétrica:"
-                  )}
-                </p>
 
-                <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-4 font-mono text-xs text-emerald-300 space-y-2">
-                  <div className="flex justify-between items-center border-b border-emerald-500/20 pb-2">
-                    <span>{t("Interferometric Phase Shift Equation:", "Equação da Mudança de Fase:")}</span>
-                    <span className="text-white font-bold">Δφ = (4π / λ) · ΔR</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 text-[11px] pt-1">
-                    <div>
-                      <span className="text-slate-400 block">{t("Radar Wavelength (λ):", "Comprimento de Onda (λ):")}</span>
-                      <span className="text-white">24.2 cm (NISAR L-Band)</span>
-                    </div>
-                    <div>
-                      <span className="text-slate-400 block">{t("Displacement Precision:", "Precisão do Deslocamento:")}</span>
-                      <span className="text-white">±1.8 mm / year</span>
-                    </div>
-                  </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+                  {(Object.keys(DAMS_DATA) as DamKey[]).map((key) => {
+                    const dam = DAMS_DATA[key];
+                    const isSelected = selectedDam === key;
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setSelectedDam(key)}
+                        className={`p-3 rounded-xl border text-left transition-all ${
+                          isSelected
+                            ? "border-emerald-500 bg-emerald-950/40 shadow-lg shadow-emerald-950/50 ring-1 ring-emerald-500"
+                            : "border-slate-800 bg-slate-900/60 hover:border-slate-700"
+                        }`}
+                      >
+                        <div className="text-[10px] text-slate-400 font-mono truncate">{dam.river}</div>
+                        <div className="text-xs font-bold text-white truncate mt-0.5">{dam.name.split(" ")[1]}</div>
+                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-800/80">
+                          <span className="text-[10px] text-emerald-400 font-mono font-bold">γ = {dam.insarCoherence}</span>
+                          <span className="text-[10px] text-slate-400 font-mono">{dam.deformationMmYr} mm/a</span>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Dam Coherence Radar Card */}
-              <div className="lg:col-span-5 rounded-2xl bg-black/60 border border-slate-800 p-6 flex flex-col justify-between">
-                <div className="text-xs font-mono text-emerald-300 uppercase tracking-widest text-center mb-4">
-                  {t("Castanhão Dam Crest Coherence", "Coerência na Crista do Açude Castanhão")}
-                </div>
-
-                <div className="space-y-4">
-                  <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
-                    <div>
-                      <span className="text-xs text-slate-400 block">{t("Interferometric Coherence (γ)", "Coerência Interferométrica (γ)")}</span>
-                      <span className="text-xl font-bold text-white">{curr.insarCoherence}</span>
-                    </div>
-                    <span className="text-xs font-mono px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded border border-emerald-500/40">
-                      {t("High Phase Quality", "Alta Qualidade de Fase")}
-                    </span>
+              {/* Dam Detail & Physical Contrast */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                {/* Left Column: Dam Profile & Rigidity Physics */}
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="flex items-center space-x-2 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                    <ShieldAlert className="h-4 w-4" />
+                    <span>{t("Interferometric Phase Coherence Formulation", "Formula da Coerência de Fase Interferométrica")}</span>
                   </div>
 
-                  <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
-                    <div>
-                      <span className="text-xs text-slate-400 block">{t("Deformation Velocity", "Velocidade de Deformação")}</span>
-                      <span className="text-xl font-bold text-emerald-400 font-mono">
-                        {curr.damDeformationMm > 0 ? `+${curr.damDeformationMm}` : curr.damDeformationMm} mm/yr
-                      </span>
+                  <h3 className="text-2xl font-bold text-white">
+                    {activeDamData.name}
+                  </h3>
+
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    {t(activeDamData.physicsEn, activeDamData.physicsPt)}
+                  </p>
+
+                  {/* Mathematical Rigidity vs Decorrelation Physics */}
+                  <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-4 font-mono text-xs text-emerald-300 space-y-3">
+                    <div className="flex justify-between items-center border-b border-emerald-500/20 pb-2">
+                      <span>{t("Interferometric Coherence:", "Coerência Interferométrica:")}</span>
+                      <span className="text-white font-bold">γ = |⟨s₁ s₂*⟩| / √(⟨|s₁|²⟩ ⟨|s₂|²⟩)</span>
                     </div>
-                    <span className="text-xs font-mono px-2 py-1 bg-slate-800 text-slate-300 rounded">
-                      {curr.damDeformationMm < -3 ? t("Settlement Warning", "Atenção Assentamento") : t("Nominal Geodesy", "Geodésia Nominal")}
-                    </span>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[11px] pt-1">
+                      <div>
+                        <span className="text-slate-400 block">{t("Rigid Structure (Dam Crest / Rock):", "Estrutura Rígida (Crista / Rocha):")}</span>
+                        <span className="text-white font-bold">γ &gt; 0.85 (Phase Preserved)</span>
+                        <p className="text-[10px] text-slate-300 mt-1">
+                          {t("Sub-wavelength scatterers remain fixed (< λ/4 = 6 cm). Yields millimeter displacement d_LOS = (λ/4π)Δφ.",
+                             "Espalhadores sub-comprimento de onda fixos (< λ/4 = 6 cm). Gera medida milimétrica d_LOS = (λ/4π)Δφ.")}
+                        </p>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block">{t("Decorrelated Medium (Water / Mud):", "Meio Decorrelacionado (Água / Lama):")}</span>
+                        <span className="text-rose-400 font-bold">γ &lt; 0.25 (Phase White Noise)</span>
+                        <p className="text-[10px] text-slate-300 mt-1">
+                          {t("Wind waves and moving mud randomize phase entirely between passes. Coherence drops to zero, blocking DInSAR.",
+                             "Ondas de vento e lodo em movimento aleatorizam a fase entre passagens. Coerência zera, inviabilizando DInSAR.")}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Dam Structural Specs Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                    <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                      <span className="text-[10px] text-slate-400 block">{t("Reservoir Capacity", "Capacidade")}</span>
+                      <span className="text-base font-bold text-white font-mono">{activeDamData.capacityMm3.toLocaleString()} Mm³</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                      <span className="text-[10px] text-slate-400 block">{t("Crest Length", "Comprimento da Crista")}</span>
+                      <span className="text-base font-bold text-white font-mono">{activeDamData.crestLengthM.toLocaleString()} m</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                      <span className="text-[10px] text-slate-400 block">{t("Crest Height", "Altura Máxima")}</span>
+                      <span className="text-base font-bold text-white font-mono">{activeDamData.crestHeightM} m</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                      <span className="text-[10px] text-slate-400 block">{t("Dam Type", "Tipo de Barragem")}</span>
+                      <span className="text-xs font-bold text-emerald-400 truncate block mt-1">{t(activeDamData.rigidityScore, activeDamData.rigidityScorePt)}</span>
+                    </div>
                   </div>
                 </div>
 
-                <p className="text-[11px] text-slate-400 text-center mt-4">
-                  {t(
-                    "Enables proactive civil defense monitoring of structural integrity without costly ground station arrays.",
-                    "Permite monitoramento preventivo pela Defesa Civil sem custos de sensores piezométricos em terra."
-                  )}
-                </p>
+                {/* Right Column: Comparative Rigidity vs Decorrelation Card */}
+                <div className="lg:col-span-5 rounded-2xl bg-black/60 border border-slate-800 p-6 flex flex-col justify-between space-y-5">
+                  <div className="text-xs font-mono text-emerald-300 uppercase tracking-widest text-center mb-1">
+                    {t("Rigid Structure vs Decorrelated Medium", "Estrutura Rígida vs Meio Decorrelacionado")}
+                  </div>
+
+                  {/* Side-by-Side Coherence Comparison Cards */}
+                  <div className="space-y-3">
+                    
+                    {/* Rigid Embankment */}
+                    <div className="p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/20 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-emerald-300 flex items-center space-x-1.5">
+                          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                          <span>{t("Rigid Rock Armor / Concrete Crest", "Enrocamento Rígido / Crista de Concreto")}</span>
+                        </span>
+                        <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
+                          γ = {activeDamData.insarCoherence}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-300">
+                        {t(
+                          "Stationary boulders and bedrock outcrops maintain constant backscattering geometry over months. Coherence remains > 0.85, enabling millimeter subsidence tracking.",
+                          "Blocos de rocha estacionários e afloramentos rochosos mantêm a geometria de retroespalhamento constante. A coerência segue > 0,85, permitindo medir assentamentos milimétricos."
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Decorrelated Reservoir Water */}
+                    <div className="p-4 rounded-xl border border-rose-500/30 bg-rose-950/20 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-rose-300 flex items-center space-x-1.5">
+                          <XCircle className="h-4 w-4 text-rose-400" />
+                          <span>{t("Reservoir Water & Saturated Mud", "Espelho D'água & Lamaçais Saturados")}</span>
+                        </span>
+                        <span className="text-xs font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">
+                          γ &lt; 0.15
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-300">
+                        {t(
+                          "Capillary wind ripples and fluctuating water level completely destroy phase correlation within seconds. The interferogram over the reservoir yields pure salt-and-pepper noise.",
+                          "Marolas geradas pelo vento e a oscilação do nível destroem a correlação de fase em segundos. O interferograma sobre a lâmina d'água gera ruído puramente aleatório."
+                        )}
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-center">
+                    <span className="text-[11px] text-slate-400 block">{t("12-Day Orbital Cycle InSAR Displacement Rate:", "Taxa de Deslocamento InSAR no Ciclo de 12 Dias:")}</span>
+                    <span className="text-xl font-bold font-mono text-emerald-400">{activeDamData.deformationMmYr} mm/year</span>
+                    <span className="text-[10px] text-slate-500 block mt-0.5">{t("Within nominal engineering safety tolerance (< 5 mm/yr)", "Dentro da tolerância nominal de segurança da engenharia (< 5 mm/ano)")}</span>
+                  </div>
+                </div>
+
               </div>
             </div>
           )}
 
-          {/* TAB 4: ESTUARY & AQUACULTURE */}
+          {/* TAB 4: ESTUARINE HYDRODYNAMICS, FLOW REGIMES & BIOLOGICAL EFFLUENTS */}
           {activeTab === "estuary" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-4">
+            <div className="space-y-8">
+              
+              {/* Header & Context */}
+              <div className="max-w-3xl space-y-3">
                 <div className="flex items-center space-x-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
                   <Waves className="h-4 w-4" />
-                  <span>{t("Estuarine Hydrodynamics & Economic Coexistence", "Hidrodinâmica Estuarina & Coexistência Econômica")}</span>
+                  <span>{t("Estuarine Dilution Dynamics & Carciniculture Effluent Quality", "Dinâmica de Diluição Estuarina & Qualidade de Efluentes da Carcinicultura")}</span>
                 </div>
                 <h3 className="text-2xl font-bold text-white">
                   {t(
-                    "Balancing Productive Carciniculture & Mangrove Health Under Extreme Drought",
-                    "Equilibrando a Carcinicultura Produtiva e a Saúde do Manguezal Sob Seca Extrema"
+                    "Strong vs Weak River Flow & The Biological Effluent Spectrum in Aracati",
+                    "Vazão Fluvial Forte vs Fraca & O Espectro de Efluentes Biológicos em Aracati"
                   )}
                 </h3>
                 <p className="text-slate-300 text-sm leading-relaxed">
                   {t(
-                    "Shrimp farming (carcinicultura) is a vital regional economic engine and food production sector in Aracati and Fortim, supporting thousands of families. However, when upstream reservoir retention reduces Jaguaribe river discharge from hundreds of m³/s to near zero, the natural tidal flushing mechanism collapses:",
-                    "A carcinicultura é um motor econômico vital e setor produtivo de alimentos em Aracati e Fortim, sustentando milhares de famílias. Contudo, quando o represamento a montante reduz a vazão do Jaguaribe de centenas de m³/s para quase zero, o mecanismo de lavagem estuarina colapsa:"
+                    "Carciniculture (shrimp farming) is a foundational productive economic activity supporting over 12,000 direct and indirect jobs in Aracati, Fortim, and Jaguaruana. However, its environmental footprint is dictated by upstream river discharge from Castanhão. When the river ceases flowing, tidal flushing collapses, turning the estuary into a biological accumulation sink.",
+                    "A carcinicultura é uma atividade econômica produtiva e legítima que sustenta mais de 12.000 empregos diretos e indiretos em Aracati, Fortim e Jaguaruana. No entanto, sua pegada ambiental é ditada pela vazão a montante liberada pelo Castanhão. Quando o rio para de correr, a renovação de maré colapsa, transformando o estuário em armadilha de acúmulo biológico."
                   )}
                 </p>
-
-                <div className="space-y-2.5 pt-2">
-                  <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3.5 flex items-start space-x-3">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 shrink-0" />
-                    <div>
-                      <span className="font-bold text-white text-xs">{t("Tidal Salinity Wedge Penetration", "Avanço da Cunha Salina Marinha")}</span>
-                      <p className="text-[11px] text-slate-300 mt-0.5">
-                        {t(
-                          "Without freshwater counter-current, marine seawater penetrated 32 km upstream to Jaguaruana in 2016, salinizing municipal intake wells and apicum flats.",
-                          "Sem contra-vazão doce, a água marinha penetrou 32 km rio acima até Jaguaruana em 2016, salinizando poços de captação e apicuns."
-                        )}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3.5 flex items-start space-x-3">
-                    <CheckCircle2 className="h-4 w-4 text-amber-400 mt-0.5 shrink-0" />
-                    <div>
-                      <span className="font-bold text-white text-xs">{t("Effluent Dilution Capacity & Biological Load", "Capacidade de Diluição de Efluentes & Carga Biológica")}</span>
-                      <p className="text-[11px] text-slate-300 mt-0.5">
-                        {t(
-                          "Aquaculture ponds release organic nutrients and nitrogen compounds during drainage. In drought, low flushing concentrates biological load, triggering algal blooms detected by SAR surface roughness dampening.",
-                          "Tanques de cultivo descarregam nutrientes orgânicos. Na seca, a baixa renovação concentra a carga biológica, gerando floração de microalgas detectada por amortecimento de rugosidade no SAR."
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
 
-              {/* Hydrodynamic Indicator Box */}
-              <div className="lg:col-span-5 rounded-2xl bg-black/60 border border-slate-800 p-6 flex flex-col justify-between">
-                <div className="text-xs font-mono text-amber-300 uppercase tracking-widest text-center mb-4">
-                  {t("Estuarine Hydraulic Coupling", "Acoplamento Hidráulico Estuarino")}
+              {/* Module 1: Strong Flow vs Weak Flow Comparative Switcher */}
+              <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                  <span className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-bold flex items-center space-x-1.5">
+                    <Sliders className="h-4 w-4" />
+                    <span>{t("Compare Hydraulic Regimes:", "Comparar Regimes Hidráulicos:")}</span>
+                  </span>
+                  
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => setRiverFlowMode("drought")}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        riverFlowMode === "drought"
+                          ? "bg-amber-500 text-white shadow-md shadow-amber-950/50"
+                          : "text-slate-400 hover:text-white bg-slate-800/60"
+                      }`}
+                    >
+                      {t("Weak / Drought Flow (Q ≈ 0 - 5 m³/s)", "Vazão Fraca / Estiagem (Q ≈ 0 - 5 m³/s)")}
+                    </button>
+                    <button
+                      onClick={() => setRiverFlowMode("strong")}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        riverFlowMode === "strong"
+                          ? "bg-cyan-500 text-white shadow-md shadow-cyan-950/50"
+                          : "text-slate-400 hover:text-white bg-slate-800/60"
+                      }`}
+                    >
+                      {t("Strong / Flood Pulse (Q > 500 m³/s)", "Vazão Forte / Cheia (Q > 500 m³/s)")}
+                    </button>
+                  </div>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
-                    <div>
-                      <span className="text-xs text-slate-400 block">{t("Upstream River Outflow", "Vazão do Rio a Montante")}</span>
-                      <span className="text-xl font-bold text-cyan-400 font-mono">{curr.riverDischargeM3s} m³/s</span>
+                {/* Flow Impact Analysis */}
+                {riverFlowMode === "drought" ? (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+                    <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 space-y-2">
+                      <span className="text-xs font-bold text-amber-400 block">{t("Tidal Salinity Intrusion (32 km)", "Intrusão da Cunha Salina (32 km)")}</span>
+                      <p className="text-xs text-slate-300">
+                        {t(
+                          "Without hydraulic counter-pressure from upstream, dense marine seawater penetrates 32 km inland to Jaguaruana. Estuarine residence time exceeds 35 days, preventing nutrient dispersion.",
+                          "Sem contrapressão fluvial a montante, a cunha salina avança 32 km até Jaguaruana. O tempo de residência ultrapassa 35 dias, impedindo a dispersão de nutrientes."
+                        )}
+                      </p>
                     </div>
-                    <span className="text-xs font-mono px-2 py-1 bg-cyan-500/20 text-cyan-300 rounded">
-                      {curr.riverDischargeM3s < 10 ? t("Drought Cutoff", "Vazão Residual") : t("Flushing Flow", "Vazão Hidráulica")}
-                    </span>
-                  </div>
 
-                  <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
-                    <div>
-                      <span className="text-xs text-slate-400 block">{t("Biological Effluent Dilution", "Diluição de Efluentes Biológicos")}</span>
-                      <span className="text-xl font-bold text-amber-400 font-mono">{curr.effluentLoad}</span>
+                    <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/30 space-y-2">
+                      <span className="text-xs font-bold text-rose-400 block">{t("Effluent Stagnation & Nocturnal Hypoxia", "Estagnação de Efluentes & Hipóxia Noturna")}</span>
+                      <p className="text-xs text-slate-300">
+                        {t(
+                          "Pond drainage discharge accumulates in deep estuarine channels. Algal blooms cause nocturnal dissolved oxygen crashes (DO < 1.5 mg/L), triggering pathogen proliferation (Vibrio spp.).",
+                          "A drenagem dos viveiros se acumula nas calhas fundas. Florações algais causam colapso noturno de oxigênio (OD < 1,5 mg/L), favorecendo patógenos (Vibrio spp.)."
+                        )}
+                      </p>
                     </div>
-                    <span className="text-xs font-mono px-2 py-1 bg-amber-500/20 text-amber-300 rounded">
-                      NDTI / NDCI
-                    </span>
+
+                    <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700 space-y-2">
+                      <span className="text-xs font-bold text-white block">{t("Impact on Aquaculture Productivity", "Impacto na Produtividade da Carcinicultura")}</span>
+                      <p className="text-xs text-slate-300">
+                        {t(
+                          "Farms intake their own stagnant discharges on flood tides. Increased organic load causes gill fouling, slowing shrimp growth and increasing harvest mortality by up to 24%.",
+                          "Os viveiros captam sua própria água de descarte na maré cheia. A carga orgânica gera incrustação branquial, retarda o crescimento e eleva mortalidade em até 24%."
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+                    <div className="p-4 rounded-xl bg-cyan-950/20 border border-cyan-500/30 space-y-2">
+                      <span className="text-xs font-bold text-cyan-400 block">{t("Rapid Ocean Flushing (Tres < 48 h)", "Lavagem Oceânica Rápida (Tres < 48 h)")}</span>
+                      <p className="text-xs text-slate-300">
+                        {t(
+                          "River discharge flushes the entire estuarine water volume into the open Atlantic in less than 48 hours. The marine salinity wedge is pushed completely seaward.",
+                          "A vazão fluvial empurra todo o volume estuarino para o Atlântico aberto em menos de 48 horas. A cunha salina marinha é expulsa para fora da barra."
+                        )}
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/30 space-y-2">
+                      <span className="text-xs font-bold text-emerald-400 block">{t("Immediate Effluent Dilution", "Diluição Imediata de Efluentes")}</span>
+                      <p className="text-xs text-slate-300">
+                        {t(
+                          "Organic matter and dissolved ammonia are diluted by more than 100-fold, completely neutralizing toxic concentrations and maintaining saturated dissolved oxygen (DO > 6.5 mg/L).",
+                          "Matéria orgânica e amônia dissolvida são diluídas em mais de 100 vezes, neutralizando concentrações tóxicas e mantendo oxigênio saturado (OD > 6,5 mg/L)."
+                        )}
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700 space-y-2">
+                      <span className="text-xs font-bold text-white block">{t("Aquaculture Osmotic Precaution", "Cautela Osmótica para Carcinicultura")}</span>
+                      <p className="text-xs text-slate-300">
+                        {t(
+                          "Rapid freshwater influx drops estuarine salinity below 5 PSU. Farms must close intake gates during peak discharge to prevent osmotic shock in Litopenaeus vannamei.",
+                          "A queda rápida da salinidade abaixo de 5 PSU exige fechar comportas de captação durante o pico para evitar choque osmótico no camarão Litopenaeus vannamei."
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Module 2: Worst vs Best Biological Effluent Detailed Demonstration */}
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="flex items-center space-x-2 text-rose-400 text-xs font-bold uppercase tracking-wider">
+                    <Flame className="h-4 w-4" />
+                    <span>{t("Biological Effluent Benchmarking: Worst Case vs. Best Practice", "Comparativo de Efluente Biológico: Pior Caso vs. Melhor Prática")}</span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1.5 text-xs">
+                    <button
+                      onClick={() => setEffluentView("comparison")}
+                      className={`px-2.5 py-1 rounded-md font-bold transition-all ${
+                        effluentView === "comparison" ? "bg-white/20 text-white" : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {t("Side-by-Side", "Lado a Lado")}
+                    </button>
+                    <button
+                      onClick={() => setEffluentView("worst")}
+                      className={`px-2.5 py-1 rounded-md font-bold transition-all ${
+                        effluentView === "worst" ? "bg-rose-500/20 text-rose-300 border border-rose-500/40" : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {t("Worst Effluent", "Pior Efluente")}
+                    </button>
+                    <button
+                      onClick={() => setEffluentView("best")}
+                      className={`px-2.5 py-1 rounded-md font-bold transition-all ${
+                        effluentView === "best" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40" : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {t("Best Effluent", "Melhor Efluente")}
+                    </button>
                   </div>
                 </div>
 
-                <div className="mt-4 p-3 rounded-lg bg-amber-950/30 border border-amber-500/30 text-[11px] text-amber-200">
-                  {t(
-                    "Recommendation: Establish ecological discharge pulses from Castanhão synchronized with pond harvest cycles to safeguard both mangrove biodiversity and shrimp farm water intake quality.",
-                    "Recomendação: Estabelecer pulsos de vazão ecológica do Castanhão sincronizados com as despescas para assegurar o manguezal e a qualidade da água dos próprios criatórios."
+                {/* Side-by-Side Comparative Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  
+                  {/* WORST BIOLOGICAL EFFLUENT CARD */}
+                  {(effluentView === "comparison" || effluentView === "worst") && (
+                    <div className="rounded-2xl border border-rose-500/40 bg-rose-950/20 p-5 space-y-4 shadow-xl">
+                      <div className="flex items-center justify-between border-b border-rose-500/30 pb-3">
+                        <div className="flex items-center space-x-2">
+                          <AlertTriangle className="h-5 w-5 text-rose-400" />
+                          <h4 className="font-extrabold text-white text-base">
+                            {t("Worst Biological Effluent Scenario", "Pior Cenário de Efluente Biológico")}
+                          </h4>
+                        </div>
+                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                          {t("Untreated Sludge / Neap Tide", "Lodo Bruto / Maré Morta")}
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        {t(
+                          "Direct discharging of anaerobic bottom pond sludge during neap tide (minimal water exchange). Unconsumed feed pellets and shrimp feces ferment under anoxia, generating high toxic ammonia and hydrogen sulfide.",
+                          "Descarte direto do lodo de fundo anaeróbio durante maré de quadratura (morta). Sobras de ração e fezes fermentam em anoxia, gerando amônia tóxica e sulfeto de hidrogênio (H₂S)."
+                        )}
+                      </p>
+
+                      {/* Chemical Parameters Table */}
+                      <div className="space-y-2 pt-1 font-mono text-xs">
+                        <div className="flex justify-between items-center p-2 rounded bg-slate-900/80 border border-rose-500/20">
+                          <span className="text-slate-400">{t("Biochemical Oxygen Demand (BOD₅):", "Demanda Bioquímica (DBO₅):")}</span>
+                          <span className="font-bold text-rose-400">&gt; 80 mg/L (Critical)</span>
+                        </div>
+                        <div className="flex justify-between items-center p-2 rounded bg-slate-900/80 border border-rose-500/20">
+                          <span className="text-slate-400">{t("Chemical Oxygen Demand (COD):", "Demanda Química (DQO):")}</span>
+                          <span className="font-bold text-rose-400">&gt; 260 mg/L</span>
+                        </div>
+                        <div className="flex justify-between items-center p-2 rounded bg-slate-900/80 border border-rose-500/20">
+                          <span className="text-slate-400">{t("Toxic Un-ionized Ammonia (NH₃):", "Amônia Tóxica Não-Ionizada (NH₃):")}</span>
+                          <span className="font-bold text-rose-400">&gt; 0.8 mg/L (Lethal)</span>
+                        </div>
+                        <div className="flex justify-between items-center p-2 rounded bg-slate-900/80 border border-rose-500/20">
+                          <span className="text-slate-400">{t("Total Phosphorus (TP):", "Fósforo Total (PT):")}</span>
+                          <span className="font-bold text-rose-400">&gt; 2.5 mg/L</span>
+                        </div>
+                        <div className="flex justify-between items-center p-2 rounded bg-slate-900/80 border border-rose-500/20">
+                          <span className="text-slate-400">{t("Pathogenic Load (Vibrio spp.):", "Carga Patogênica (Vibrio spp.):")}</span>
+                          <span className="font-bold text-rose-400">&gt; 10⁵ CFU/mL (High)</span>
+                        </div>
+                      </div>
+
+                      <div className="text-[11px] text-rose-300/90 bg-rose-950/40 p-3 rounded-xl border border-rose-500/30">
+                        <strong>{t("Consequences:", "Consequências:")}</strong>{" "}
+                        {t(
+                          "Benthic suffocation, severe coastal red tides (dinoflagellates), self-contamination of intake water for downstream farms, and destruction of mangrove crab nurseries.",
+                          "Sufocamento bentônico, marés vermelhas (dinoflagelados), auto-contaminação de captações de fazendas vizinhas e destruição de berçários de caranguejo."
+                        )}
+                      </div>
+                    </div>
                   )}
+
+                  {/* BEST BIOLOGICAL EFFLUENT CARD */}
+                  {(effluentView === "comparison" || effluentView === "best") && (
+                    <div className="rounded-2xl border border-emerald-500/40 bg-emerald-950/20 p-5 space-y-4 shadow-xl">
+                      <div className="flex items-center justify-between border-b border-emerald-500/30 pb-3">
+                        <div className="flex items-center space-x-2">
+                          <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                          <h4 className="font-extrabold text-white text-base">
+                            {t("Best Biological Effluent Practice", "Melhor Prática de Efluente Biológico")}
+                          </h4>
+                        </div>
+                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                          {t("RAS + Mangrove Biofilter / Spring Ebb", "RAS + Biofiltro de Mangue / Sizígia")}
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        {t(
+                          "Recirculating Aquaculture System (RAS) with rotating drum micro-screening to separate solid feces for agricultural fertilizer, 48-hour settling basin, and biological polishing through constructed Rhizophora mangle wetlands released exclusively on spring ebb tide.",
+                          "Sistema com recirculação (RAS), microfiltragem mecânica do lodo fecal para compostagem agrícola, bacia de sedimentação de 48h e polimento biológico em manguezal construído (Rhizophora mangle) com descarte na vazante de sizígia."
+                        )}
+                      </p>
+
+                      {/* Chemical Parameters Table */}
+                      <div className="space-y-2 pt-1 font-mono text-xs">
+                        <div className="flex justify-between items-center p-2 rounded bg-slate-900/80 border border-emerald-500/20">
+                          <span className="text-slate-400">{t("Biochemical Oxygen Demand (BOD₅):", "Demanda Bioquímica (DBO₅):")}</span>
+                          <span className="font-bold text-emerald-400">&lt; 12 mg/L (Pristine)</span>
+                        </div>
+                        <div className="flex justify-between items-center p-2 rounded bg-slate-900/80 border border-emerald-500/20">
+                          <span className="text-slate-400">{t("Chemical Oxygen Demand (COD):", "Demanda Química (DQO):")}</span>
+                          <span className="font-bold text-emerald-400">&lt; 45 mg/L</span>
+                        </div>
+                        <div className="flex justify-between items-center p-2 rounded bg-slate-900/80 border border-emerald-500/20">
+                          <span className="text-slate-400">{t("Toxic Un-ionized Ammonia (NH₃):", "Amônia Tóxica Não-Ionizada (NH₃):")}</span>
+                          <span className="font-bold text-emerald-400">&lt; 0.03 mg/L (Safe)</span>
+                        </div>
+                        <div className="flex justify-between items-center p-2 rounded bg-slate-900/80 border border-emerald-500/20">
+                          <span className="text-slate-400">{t("Total Phosphorus (TP):", "Fósforo Total (PT):")}</span>
+                          <span className="font-bold text-emerald-400">&lt; 0.3 mg/L (Absorbed)</span>
+                        </div>
+                        <div className="flex justify-between items-center p-2 rounded bg-slate-900/80 border border-emerald-500/20">
+                          <span className="text-slate-400">{t("Dissolved Oxygen (DO):", "Oxigênio Dissolvido (OD):")}</span>
+                          <span className="font-bold text-emerald-400">&gt; 5.5 mg/L (Saturated)</span>
+                        </div>
+                      </div>
+
+                      <div className="text-[11px] text-emerald-300/90 bg-emerald-950/40 p-3 rounded-xl border border-emerald-500/30">
+                        <strong>{t("Outcomes:", "Resultados:")}</strong>{" "}
+                        {t(
+                          "Pristine estuary clarity, enhanced mangrove growth from nutrient bio-uptake, zero pathogen accumulation, sustained international export certifications, and robust shrimp yields.",
+                          "Transparência da água preservada, bioassimilação de nutrientes pelos mangues, zero proliferação patogênica, certificações internacionais de exportação e colheitas vigorosas."
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                 </div>
               </div>
+
             </div>
           )}
 

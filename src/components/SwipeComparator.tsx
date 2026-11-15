@@ -124,23 +124,23 @@ const HOTSPOTS: HotspotScenario[] = [
     },
     opticalObservationEn: "Persistent coastal trade-wind clouds and sea haze obstruct the shoreline. Dense mangrove crowns hide tidal water beneath, preventing optical waterlogging detection.",
     opticalObservationPt: "Nuvens cúmulos costeiras e névoa marítima obstruem o litoral. A copa densa dos mangues oculta a água da maré por baixo das árvores.",
-    sarDiscoveryEn: "Radar penetrates 100% through all clouds. Double-bounce (dihedral scattering) reveals high-tide flooding beneath mangrove stilt roots, while aquaculture shrimp ponds appear as razor-sharp specular black polygons.",
-    sarDiscoveryPt: "O radar atravessa 100% das nuvens. O espalhamento em diedro (double-bounce) revela a água da preamar sob as raízes de mangue, enquanto tanques de carcinicultura aparecem como polígonos pretos perfeitos.",
+    sarDiscoveryEn: "Radar penetrates 100% through clouds. Double-bounce (dihedral reflection) reveals high-tide flooding beneath mangrove stilt roots (Rhizophora mangle), while shrimp aquaculture ponds appear as razor-sharp specular black polygons.",
+    sarDiscoveryPt: "O radar atravessa 100% das nuvens. O espalhamento em diedro (double-bounce) revela a água da preamar sob as raízes de mangue (Rhizophora mangle), enquanto viveiros de carcinicultura aparecem como polígonos pretos perfeitos.",
     radarPhysicsPointers: [
       {
         labelEn: "Sub-Canopy Tidal Inundation",
         labelPt: "Maré sob o Dossel do Mangue",
-        mechanism: "Double-Bounce Dihedral (HH-VV / VV)",
-        descEn: "Radar pulse bounces between water mirror and vertical stilt roots (Rhizophora mangle).",
-        descPt: "O pulso rebate entre a lâmina d'água e as raízes escora verticais do mangue-vermelho.",
+        mechanism: "Dihedral Double-Bounce (|S_HH - S_VV|²)",
+        descEn: "90° orthogonal reflection between specular water mirror (ε ≈ 80) and vertical Rhizophora mangle roots produces a +8 dB backscatter surge in Pauli Red.",
+        descPt: "Reflexão ortogonal de 90° entre a lâmina d'água especular (ε ≈ 80) e as raízes escora verticais gera pico de +8 dB no canal Vermelho de Pauli.",
         color: "text-rose-400 border-rose-500/30 bg-rose-950/20"
       },
       {
         labelEn: "Aquaculture Pond Geometry",
         labelPt: "Viveiros de Carcinicultura",
-        mechanism: "Specular Water Reflection + Earthen Dike Backscatter",
-        descEn: "Calm water reflects microwave away (pitch black), while raised perimeter dikes return intense signal.",
-        descPt: "A água calma reflete o radar para longe (preto absoluto), enquanto diques de contenção retornam sinal brilhante.",
+        mechanism: "Specular Reflection + Earthen Dike Backscatter",
+        descEn: "Calm water reflects microwave away (pitch black, σ⁰ < -22 dB), while raised perimeter dikes return intense single-bounce echoes.",
+        descPt: "A água calma reflete o radar para longe (preto absoluto, σ⁰ < -22 dB), enquanto diques de contenção retornam eco brilhante.",
         color: "text-cyan-400 border-cyan-500/30 bg-cyan-950/20"
       }
     ]
@@ -173,19 +173,19 @@ const HOTSPOTS: HotspotScenario[] = [
     sarDiscoveryPt: "Extração submétrica da cota hídrica por contraste especular ativo. O InSAR multitemporal mede deformações milimétricas na crista da barragem de terra.",
     radarPhysicsPointers: [
       {
-        labelEn: "Specular Water Surface",
-        labelPt: "Superfície D'água Especular",
-        mechanism: "Specular Backscatter Dropout (< -22 dB)",
-        descEn: "Microwave bounces forward, producing an unmistakable black footprint regardless of water turbidity.",
-        descPt: "O feixe reflete para frente, produzindo contraste escuro infalível independente de sedimentos ou algas.",
+        labelEn: "Specular Waterline vs. Decorrelation",
+        labelPt: "Lâmina Especular vs. Decorrelação",
+        mechanism: "Specular Dropout + Phase Noise (γ < 0.15)",
+        descEn: "Capillary waves destroy InSAR phase coherence over water (γ < 0.15), while forward specular reflection clearly delineates the true reservoir perimeter.",
+        descPt: "Marolas de vento destroem a coerência de fase sobre a água (γ < 0,15), enquanto o reflexo especular para frente delimita com precisão o perímetro.",
         color: "text-blue-400 border-blue-500/30 bg-blue-950/20"
       },
       {
-        labelEn: "Dam Embankment Geodesy",
-        labelPt: "Crista da Barragem de Terra",
-        mechanism: "High Interferometric Coherence (γ > 0.85)",
-        descEn: "Stable rock armor on the dam face maintains rigid phase, enabling millimeter subsidence tracking.",
-        descPt: "O enrocamento de pedra mantém coerência de fase estável, permitindo medir assentamento milimétrico.",
+        labelEn: "Rigid Dam Embankment Geodesy",
+        labelPt: "Geodésia da Crista Rígida da Barragem",
+        mechanism: "Rigid Structural Coherence (γ > 0.90)",
+        descEn: "Rock armor rip-rap preserves phase between 12-day passes (γ = 0.92), enabling millimeter LOS subsidence tracking via d_LOS = (λ/4π)Δφ.",
+        descPt: "O enrocamento de pedras preserva a fase entre passagens de 12 dias (γ = 0,92), permitindo medir assentamento milimétrico por d_LOS = (λ/4π)Δφ.",
         color: "text-emerald-400 border-emerald-500/30 bg-emerald-950/20"
       }
     ]

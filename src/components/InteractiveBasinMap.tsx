@@ -25,7 +25,9 @@ import {
   AlertTriangle,
   Mountain,
   Home,
-  Fish
+  Fish,
+  Crosshair,
+  Satellite
 } from "lucide-react";
 import {
   AreaChart,
@@ -57,7 +59,7 @@ export const HISTORICAL_TIMELINE: HistoricalMilestone[] = [
     year: 1985,
     label: "1985 - Pre-Dam Natural Regime",
     castanhaoStoragePct: 88,
-    castanhaoAreaKm2: 310,
+    castanhaoAreaKm2: 0, // Pre-dam baseline
     caatingaBiomassIndex: 92,
     soilDielectricEpsilon: 15.4,
     aquaculturePondAreaHa: 120,
@@ -70,7 +72,7 @@ export const HISTORICAL_TIMELINE: HistoricalMilestone[] = [
     year: 1990,
     label: "1990 - Early Carciniculture Exploration",
     castanhaoStoragePct: 84,
-    castanhaoAreaKm2: 295,
+    castanhaoAreaKm2: 0,
     caatingaBiomassIndex: 90,
     soilDielectricEpsilon: 14.8,
     aquaculturePondAreaHa: 280,
@@ -83,7 +85,7 @@ export const HISTORICAL_TIMELINE: HistoricalMilestone[] = [
     year: 1995,
     label: "1995 - Mid-Decade Wet Pulse",
     castanhaoStoragePct: 89,
-    castanhaoAreaKm2: 315,
+    castanhaoAreaKm2: 0,
     caatingaBiomassIndex: 94,
     soilDielectricEpsilon: 16.2,
     aquaculturePondAreaHa: 480,
@@ -96,7 +98,7 @@ export const HISTORICAL_TIMELINE: HistoricalMilestone[] = [
     year: 2000,
     label: "2000 - Castanhão Construction Phase",
     castanhaoStoragePct: 74,
-    castanhaoAreaKm2: 270,
+    castanhaoAreaKm2: 45, // Dam works started
     caatingaBiomassIndex: 86,
     soilDielectricEpsilon: 12.1,
     aquaculturePondAreaHa: 890,
@@ -109,7 +111,7 @@ export const HISTORICAL_TIMELINE: HistoricalMilestone[] = [
     year: 2004,
     label: "2004 - Reservoir Filling & Historic Inundation",
     castanhaoStoragePct: 100,
-    castanhaoAreaKm2: 325,
+    castanhaoAreaKm2: 325, // 100% full maximum footprint
     caatingaBiomassIndex: 95,
     soilDielectricEpsilon: 21.0,
     aquaculturePondAreaHa: 1350,
@@ -161,7 +163,7 @@ export const HISTORICAL_TIMELINE: HistoricalMilestone[] = [
     year: 2016,
     label: "2016 - Drought Apex: Castanhão at 5.2%",
     castanhaoStoragePct: 5.2,
-    castanhaoAreaKm2: 38,
+    castanhaoAreaKm2: 38, // shrunken pool
     caatingaBiomassIndex: 34,
     soilDielectricEpsilon: 3.2,
     aquaculturePondAreaHa: 3100,
@@ -237,28 +239,322 @@ export const HISTORICAL_TIMELINE: HistoricalMilestone[] = [
   }
 ];
 
+// 5-YEAR SATELLITE & SAR MISSIONS ACROSS MULTIDECADAL TIMELINE
+interface SatelliteMissionEra {
+  yearMin: number;
+  yearMax: number;
+  opticalMission: string;
+  opticalSensor: string;
+  opticalResolution: string;
+  sarMission: string;
+  sarBand: string;
+  sarResolution: string;
+  filterStyle: string;
+  contextEn: string;
+  contextPt: string;
+}
+
+const SATELLITE_MISSION_ERAS: SatelliteMissionEra[] = [
+  {
+    yearMin: 1985,
+    yearMax: 1990,
+    opticalMission: "Landsat-5 (NASA / USGS)",
+    opticalSensor: "Thematic Mapper (TM)",
+    opticalResolution: "30 m Multispectral",
+    sarMission: "ERS-1 (ESA)",
+    sarBand: "C-Band (5.3 GHz, λ = 5.66 cm)",
+    sarResolution: "25 m Precision Imagery",
+    filterStyle: "contrast(1.02) saturate(0.95)",
+    contextEn: "Pre-Castanhão baseline: Natural riverbed with seasonal torrential flooding. Pristine apicuns.",
+    contextPt: "Marco zero pré-Castanhão: Leito natural do Jaguaribe sem represamento. Apicuns preservados."
+  },
+  {
+    yearMin: 1991,
+    yearMax: 1995,
+    opticalMission: "Landsat-5 (NASA / USGS)",
+    opticalSensor: "Thematic Mapper (TM)",
+    opticalResolution: "30 m Surface Reflectance",
+    sarMission: "ERS-1 / ERS-2 (ESA)",
+    sarBand: "AMI Active Microwave Instrument",
+    sarResolution: "25 m Synthetic Aperture Radar",
+    filterStyle: "contrast(1.05) saturate(1.1)",
+    contextEn: "Super wet flood pulses flush basin with heavy sediment transport.",
+    contextPt: "Super cheias lavam a bacia com forte transporte de sedimentos."
+  },
+  {
+    yearMin: 1996,
+    yearMax: 2000,
+    opticalMission: "Landsat-7 (NASA / USGS)",
+    opticalSensor: "Enhanced Thematic Mapper Plus (ETM+)",
+    opticalResolution: "15 m Pan-Sharpened / 30 m",
+    sarMission: "RADARSAT-1 (CSA / NASA)",
+    sarBand: "C-Band SAR (5.3 GHz HH Mode)",
+    sarResolution: "28 m Standard Mode",
+    filterStyle: "contrast(1.08) saturate(0.98)",
+    contextEn: "Earthworks and riverbed diversion for Castanhão dam construction.",
+    contextPt: "Obras de terraplenagem e desvio do leito para a construção do Castanhão."
+  },
+  {
+    yearMin: 2001,
+    yearMax: 2005,
+    opticalMission: "Terra MODIS & Landsat-7",
+    opticalSensor: "MODIS Surface Reflectance & ETM+",
+    opticalResolution: "250 m Surface Reflectance / 30 m",
+    sarMission: "ENVISAT (ESA)",
+    sarBand: "ASAR (C-Band Alternating Polarization)",
+    sarResolution: "30 m Dual-Pol",
+    filterStyle: "contrast(1.12) saturate(1.25)",
+    contextEn: "Castanhão reaches 100% capacity in 2004, creating a massive 325 km² specular water mirror.",
+    contextPt: "Castanhão atinge 100% de sangria em 2004, formando espelho d'água de 325 km²."
+  },
+  {
+    yearMin: 2006,
+    yearMax: 2010,
+    opticalMission: "Landsat-7 & Terra MODIS",
+    opticalSensor: "ETM+ / MODIS Rapid Response",
+    opticalResolution: "30 m Multispectral",
+    sarMission: "ALOS-1 (JAXA)",
+    sarBand: "PALSAR (L-Band 1.27 GHz, λ = 23.6 cm)",
+    sarResolution: "10 m Quad-Pol High-Res",
+    filterStyle: "contrast(1.1) saturate(1.15)",
+    contextEn: "Surplus wet years maintain high storage; rapid carciniculture expansion in Aracati.",
+    contextPt: "Anos consecutivos de chuvas fartas mantêm o açude cheio e impulsionam viveiros em Aracati."
+  },
+  {
+    yearMin: 2011,
+    yearMax: 2015,
+    opticalMission: "Landsat-8 (NASA / USGS)",
+    opticalSensor: "Operational Land Imager (OLI)",
+    opticalResolution: "15 m Pan / 30 m Multispectral",
+    sarMission: "ALOS-2 (JAXA)",
+    sarBand: "PALSAR-2 (L-Band 1.2 GHz)",
+    sarResolution: "6 m StripMap Full Polarimetry",
+    filterStyle: "contrast(1.08) saturate(0.85) sepia(0.08)",
+    contextEn: "Onset of historic megadrought: reservoir shrinks by 57%; river gates closed to save Fortaleza.",
+    contextPt: "Eclosão da megaseca: espelho d'água retrai 57%; comportas fechadas para resguardar Fortaleza."
+  },
+  {
+    yearMin: 2016,
+    yearMax: 2020,
+    opticalMission: "Copernicus Sentinel-2A/B (ESA)",
+    opticalSensor: "Multi-Spectral Instrument (MSI)",
+    opticalResolution: "10 m Full Color & Red Edge",
+    sarMission: "Copernicus Sentinel-1A/B (ESA)",
+    sarBand: "C-SAR (5.405 GHz VV+VH Dual-Pol RTC)",
+    sarResolution: "10 m High-Resolution IW Swath",
+    filterStyle: "contrast(1.15) saturate(0.65) brightness(0.95)",
+    contextEn: "Megadrought Apex (5.2% storage): Water area contracts to just 38 km². Salinity wedge advances 32 km.",
+    contextPt: "Ápice da Seca (5,2% de volume): Lâmina d'água encolhe para 38 km². Cunha salina avança 32 km."
+  },
+  {
+    yearMin: 2021,
+    yearMax: 2026,
+    opticalMission: "Copernicus Sentinel-2B / MSI (ESA)",
+    opticalSensor: "Level-2A Surface Reflectance",
+    opticalResolution: "10 m True Color Visual",
+    sarMission: "NASA-ISRO NISAR & Sentinel-1 (NASA/ESA)",
+    sarBand: "Dual-Frequency L-Band (24 cm) + S-Band (9 cm)",
+    sarResolution: "3–10 m High-Resolution Polarimetry",
+    filterStyle: "contrast(1.05) saturate(1.05)",
+    contextEn: "PISF São Francisco waters arrive; modern dual-frequency microwave monitoring operationalized.",
+    contextPt: "Chegada das águas do São Francisco (PISF); monitoramento quinzenal NISAR ativo."
+  }
+];
+
 // 12 GENUINE SENTINEL-1 RTC GRANULES COVERING 100% OF CEARÁ
 const CEARA_S1_RTC_GRANULES = [
-  // Pass 1: East Ceará (Track 082) - Coast to South
   "S1A_IW_GRDH_1SDV_20231129T080854_20231129T080923_051429_0634EA_rtc",
   "S1A_IW_GRDH_1SDV_20231129T080923_20231129T080948_051429_0634EA_rtc",
   "S1A_IW_GRDH_1SDV_20231129T080948_20231129T081013_051429_0634EA_rtc",
   "S1A_IW_GRDH_1SDV_20231129T081013_20231129T081038_051429_0634EA_rtc",
-
-  // Pass 2: Central Ceará (Track 010) - Sobral to Inhamuns
   "S1A_IW_GRDH_1SDV_20231122T081735_20231122T081800_051327_06316D_rtc",
   "S1A_IW_GRDH_1SDV_20231122T081800_20231122T081825_051327_06316D_rtc",
   "S1A_IW_GRDH_1SDV_20231122T081825_20231122T081850_051327_06316D_rtc",
   "S1A_IW_GRDH_1SDV_20231122T081850_20231122T081915_051327_06316D_rtc",
-
-  // Pass 3: West Ceará (Track 155) - Camocim to Ibiapaba & Crateús
   "S1A_IW_GRDH_1SDV_20231127T082535_20231127T082604_051400_0633E3_rtc",
   "S1A_IW_GRDH_1SDV_20231127T082604_20231127T082629_051400_0633E3_rtc",
   "S1A_IW_GRDH_1SDV_20231127T082629_20231127T082654_051400_0633E3_rtc",
   "S1A_IW_GRDH_1SDV_20231127T082654_20231127T082719_051400_0633E3_rtc"
 ];
 
-// APPROXIMATED WATER CONCENTRATION & ALLUVIAL MOISTURE POINTS (Replacing crude blue box)
+// MAJOR DAMS SPECIFICATION FOR DAM SELECTOR & RIGIDITY VS DECORRELATION
+export interface DamSpecification {
+  id: string;
+  name: string;
+  river: string;
+  location: string;
+  coords: [number, number];
+  zoom: number;
+  capacityMm3: number;
+  currentStoragePct: number;
+  crestLengthM: number;
+  crestHeightM: number;
+  damTypeEn: string;
+  damTypePt: string;
+  foundationGeologyEn: string;
+  foundationGeologyPt: string;
+  insarCoherence: number;
+  deformationMmYr: number;
+  rigidityStatusEn: string;
+  rigidityStatusPt: string;
+  descriptionEn: string;
+  descriptionPt: string;
+}
+
+export const MAJOR_DAMS: DamSpecification[] = [
+  {
+    id: "castanhao",
+    name: "Açude Castanhão (Padre Cícero)",
+    river: "Rio Jaguaribe",
+    location: "Alto Santo / Jaguaribara (Médio Jaguaribe)",
+    coords: [-5.50, -38.45],
+    zoom: 11,
+    capacityMm3: 6700,
+    currentStoragePct: 34.2,
+    crestLengthM: 30000,
+    crestHeightM: 60,
+    damTypeEn: "Zoned earthfill dam with concrete gated spillway",
+    damTypePt: "Barragem de terra zoneada com vertedouro de concreto e comportas",
+    foundationGeologyEn: "Precambrian gneiss bedrock with weathered granite abutments",
+    foundationGeologyPt: "Embasamento gnáissico pré-cambriano com ombreiras de granito alterado",
+    insarCoherence: 0.92,
+    deformationMmYr: -2.4,
+    rigidityStatusEn: "Rigid Structural Armor (High Coherence γ > 0.90)",
+    rigidityStatusPt: "Enrocamento Rígido Estável (Alta Coerência γ > 0,90)",
+    descriptionEn: "Latin America's largest public reservoir. Riprap rock armor on the upstream face preserves stable radar phase, allowing millimeter PS-InSAR tracking.",
+    descriptionPt: "Maior reservatório público de terra da América Latina. O enrocamento de pedras na face de montante preserva a fase de radar, permitindo monitorar assentamentos milimétricos."
+  },
+  {
+    id: "oros",
+    name: "Açude Orós (Pres. Juscelino Kubitschek)",
+    river: "Rio Jaguaribe",
+    location: "Orós / Iguatu (Alto/Médio Jaguaribe)",
+    coords: [-6.10, -38.92],
+    zoom: 11,
+    capacityMm3: 1940,
+    currentStoragePct: 58.5,
+    crestLengthM: 1980,
+    crestHeightM: 54,
+    damTypeEn: "Curved rockfill embankment with masonry core (Built 1961)",
+    damTypePt: "Aterro de enrocamento curvo com núcleo de alvenaria de pedra (Construído em 1961)",
+    foundationGeologyEn: "Massive crystalline quartz-diorite canyon gorge",
+    foundationGeologyPt: "Boqueirão cristalino de quartzo-diorito maciço",
+    insarCoherence: 0.95,
+    deformationMmYr: -0.6,
+    rigidityStatusEn: "Ultra-Rigid Bedrock Anchor (γ ≈ 0.95)",
+    rigidityStatusPt: "Fixação Ultrarrígida em Rocha Viva (γ ≈ 0,95)",
+    descriptionEn: "Anchored directly into a steep crystalline canyon gorge. Extremely low temporal decorrelation makes Orós a prime InSAR geodetic calibration reference.",
+    descriptionPt: "Ancorado diretamente no boqueirão de rocha cristalina. Baixíssima decorrelação temporal torna o Orós um calibrador geodésico ideal para satélites SAR."
+  },
+  {
+    id: "banabuiu",
+    name: "Açude Banabuiú (Arrojado Lisboa)",
+    river: "Rio Banabuiú",
+    location: "Banabuiú (Sertão Central)",
+    coords: [-5.32, -38.92],
+    zoom: 11,
+    capacityMm3: 1600,
+    currentStoragePct: 39.0,
+    crestLengthM: 1040,
+    crestHeightM: 48,
+    damTypeEn: "Rockfill with central clay core and side spillway",
+    damTypePt: "Enrocamento com núcleo central de argila e vertedouro lateral",
+    foundationGeologyEn: "Biotite-gneiss crystalline basement",
+    foundationGeologyPt: "Embasamento cristalino biotita-gnaisse",
+    insarCoherence: 0.88,
+    deformationMmYr: -1.2,
+    rigidityStatusEn: "Stable Rigid Embankment (γ > 0.85)",
+    rigidityStatusPt: "Aterro Rígido Estável (γ > 0,85)",
+    descriptionEn: "Third largest reservoir in Ceará, providing strategic buffering for the Sertão Central agricultural perimeter.",
+    descriptionPt: "Terceiro maior açude do estado, regulador estratégico de água potável e irrigação para o Sertão Central."
+  },
+  {
+    id: "arneiroz",
+    name: "Açude Arneiroz II",
+    river: "Alto Jaguaribe",
+    location: "Arneiroz / Tauá (Sertão dos Inhamuns)",
+    coords: [-6.32, -40.16],
+    zoom: 12,
+    capacityMm3: 197,
+    currentStoragePct: 62.0,
+    crestLengthM: 1420,
+    crestHeightM: 32,
+    damTypeEn: "Homogeneous earthfill dam with riprap slope protection",
+    damTypePt: "Barragem de terra homogênea com enrocamento de proteção",
+    foundationGeologyEn: "Schistose and migmatitic bedrock",
+    foundationGeologyPt: "Embasamento xistoso e migmatítico",
+    insarCoherence: 0.86,
+    deformationMmYr: -0.9,
+    rigidityStatusEn: "Stable Headwater Retention (γ ≈ 0.86)",
+    rigidityStatusPt: "Retenção Estável de Cabeceira (γ ≈ 0,86)",
+    descriptionEn: "Controls torrential summer flash floods from the Inhamuns crystalline uplands, storing precious water before it reaches Orós.",
+    descriptionPt: "Retém as enxurradas torrenciais das serras secas dos Inhamuns, preservando volume antes do Médio Jaguaribe."
+  },
+  {
+    id: "trussu",
+    name: "Açude Roberto Costa (Trussu)",
+    river: "Rio Trussu (Afluente do Jaguaribe)",
+    location: "Iguatu (Centro-Sul Cearense)",
+    coords: [-6.28, -39.38],
+    zoom: 12,
+    capacityMm3: 300,
+    currentStoragePct: 54.0,
+    crestLengthM: 1100,
+    crestHeightM: 38,
+    damTypeEn: "Zoned earthfill dam with morning-glory shaft spillway",
+    damTypePt: "Barragem de terra zoneada com vertedouro tipo tulipa",
+    foundationGeologyEn: "Metasedimentary crystalline basement",
+    foundationGeologyPt: "Embasamento metassedimentar cristalino",
+    insarCoherence: 0.89,
+    deformationMmYr: -0.7,
+    rigidityStatusEn: "Rigid Structural Crest (γ ≈ 0.89)",
+    rigidityStatusPt: "Crista Estrutural Rígida (γ ≈ 0,89)",
+    descriptionEn: "Crucial regulatory dam for the fertile Iguatu floodplain and confluence with Rio Salgado.",
+    descriptionPt: "Açude vital para perenizar a rica várzea de Iguatu e abastecer a confluência com o Rio Salgado."
+  }
+];
+
+// WATER BODY POLYGONS (REAL WATER MASK DELINEATING WATER SURFACES OVER SAR)
+const WATER_BODY_POLYGONS = {
+  // Castanhão 100% full extent
+  castanhaoFull: [
+    [-5.42, -38.45], [-5.44, -38.40], [-5.48, -38.35], [-5.52, -38.36],
+    [-5.56, -38.40], [-5.60, -38.46], [-5.62, -38.52], [-5.58, -38.56],
+    [-5.54, -38.55], [-5.50, -38.52], [-5.46, -38.48]
+  ],
+  // Castanhão shrunken 2016 drought pool (5.2%)
+  castanhaoDrought2016: [
+    [-5.48, -38.44], [-5.50, -38.42], [-5.53, -38.43], [-5.52, -38.46],
+    [-5.49, -38.47]
+  ],
+  // Açude Orós Lake
+  oros: [
+    [-6.02, -38.90], [-6.06, -38.88], [-6.12, -38.89], [-6.16, -38.93],
+    [-6.18, -38.97], [-6.14, -38.96], [-6.08, -38.93], [-6.04, -38.92]
+  ],
+  // Açude Banabuiú Lake
+  banabuiu: [
+    [-5.28, -38.90], [-5.32, -38.88], [-5.36, -38.92], [-5.34, -38.96],
+    [-5.30, -38.94]
+  ],
+  // Açude Arneiroz II
+  arneiroz: [
+    [-6.30, -40.14], [-6.33, -40.15], [-6.35, -40.18], [-6.33, -40.19],
+    [-6.31, -40.16]
+  ],
+  // Açude Trussu
+  trussu: [
+    [-6.26, -39.36], [-6.29, -39.37], [-6.31, -39.40], [-6.29, -39.41],
+    [-6.27, -39.38]
+  ],
+  // Estuário de Aracati / Fortim (Tidal channel & shrimp pond clusters)
+  aracatiEstuary: [
+    [-4.40, -37.74], [-4.42, -37.75], [-4.45, -37.77], [-4.48, -37.80],
+    [-4.46, -37.82], [-4.43, -37.79], [-4.41, -37.76]
+  ]
+};
+
+// APPROXIMATED WATER CONCENTRATION & ALLUVIAL MOISTURE POINTS
 interface WaterConcentrationPoint {
   id: string;
   name: string;
@@ -273,7 +569,6 @@ interface WaterConcentrationPoint {
 }
 
 const WATER_CONCENTRATION_POINTS: WaterConcentrationPoint[] = [
-  // 1. Perennial Reservoirs (Lâmina Hídrica & Sedimentos Saturados)
   {
     id: "castanhao",
     name: "Açude Castanhão (Alto Santo / Jaguaribara)",
@@ -335,32 +630,6 @@ const WATER_CONCENTRATION_POINTS: WaterConcentrationPoint[] = [
     descPt: "Armazenamento perene que irriga a várzea fértil de Iguatu e deságua no Salgado."
   },
   {
-    id: "lima_campos",
-    name: "Açude Lima Campos (Icó)",
-    category: "mega_reservoir",
-    coords: [-6.40, -38.95],
-    radiusMeters: 5000,
-    epsilonBase: 19.8,
-    depthCm: "0–20 cm",
-    volumeOrCapacity: "66.300.000 m³",
-    descEn: "Historic irrigation reservoir supporting ancient riparian fruit orchards along Rio Salgado.",
-    descPt: "Açude histórico que sustenta os perímetros irrigados tradicionais de Icó."
-  },
-  {
-    id: "araras",
-    name: "Açude Araras / Paulo Sarasate (Noroeste)",
-    category: "mega_reservoir",
-    coords: [-4.23, -40.67],
-    radiusMeters: 9000,
-    epsilonBase: 23.5,
-    depthCm: "0–30 cm",
-    volumeOrCapacity: "1.000.000.000 m³",
-    descEn: "Fourth largest reservoir in Ceará, controlling the Rio Acaraú basin in the northwest.",
-    descPt: "Quarto maior açude do estado, regulador central da Bacia do Acaraú no noroeste."
-  },
-
-  // 2. Alluvial Riparian Aquifers (Aquíferos Aluvionares Subterrâneos)
-  {
     id: "alluvium_alto",
     name: "Aquífero Aluvionar do Alto Jaguaribe (Tauá - Arneiroz)",
     category: "alluvial_corridor",
@@ -369,8 +638,8 @@ const WATER_CONCENTRATION_POINTS: WaterConcentrationPoint[] = [
     epsilonBase: 16.5,
     depthCm: "15–30 cm (Sondagem Banda L)",
     volumeOrCapacity: "Reserva Aluvionar Subsuperficial",
-    descEn: "Coarse fluvial sand deposits store shallow subsurface groundwater even when surface riverbed runs completely dry. NISAR L-band detects root-zone moisture through sandy overburden.",
-    descPt: "Depósitos arenosos fluviais armazenam água subsuperficial mesmo quando a superfície do rio seca. O SAR de Banda L penetra a areia seca e detecta a umidade retida nas raízes."
+    descEn: "Coarse fluvial sand deposits store shallow subsurface groundwater even when surface riverbed runs dry.",
+    descPt: "Depósitos arenosos fluviais armazenam água subsuperficial mesmo quando a superfície do rio seca."
   },
   {
     id: "alluvium_medio",
@@ -381,20 +650,8 @@ const WATER_CONCENTRATION_POINTS: WaterConcentrationPoint[] = [
     epsilonBase: 18.0,
     depthCm: "15–30 cm",
     volumeOrCapacity: "Várzea Fértil de Alta Retenção",
-    descEn: "Broad floodway with organic silt and sand layers. Crucial natural water filtration zone sustaining agriculture.",
-    descPt: "Calha larga de inundação com silte e areia. Zona de amortecimento e filtro natural que mantém a umidade no solo."
-  },
-  {
-    id: "alluvium_salgado",
-    name: "Corredor Aluvionar do Rio Salgado (Cariri - Icó)",
-    category: "alluvial_corridor",
-    coords: [-6.65, -38.98],
-    radiusMeters: 15000,
-    epsilonBase: 19.2,
-    depthCm: "15–30 cm",
-    volumeOrCapacity: "Fluxo Perenizado do Cariri",
-    descEn: "Main perennial tributary of the Jaguaribe, channeling groundwater drainage from the Chapada do Araripe.",
-    descPt: "Principal afluente perene do Jaguaribe, drenando águas subterrâneas da Chapada do Araripe."
+    descEn: "Broad floodway with organic silt and sand layers sustaining subsistence agriculture.",
+    descPt: "Calha larga de inundação com silte e areia. Zona de amortecimento e filtro natural."
   },
   {
     id: "alluvium_baixo",
@@ -405,45 +662,17 @@ const WATER_CONCENTRATION_POINTS: WaterConcentrationPoint[] = [
     epsilonBase: 20.0,
     depthCm: "10–30 cm",
     volumeOrCapacity: "Polo de Irrigação & Aquífero Livre",
-    descEn: "Deep sediment floodplain supporting dense banana, melon, and fruit agriculture through sub-irrigation.",
+    descEn: "Deep sediment floodplain supporting dense fruit agriculture through accessible shallow water tables.",
     descPt: "Planície profunda de sedimentos que sustenta a fruticultura irrigada por lençol freático acessível."
   },
-
-  // 3. Groundwater Infiltration & Karst / Sandstone Aquifers
-  {
-    id: "karst_apodi",
-    name: "Aquífero Cárstico da Chapada do Apodi (Quixeré / Potiguar)",
-    category: "groundwater_karst",
-    coords: [-5.18, -37.75],
-    radiusMeters: 12000,
-    epsilonBase: 16.8,
-    depthCm: "20–30 cm (Fraturas cársticas)",
-    volumeOrCapacity: "Reserva Carbonática Transfronteiriça",
-    descEn: "Permeable limestone and sandstone karst with high secondary porosity, forming a vital drought refuge aquifer.",
-    descPt: "Calcários e arenitos com alta porosidade cárstica, constituindo aquífero estratégico de reserva contra a seca."
-  },
-  {
-    id: "sandstone_araripe",
-    name: "Bacia Sedimentar do Araripe (Juazeiro do Norte / Crato)",
-    category: "groundwater_karst",
-    coords: [-7.22, -39.35],
-    radiusMeters: 17000,
-    epsilonBase: 19.5,
-    depthCm: "15–30 cm",
-    volumeOrCapacity: "Aquíferos Exú e Missão Velha",
-    descEn: "Abundant perennial spring water recharge emerging from Cretaceous sandstone escarpments.",
-    descPt: "Recarga perene abundante que brota nas encostas de arenito da Bacia do Araripe, alimentando o Salgado."
-  },
-
-  // 4. Estuarine & Coastal Wetlands
   {
     id: "estuary_aracati",
-    name: "Complexo Estuarino de Aracati / Fortim (Manguezais)",
+    name: "Complexo Estuarino de Aracati / Fortim (Manguezais & Viveiros)",
     category: "estuarine_wetland",
     coords: [-4.42, -37.76],
     radiusMeters: 12000,
     epsilonBase: 28.0,
-    depthCm: "0–30 cm (Saturação hipersalina mareal)",
+    depthCm: "0–30 cm (Saturação mareal)",
     volumeOrCapacity: "Estuário Aberto & 3.700 ha de Viveiros",
     descEn: "Tidal mangrove sump and 3,700 ha of shrimp ponds. Permanent saturated conditions yield highest dielectric return (ε > 26).",
     descPt: "Complexo de manguezais e 3.700 ha de viveiros de camarão. Saturação hídrica permanente produz máxima constante dielétrica (ε > 26)."
@@ -533,6 +762,9 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
+  // Selected Dam for Detailed Geotechnical & Coherence Inspection
+  const [selectedDamId, setSelectedDamId] = useState<string>("castanhao");
+
   // Map Layer Modes
   const [baseMapStyle, setBaseMapStyle] = useState<"dark" | "satellite" | "osm">("satellite");
   const [sarOverlayMode, setSarOverlayMode] = useState<"none" | "sentinel1_rtc" | "dielectric_heatmap">("sentinel1_rtc");
@@ -542,6 +774,13 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
   const [activeMetricDrawer, setActiveMetricDrawer] = useState<MetricType | null>(null);
 
   const currentMilestone = HISTORICAL_TIMELINE[selectedYearIdx];
+
+  // Identify active 5-year satellite mission era
+  const currentMissionEra = SATELLITE_MISSION_ERAS.find(
+    (e) => currentMilestone.year >= e.yearMin && currentMilestone.year <= e.yearMax
+  ) || SATELLITE_MISSION_ERAS[SATELLITE_MISSION_ERAS.length - 1];
+
+  const selectedDam = MAJOR_DAMS.find((d) => d.id === selectedDamId) || MAJOR_DAMS[0];
 
   // Sync with external year prop from HistoricalSlideDeck
   useEffect(() => {
@@ -561,6 +800,14 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
     }
   };
 
+  // Fly to selected Dam
+  const handleSelectDam = (dam: DamSpecification) => {
+    setSelectedDamId(dam.id);
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.flyTo(dam.coords, dam.zoom, { duration: 1.5 });
+    }
+  };
+
   // Auto-play animation loop
   useEffect(() => {
     let interval: any;
@@ -573,7 +820,7 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
           }
           return nextIdx;
         });
-      }, 2200);
+      }, 2400);
     }
     return () => clearInterval(interval);
   }, [isPlaying, onYearChange]);
@@ -641,7 +888,6 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
       const sarMosaicGroup = L.layerGroup(s1Layers);
       layersRef.current.sarMosaicGroup = sarMosaicGroup;
 
-      // Add SAR layer immediately on mount so it is preloaded and ready
       if (sarOverlayMode === "sentinel1_rtc") {
         sarMosaicGroup.addTo(map);
         layersRef.current.activeSar = sarMosaicGroup;
@@ -692,63 +938,48 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
         fillOpacity: 0.04
       }).addTo(map);
 
-      // KEY HOTSPOT WAYPOINTS
-      const hotspots = [
-        {
-          name: "Sertão dos Inhamuns (Tauá)",
-          role: "Nascente & Caatinga",
-          coords: [-5.90, -40.29],
-          desc: "Zona de cabeceira pedregosa. O SAR de Banda L penetra a dormência estacional ('mata branca') e mede a biomassa viva preservada.",
-          color: "#10B981"
-        },
-        {
-          name: "Açude Castanhão (Alto Santo)",
-          role: "Mega-Reservatório & Barragem",
-          coords: [-5.50, -38.45],
-          desc: "Maior reservatório de terra da América Latina (6,7 bi m³). O InSAR mede estabilidade na crista e o radar delimita o espelho d'água sob nuvens.",
-          color: "#06B6D4"
-        },
-        {
-          name: "Açude Orós",
-          role: "Barramento Intermediário",
-          coords: [-6.10, -38.92],
-          desc: "Segundo maior reservatório do Ceará (1,9 bi m³), regulador central do Médio Jaguaribe.",
-          color: "#3B82F6"
-        },
-        {
-          name: "Jaguaruana (Limite Cunha Salina)",
-          role: "Ponto Crítico de Salinização",
-          coords: [-4.75, -37.85],
-          desc: "Em 2016, com a retenção no Castanhão, a maré hipersalina penetrou 32 km rio acima até aqui.",
-          color: "#F59E0B"
-        },
-        {
-          name: "Estuário de Aracati / Fortim",
-          role: "Manguezais & Carcinicultura",
-          coords: [-4.42, -37.76],
-          desc: "Foz no Atlântico. O SAR polarimétrico (HH-VV) detecta raízes de mangue alagadas e delimita viveiros de carcinicultura.",
-          color: "#F43F5E"
-        }
-      ];
-
-      hotspots.forEach((spot) => {
-        const marker = L.circleMarker(spot.coords as [number, number], {
-          radius: 8,
-          fillColor: spot.color,
+      // MAJOR DAMS PINS (With InSAR Coherence details)
+      const damPins = MAJOR_DAMS.map((dam) => {
+        const pin = L.circleMarker(dam.coords, {
+          radius: 9,
+          fillColor: "#06B6D4",
           color: "#FFFFFF",
-          weight: 2,
+          weight: 2.5,
           opacity: 1,
           fillOpacity: 0.95
-        }).addTo(map);
+        });
 
-        marker.bindPopup(`
-          <div class="p-2 font-sans text-xs">
-            <span class="text-[10px] uppercase font-bold text-slate-400 block">${spot.role}</span>
-            <strong class="text-white text-sm block mb-1" style="color: ${spot.color}">${spot.name}</strong>
-            <p class="text-slate-300 leading-relaxed">${spot.desc}</p>
+        pin.bindPopup(`
+          <div class="p-2.5 font-sans text-xs max-w-xs">
+            <span class="text-[10px] uppercase font-bold text-cyan-400 block mb-0.5">Barragem & Geodésia InSAR</span>
+            <strong class="text-white text-sm block mb-1">${dam.name}</strong>
+            <div class="grid grid-cols-2 gap-1.5 mb-2 font-mono text-[10px] bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+              <div>
+                <span class="text-slate-400 block text-[9px] uppercase">Capacidade:</span>
+                <strong class="text-white">${dam.capacityMm3} mi m³</strong>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[9px] uppercase">Coerência (γ):</span>
+                <strong class="text-emerald-400">${dam.insarCoherence}</strong>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[9px] uppercase">Deformação:</span>
+                <strong class="text-cyan-300">${dam.deformationMmYr} mm/ano</strong>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[9px] uppercase">Extensão Crista:</span>
+                <strong class="text-white">${(dam.crestLengthM / 1000).toFixed(1)} km</strong>
+              </div>
+            </div>
+            <p class="text-slate-300 leading-relaxed text-[11px] mb-2">${dam.descriptionPt}</p>
+            <div class="p-1.5 rounded bg-cyan-950/40 border border-cyan-500/30 text-[10px] text-cyan-300 font-mono">
+              ${dam.rigidityStatusPt}
+            </div>
           </div>
         `);
+        return pin;
       });
+      L.layerGroup(damPins).addTo(map);
 
       // ECOLOGICAL CHALLENGES & MITIGATION LAYER
       const riskMarkers = ECOLOGICAL_MARKERS.map((rm) => {
@@ -838,7 +1069,7 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
     }
   }, [showEcologicalRisks]);
 
-  // Handle SAR Overlay Switching & Dielectric Water Points
+  // Handle SAR Overlay Switching & DYNAMIC 5-YEAR WATER MASK (ON TOP OF MAP / SAR)
   useEffect(() => {
     if (!mapInstanceRef.current) return;
     const map = mapInstanceRef.current;
@@ -853,27 +1084,118 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
       layersRef.current.sarMosaicGroup.addTo(map);
       layersRef.current.activeSar = layersRef.current.sarMosaicGroup;
     } else if (sarOverlayMode === "dielectric_heatmap") {
-      // PROCEDURAL DIELECTRIC WATER CONCENTRATION & ALLUVIAL MOISTURE POINTS
+      // RENDER REAL WATER MASK OVERLAYS ON TOP OF THE ORIGINAL SAR RADAR MAP TOGETHER WITH THE BLUE INDICATOR POINTS
       import("leaflet").then((L) => {
-        const dielectricMarkers = WATER_CONCENTRATION_POINTS.map((pt) => {
-          // Dynamic permittivity scaled to the selected multi-decadal timeline milestone
+        const maskLayers: any[] = [];
+
+        // Prepend the original SAR mosaic so it sits directly underneath the water masks & blue points
+        if (layersRef.current.sarMosaicGroup) {
+          maskLayers.push(layersRef.current.sarMosaicGroup);
+        }
+
+        // 1. DYNAMIC WATER MASK POLYGONS DELINEATING ACTUAL WATER BODIES
+        // Castanhão Mask (scales with 5-year timeline from 0 km² in 1985 to 325 km² in 2004, down to 38 km² in 2016)
+        if (currentMilestone.year >= 2000) {
+          const isDroughtApex = currentMilestone.year === 2016 || currentMilestone.year === 2018;
+          const castanhaoPolyCoords = isDroughtApex 
+            ? WATER_BODY_POLYGONS.castanhaoDrought2016 
+            : WATER_BODY_POLYGONS.castanhaoFull;
+
+          const castanhaoWaterMask = L.default.polygon(castanhaoPolyCoords as [number, number][], {
+            color: "#00E5FF",
+            weight: 2.5,
+            dashArray: isDroughtApex ? "4, 4" : undefined,
+            fillColor: "#00E5FF",
+            fillOpacity: isDroughtApex ? 0.35 : 0.60
+          });
+
+          castanhaoWaterMask.bindPopup(`
+            <div class="p-2 font-sans text-xs max-w-xs">
+              <strong class="text-cyan-400 font-bold block mb-1">Máscara Hídrica Ativa: Açude Castanhão</strong>
+              <span class="text-white font-mono text-[11px] block mb-1">
+                Ano ${currentMilestone.year}: ${currentMilestone.castanhaoAreaKm2} km² (${currentMilestone.castanhaoStoragePct}% de volume)
+              </span>
+              <p class="text-slate-300 text-[11px]">
+                ${isDroughtApex 
+                  ? "Ápice da seca: espelho d'água retraído para a fossa profunda junto ao barramento; leito perimetral exposto com alta reflectância em radar." 
+                  : "Lâmina d'água plena gerando espalhamento especular absoluto (reflexão para longe do radar, σ⁰ < -22 dB)."}
+              </p>
+            </div>
+          `);
+          maskLayers.push(castanhaoWaterMask);
+        }
+
+        // Açude Orós Lake Mask
+        const orosWaterMask = L.default.polygon(WATER_BODY_POLYGONS.oros as [number, number][], {
+          color: "#00E5FF",
+          weight: 2,
+          fillColor: "#00E5FF",
+          fillOpacity: 0.55
+        });
+        orosWaterMask.bindPopup(`<strong>Máscara Hídrica: Açude Orós</strong><br/>Espelho d'água de 1.940 mi m³.`);
+        maskLayers.push(orosWaterMask);
+
+        // Açude Banabuiú Lake Mask
+        const banabuiuWaterMask = L.default.polygon(WATER_BODY_POLYGONS.banabuiu as [number, number][], {
+          color: "#00E5FF",
+          weight: 2,
+          fillColor: "#00E5FF",
+          fillOpacity: 0.50
+        });
+        maskLayers.push(banabuiuWaterMask);
+
+        // Açude Arneiroz II Mask
+        const arneirozWaterMask = L.default.polygon(WATER_BODY_POLYGONS.arneiroz as [number, number][], {
+          color: "#00E5FF",
+          weight: 2,
+          fillColor: "#00E5FF",
+          fillOpacity: 0.50
+        });
+        maskLayers.push(arneirozWaterMask);
+
+        // Açude Trussu Mask
+        const trussuWaterMask = L.default.polygon(WATER_BODY_POLYGONS.trussu as [number, number][], {
+          color: "#00E5FF",
+          weight: 2,
+          fillColor: "#00E5FF",
+          fillOpacity: 0.50
+        });
+        maskLayers.push(trussuWaterMask);
+
+        // Aracati Estuary Water & Aquaculture Pond Mask
+        const aracatiWaterMask = L.default.polygon(WATER_BODY_POLYGONS.aracatiEstuary as [number, number][], {
+          color: "#06B6D4",
+          weight: 2,
+          fillColor: "#06B6D4",
+          fillOpacity: 0.65
+        });
+        aracatiWaterMask.bindPopup(`
+          <div class="p-2 font-sans text-xs">
+            <strong class="text-cyan-400 font-bold block mb-1">Máscara Estuarina & Viveiros de Carcinicultura</strong>
+            <span class="text-slate-200 text-[11px] block">Área de viveiros em ${currentMilestone.year}: ${currentMilestone.aquaculturePondAreaHa} ha</span>
+            <p class="text-slate-300 text-[10px] mt-1">Lâmina d'água saturada e canais de maré delimitados por contraste radar.</p>
+          </div>
+        `);
+        maskLayers.push(aracatiWaterMask);
+
+        // 2. BLUE INDICATOR POINTS & DIELECTRIC TELEMETRY CORES
+        WATER_CONCENTRATION_POINTS.forEach((pt) => {
           const dynamicEpsilon = Math.max(
             3.5, 
             Number((pt.epsilonBase * (currentMilestone.soilDielectricEpsilon / 12.4)).toFixed(1))
           );
           
-          // Color based on dielectric permittivity (ε)
           const color = dynamicEpsilon >= 22 
-            ? "#00E5FF" // Saturated Open Water
+            ? "#00E5FF" 
             : dynamicEpsilon >= 16 
-            ? "#10B981" // Alluvial Aquifer / Moist Subsurface
+            ? "#10B981" 
             : dynamicEpsilon >= 10 
-            ? "#F59E0B" // Root-zone Moisture
-            : "#EF4444"; // Dry Crust Stress
+            ? "#F59E0B" 
+            : "#EF4444";
 
-          // Outer halo indicating microwave dielectric gradient
+          // Pulsing halo
           const halo = L.default.circle(pt.coords, {
-            radius: pt.radiusMeters * (dynamicEpsilon / 18),
+            radius: pt.radiusMeters * (dynamicEpsilon / 20),
             color: color,
             weight: 1.5,
             dashArray: "3, 5",
@@ -881,13 +1203,13 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
             fillOpacity: 0.18
           });
 
-          // Core circle
+          // Distinct blue indicator core point
           const core = L.default.circleMarker(pt.coords, {
             radius: 8,
             color: "#FFFFFF",
             weight: 2,
             fillColor: color,
-            fillOpacity: 0.85
+            fillOpacity: 0.90
           });
 
           const popupContent = `
@@ -914,12 +1236,13 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
           halo.bindPopup(popupContent);
           core.bindPopup(popupContent);
 
-          return L.default.layerGroup([halo, core]);
+          maskLayers.push(halo);
+          maskLayers.push(core);
         });
 
-        const dielectricGroup = L.default.layerGroup(dielectricMarkers);
-        dielectricGroup.addTo(map);
-        layersRef.current.activeSar = dielectricGroup;
+        const maskGroup = L.default.layerGroup(maskLayers);
+        maskGroup.addTo(map);
+        layersRef.current.activeSar = maskGroup;
       });
     }
 
@@ -939,13 +1262,17 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
     <section 
       id="interactive-map" 
       className={`relative w-full border-b border-slate-800 bg-[#050B14] transition-all duration-300 ${
-        isFullScreen ? "fixed inset-0 z-50 h-screen" : "h-[750px] lg:h-[820px]"
+        isFullScreen ? "fixed inset-0 z-50 h-screen" : "h-[760px] lg:h-[840px]"
       }`}
     >
-      {/* Map Leaflet Container */}
-      <div ref={mapContainerRef} className="absolute inset-0 z-0 h-full w-full bg-[#03070E]" />
+      {/* Map Leaflet Container with Dynamic 5-Year Atmospheric Atmosphere Filter */}
+      <div 
+        ref={mapContainerRef} 
+        className="absolute inset-0 z-0 h-full w-full bg-[#03070E] transition-all duration-700"
+        style={{ filter: currentMissionEra.filterStyle }}
+      />
 
-      {/* Top Map Control Bar */}
+      {/* TOP CONTROL BAR */}
       <div className="absolute top-4 left-4 z-10 flex flex-wrap items-center gap-2 max-w-[calc(100%-4rem)]">
         
         {/* Base Layer Switcher */}
@@ -1000,7 +1327,7 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
               sarOverlayMode === "dielectric_heatmap" ? "bg-emerald-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
             }`}
           >
-            {t("Water Points & Dielectric ε", "Pontos de Água & Dielétrico ε")}
+            {t("Water Mask & Dielectric ε", "Máscara Hídrica & Dielétrico ε")}
           </button>
           <button
             onClick={() => setSarOverlayMode("none")}
@@ -1036,12 +1363,67 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
 
       </div>
 
+      {/* TOP-LEFT 5-YEAR SATELLITE & SAR MISSION TIMESTAMP BADGE */}
+      <div className="absolute top-16 left-4 z-10 max-w-sm rounded-2xl border border-slate-700/80 bg-slate-900/95 p-3.5 backdrop-blur-md shadow-2xl">
+        <div className="flex items-center space-x-2 text-[10px] font-mono text-cyan-400 font-bold uppercase mb-1">
+          <Satellite className="h-3.5 w-3.5 text-cyan-400" />
+          <span>{t("Active 5-Year Satellite Era", "Era de Satélites do Período")} ({currentMissionEra.yearMin}–{currentMissionEra.yearMax})</span>
+        </div>
+        <div className="space-y-1 text-xs">
+          <div className="flex items-center justify-between text-[11px]">
+            <span className="text-amber-300 font-bold">Óptico:</span>
+            <span className="font-mono text-white text-[10px]">{currentMissionEra.opticalMission}</span>
+          </div>
+          <div className="flex items-center justify-between text-[11px]">
+            <span className="text-emerald-300 font-bold">Radar SAR:</span>
+            <span className="font-mono text-white text-[10px]">{currentMissionEra.sarMission} ({currentMissionEra.sarBand.split("(")[0]})</span>
+          </div>
+        </div>
+        <div className="mt-2 pt-1.5 border-t border-slate-800 text-[10px] text-slate-300 italic">
+          {t(currentMissionEra.contextEn, currentMissionEra.contextPt)}
+        </div>
+      </div>
+
+      {/* DAM SELECTOR QUICK BAR (Center-Top) */}
+      <div className="hidden md:flex absolute top-4 right-80 z-10 items-center rounded-xl border border-slate-700/80 bg-slate-900/90 p-1 backdrop-blur-md shadow-xl text-xs">
+        <span className="text-[10px] font-bold text-cyan-300 uppercase px-2 flex items-center space-x-1">
+          <Crosshair className="h-3 w-3" />
+          <span>{t("Select Dam:", "Açude:")}</span>
+        </span>
+        {MAJOR_DAMS.map((dam) => (
+          <button
+            key={dam.id}
+            onClick={() => handleSelectDam(dam)}
+            className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
+              selectedDamId === dam.id
+                ? "bg-cyan-500 text-black shadow-sm font-bold"
+                : "text-slate-300 hover:text-white"
+            }`}
+          >
+            {dam.name.split(" ")[1]}
+          </button>
+        ))}
+      </div>
+
       {/* TOP-RIGHT CONCISE HUD CARDS (Clickable -> Opens Drawer) */}
       <div className="absolute top-16 right-4 z-10 flex flex-col gap-2.5 w-64 sm:w-72">
         
-        {/* Helper Badge */}
-        <div className="rounded-lg bg-black/70 border border-slate-800 px-3 py-1 text-[10px] text-slate-400 text-center backdrop-blur-md">
-          {t("Click any indicator below to open full radar telemetry", "Clique em qualquer indicador para abrir a análise")}
+        {/* Selected Dam Mini Telemetry Card */}
+        <div 
+          onClick={() => setActiveMetricDrawer("storage")}
+          className="cursor-pointer rounded-xl border border-cyan-500/50 bg-slate-900/95 p-3 backdrop-blur-md shadow-xl hover:border-cyan-400 transition-all"
+        >
+          <div className="flex items-center justify-between text-xs mb-1">
+            <span className="text-[10px] uppercase font-bold text-cyan-400">{selectedDam.name.split("(")[0]}</span>
+            <span className="text-[10px] font-mono text-emerald-300">γ = {selectedDam.insarCoherence}</span>
+          </div>
+          <div className="flex items-baseline justify-between">
+            <span className="text-base font-extrabold text-white font-mono">{selectedDam.capacityMm3} mi m³</span>
+            <span className="text-xs text-slate-400">{selectedDam.deformationMmYr} mm/ano</span>
+          </div>
+          <span className="text-[9px] text-cyan-200/80 font-mono block mt-1">
+            {selectedDam.damTypePt.split(" com ")[0]}
+          </span>
         </div>
 
         {/* Card 1: Castanhão Storage */}
@@ -1192,7 +1574,7 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
         </div>
       </div>
 
-      {/* OFF-CANVAS INTERACTIVE METRIC DRAWER (SLIDING SIDEBAR) */}
+      {/* OFF-CANVAS INTERACTIVE METRIC DRAWER */}
       {activeMetricDrawer && (
         <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[480px] bg-[#0A1220]/98 border-l border-slate-700/80 p-6 backdrop-blur-xl shadow-2xl flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-300">
           
@@ -1208,7 +1590,7 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
                     {t("Deep SAR Telemetry Inspector", "Inspetor Biofísico SAR Profundo")}
                   </span>
                   <h3 className="text-lg font-bold text-white">
-                    {activeMetricDrawer === "storage" && t("Castanhão Water Volume & Specular SAR", "Volume do Castanhão & SAR Especular")}
+                    {activeMetricDrawer === "storage" && t("Dam Geodesy & Specular SAR Waterline", "Geodésia de Barragens & Lâmina Hídrica SAR")}
                     {activeMetricDrawer === "biomass" && t("Caatinga Standing Woody Biomass (HV)", "Biomassa em Pé da Caatinga (HV)")}
                     {activeMetricDrawer === "dielectric" && t("Root-Zone Dielectric Moisture (ε)", "Umidade Dielétrica Radicular (ε)")}
                     {activeMetricDrawer === "salinity" && t("Estuarine Salinity Intrusion Wedge", "Cunha Salina & Carcinicultura")}
@@ -1227,10 +1609,34 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
             <div className="space-y-4 mb-6 text-xs text-slate-300 leading-relaxed">
               {activeMetricDrawer === "storage" && (
                 <>
+                  <div className="rounded-xl border border-cyan-500/30 bg-slate-900 p-3.5 mb-3">
+                    <span className="text-[10px] uppercase font-bold text-cyan-400 block mb-1">
+                      {t("Selected Dam Geotechnical Profile:", "Perfil Geotécnico do Açude Selecionado:")}
+                    </span>
+                    <strong className="text-white text-sm block mb-1">{selectedDam.name}</strong>
+                    <div className="grid grid-cols-2 gap-2 text-[11px] font-mono mt-2">
+                      <div>
+                        <span className="text-slate-400 block text-[9px]">Capacidade Total:</span>
+                        <span className="text-white font-bold">{selectedDam.capacityMm3} mi m³</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block text-[9px]">Coerência InSAR (γ):</span>
+                        <span className="text-emerald-400 font-bold">{selectedDam.insarCoherence}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block text-[9px]">Deformação Anual:</span>
+                        <span className="text-cyan-300 font-bold">{selectedDam.deformationMmYr} mm/ano</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block text-[9px]">Comprimento Crista:</span>
+                        <span className="text-white font-bold">{selectedDam.crestLengthM} m</span>
+                      </div>
+                    </div>
+                  </div>
                   <p>
                     {t(
-                      "Castanhão Dam (6.7 billion m³) controls downstream hydrology for Ceará. Synthetic Aperture Radar detects water via specular reflection: smooth open water acts as a mirror, deflecting incident microwave pulses away and creating jet-black polygons in both HH and VV polarizations.",
-                      "O Açude Castanhão (6,7 bilhões de m³) controla a hidrologia a jusante no Ceará. O radar SAR detecta a água por reflexão especular: o espelho d'água liso reflete os pulsos para longe, gerando polígonos pretos milimetricamente delimitados mesmo sob céu nublado."
+                      "Synthetic Aperture Radar detects water via specular reflection: smooth open water acts as a mirror, deflecting incident microwave pulses away and creating jet-black polygons in both HH and VV polarizations.",
+                      "O radar SAR detecta a água por reflexão especular: o espelho d'água liso reflete os pulsos para longe, gerando polígonos pretos milimetricamente delimitados mesmo sob céu nublado."
                     )}
                   </p>
                   <div className="rounded-xl bg-slate-900 border border-slate-800 p-3 font-mono text-[11px] text-cyan-300">
