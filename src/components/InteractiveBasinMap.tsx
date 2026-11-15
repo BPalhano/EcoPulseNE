@@ -557,53 +557,57 @@ const WATER_BODY_POLYGONS = {
   ]
 };
 
-// BIOME POLYGONS (DISCRIMINATING CAATINGA, MANGROVES, GALLERY RIPARIAN FOREST, AND APICUNS)
+// BIOME POLYGONS (REALISTIC SPATIAL EXTENTS ACROSS CEARÁ & JAGUARIBE BASIN)
 const BIOME_POLYGONS = {
-  // 1. Caatinga Arbustiva-Arbórea dos Inhamuns (Sertão Ocidental)
-  caatingaInhamuns: {
-    nameEn: "Inhamuns Arboreal & Thorny Caatinga",
-    namePt: "Caatinga Arbustiva-Arbórea dos Inhamuns",
-    biomeEn: "Semi-Arid Caatinga (Deciduous Scrub)",
-    biomePt: "Caatinga Semiárida (Mata Branca Decidual)",
-    color: "#22C55E",
-    borderColor: "#15803D",
-    coords: [
-      [-5.55, -40.55], [-5.80, -40.05], [-6.38, -39.95], [-6.62, -40.35],
-      [-6.35, -40.75], [-5.75, -40.72]
-    ],
-    featuresEn: "Deciduous thorny scrub & dry arboreal Caatinga. Volume scattering (HV/VH) confirms living woody branches during severe dry seasons.",
-    featuresPt: "Caatinga arbustiva espinhosa e arbórea decidual. Espalhamento volumétrico (HV/VH) comprova madeira lenhosa viva na seca."
-  },
-  // 2. Caatinga do Médio Jaguaribe & Sertão Central
+  // 1. Caatinga da Depressão Sertaneja & Médio/Baixo Jaguaribe (Dominant Biome)
   caatingaSertaoCentral: {
-    nameEn: "Middle Jaguaribe & Sertão Central Caatinga",
-    namePt: "Caatinga do Médio Jaguaribe & Sertão Central",
-    biomeEn: "Crystalline Basement Caatinga",
-    biomePt: "Caatinga sobre Cristalino Raso",
+    nameEn: "Sertão Central & Depressão Sertaneja Caatinga",
+    namePt: "Caatinga da Depressão Sertaneja & Médio Jaguaribe",
+    biomeEn: "Crystalline Depression Caatinga (Deciduous Scrub)",
+    biomePt: "Caatinga sobre Cristalino Raso da Depressão Sertaneja",
     color: "#16A34A",
     borderColor: "#14532D",
     coords: [
-      [-4.78, -39.32], [-5.08, -38.58], [-5.62, -38.78], [-5.82, -39.18],
-      [-5.42, -39.62], [-4.88, -39.52]
+      [-4.35, -38.65], [-4.38, -37.75], [-4.95, -37.30], [-5.65, -37.60],
+      [-6.25, -38.15], [-6.45, -38.75], [-6.15, -39.15], [-5.55, -39.25],
+      [-4.85, -39.35], [-4.35, -38.65]
     ],
-    featuresEn: "Dense crystalline Caatinga over shallow Precambrian rock. High sensitivity to prolonged precipitation deficits.",
-    featuresPt: "Caatinga densa sobre embasamento cristalino pré-cambriano raso. Alta sensibilidade a déficits hídricos plurianuais."
+    featuresEn: "Dominant biome covering 75% of the basin over shallow crystalline Precambrian bedrock. Complete seasonal deciduous defoliation during prolonged dry spells; volume scattering (HV/VH) tracks living woody stems.",
+    featuresPt: "Bioma dominante cobrindo 75% da bacia sobre embasamento cristalino pré-cambriano raso. Defoliação caducifólia total na seca; retroespalhamento volumétrico (HV/VH) comprova caules lenhosos vivos."
   },
-  // 3. Mata Ciliar Ripária do Rio Jaguaribe (APP Fluvial)
+  // 2. Caatinga dos Inhamuns & Alto Jaguaribe (Dry Southwestern Uplands)
+  caatingaInhamuns: {
+    nameEn: "Inhamuns Arboreal & Thorny Caatinga (Alto Jaguaribe)",
+    namePt: "Caatinga Arbustiva dos Inhamuns & Alto Jaguaribe",
+    biomeEn: "Hyperxerophytic Upland Caatinga",
+    biomePt: "Caatinga Hiperxerófila de Planalto Cristalino",
+    color: "#22C55E",
+    borderColor: "#15803D",
+    coords: [
+      [-5.25, -40.65], [-5.25, -39.85], [-5.85, -39.65], [-6.45, -39.45],
+      [-6.95, -39.75], [-7.25, -40.25], [-6.85, -40.95], [-6.05, -40.95],
+      [-5.25, -40.65]
+    ],
+    featuresEn: "Arid crystalline tablelands (Tauá, Parambu, Arneiroz, Aiuaba). Deep-penetrating L-band microwave telemetry (NISAR) penetrates parched soil (0–30 cm) tracking severe moisture deficits.",
+    featuresPt: "Altos sertões cristalinos (Tauá, Parambu, Arneiroz, Aiuaba). Micro-ondas em banda L (NISAR) penetram até 30 cm no solo ressequido, rastreando secas profundas."
+  },
+  // 3. Mata Ciliar Ripária do Rio Jaguaribe (APP Fluvial de 610 km)
   mataCiliarJaguaribe: {
-    nameEn: "Jaguaribe Riparian Gallery Forest (River Corridor APP)",
-    namePt: "Mata Ciliar Ripária do Rio Jaguaribe (Corredor APP)",
-    biomeEn: "Riparian Gallery Forest",
-    biomePt: "Floresta Ciliar Ripária",
+    nameEn: "Jaguaribe Riparian Gallery Forest (610-km River APP)",
+    namePt: "Mata Ciliar Ripária do Rio Jaguaribe (APP Fluvial 610 km)",
+    biomeEn: "Riparian Alluvial Gallery Forest",
+    biomePt: "Mata Ripária Aluvionar Protetora",
     color: "#84CC16",
     borderColor: "#4D7C0F",
     coords: [
-      [-4.48, -37.84], [-4.78, -38.08], [-5.12, -38.24], [-5.48, -38.44],
-      [-5.78, -38.68], [-6.08, -38.90], [-6.14, -38.86], [-5.82, -38.62],
-      [-5.42, -38.38], [-5.08, -38.18], [-4.72, -38.02], [-4.46, -37.78]
+      [-4.42, -37.76], [-4.60, -37.95], [-4.95, -38.10], [-5.35, -38.35],
+      [-5.70, -38.58], [-6.12, -38.88], [-6.25, -39.35], [-6.38, -39.95],
+      [-6.55, -40.25], [-6.45, -40.35], [-6.25, -40.05], [-6.10, -39.45],
+      [-5.98, -38.98], [-5.58, -38.68], [-5.22, -38.45], [-4.85, -38.20],
+      [-4.50, -38.05], [-4.38, -37.82]
     ],
-    featuresEn: "Linear riparian gallery corridor buffering sediment runoff, stabilizing riverbank terraces, and mitigating siltation into Castanhão.",
-    featuresPt: "Corredor ripário linear que retém sedimentos, estabiliza barrancos contra deslizamentos e atenua assoreamento no Castanhão."
+    featuresEn: "Linear riparian gallery buffering sediment runoff, stabilizing riverbank terraces against devastating slope landslides (desbarrancamento), and preserving alluvial aquifers.",
+    featuresPt: "Faixa florestal contínua que retém sedimentos, estabiliza barrancos contra deslizamentos (desbarrancamento) e protege os aquíferos aluviais perenizados."
   },
   // 4. Manguezais Estuarinos de Aracati & Fortim
   manguezaisAracati: {
@@ -614,11 +618,11 @@ const BIOME_POLYGONS = {
     color: "#10B981",
     borderColor: "#047857",
     coords: [
-      [-4.36, -37.70], [-4.41, -37.73], [-4.45, -37.77], [-4.49, -37.81],
-      [-4.46, -37.83], [-4.40, -37.78], [-4.37, -37.73]
+      [-4.34, -37.68], [-4.40, -37.72], [-4.47, -37.76], [-4.52, -37.82],
+      [-4.49, -37.86], [-4.42, -37.80], [-4.35, -37.74]
     ],
-    featuresEn: "Tidal fringe forest (Rhizophora mangle, Avicennia germinans). Displays massive double-bounce dihedral scattering (+8 dB) during high-tide flooding.",
-    featuresPt: "Manguezal de maré (Rhizophora mangle, Avicennia germinans). Apresenta reflexão dupla diédrica massiva (+8 dB) na preamar sob o dossel."
+    featuresEn: "Tidal fringe forest (Rhizophora mangle, Avicennia germinans). High tide water sheet creates an orthogonal 90° dihedral reflector with stilt roots, yielding +8.4 dB double-bounce radar spike.",
+    featuresPt: "Manguezal de maré (Rhizophora mangle, Avicennia germinans). A lâmina d'água na preamar forma diedro de 90° com raízes escora, gerando pico de +8,4 dB em reflexão dupla."
   },
   // 5. Apicuns e Planícies Hipersalinas Costeiras
   apicunsCosteiros: {
@@ -629,11 +633,25 @@ const BIOME_POLYGONS = {
     color: "#EAB308",
     borderColor: "#A16207",
     coords: [
-      [-4.42, -37.71], [-4.46, -37.75], [-4.50, -37.78], [-4.48, -37.80],
-      [-4.44, -37.76], [-4.40, -37.72]
+      [-4.41, -37.70], [-4.46, -37.74], [-4.52, -37.79], [-4.50, -37.82],
+      [-4.44, -37.77], [-4.39, -37.73]
     ],
     featuresEn: "Supratidal hypersaline flats bordering mangroves. Low biomass and high surface radar backscatter; primary conversion area for shrimp ponds.",
     featuresPt: "Planícies hipersalinas na retaguarda do manguezal. Baixa biomassa e reflexão de superfície; área de expansão de viveiros."
+  },
+  // 6. Brejos de Altitude & Matas Serranas (Pereiro, Baturité)
+  brejosAltitude: {
+    nameEn: "High-Altitude Moist Forest Relicts (Brejos de Altitude)",
+    namePt: "Brejos de Altitude & Matas Serranas (Pereiro/Baturité)",
+    biomeEn: "Subperennial Moist Highland Forest",
+    biomePt: "Floresta Úmida Subperenifólia Serrana",
+    color: "#059669",
+    borderColor: "#065F46",
+    coords: [
+      [-4.20, -38.90], [-4.40, -38.80], [-4.50, -38.95], [-4.30, -39.10]
+    ],
+    featuresEn: "Relict moist highland forests intercepting orographic clouds on crystalline massifs. Maintain high canopy volume scattering year-round, serving as ecological recharge islands.",
+    featuresPt: "Ilhas de floresta úmida sobre maciços cristalinos que retêm chuvas orográficas. Mantêm alto espalhamento volumétrico o ano todo, atuando como refúgios ecológicos."
   }
 };
 
@@ -1068,6 +1086,9 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
               </div>
             </div>
             <p class="text-slate-300 leading-relaxed text-[11px] mb-2">${dam.descriptionPt}</p>
+            <div class="mb-2 p-1.5 rounded bg-black/50 border border-slate-800 text-[10px] text-cyan-200/90 leading-tight">
+              <strong>Contexto do Açude:</strong> Barramento de enrocamento sobre cristalino impermeável para garantir água nas secas plurianuais.
+            </div>
             <div class="p-1.5 rounded bg-cyan-950/40 border border-cyan-500/30 text-[10px] text-cyan-300 font-mono">
               ${dam.rigidityStatusPt}
             </div>
@@ -1180,24 +1201,30 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
       layersRef.current.sarMosaicGroup.addTo(map);
       layersRef.current.activeSar = layersRef.current.sarMosaicGroup;
     } else if (sarOverlayMode === "vegetation_biomes") {
-      // RENDER VEGETATION MASK DISCRIMINATING CAATINGA, MANGROVES, RIPARIAN GALLERY FOREST, AND APICUNS
+      // RENDER VEGETATION MASK WITH SENTINEL-1 SAR MOSAIC UNDERNEATH AND COHERENT BIOMES OVERLAY
       import("leaflet").then((L) => {
         const biomeLayers: any[] = [];
 
+        // 1. Add Full SAR Radar Mosaic as base texture under the vegetation mask
+        if (layersRef.current.sarMosaicGroup) {
+          biomeLayers.push(layersRef.current.sarMosaicGroup);
+        }
+
+        // 2. Add realistic vegetation biomes with semi-transparent vegetative shading
         Object.entries(BIOME_POLYGONS).forEach(([key, biomeData]) => {
           const poly = L.default.polygon(biomeData.coords as [number, number][], {
             color: biomeData.borderColor,
             weight: 2.5,
             fillColor: biomeData.color,
-            fillOpacity: key === "manguezaisAracati" ? 0.70 : key === "mataCiliarJaguaribe" ? 0.60 : 0.45
+            fillOpacity: key === "manguezaisAracati" ? 0.70 : key === "mataCiliarJaguaribe" ? 0.65 : 0.48
           });
 
           poly.bindPopup(`
             <div class="p-2.5 font-sans text-xs max-w-xs">
-              <span class="text-[10px] uppercase font-bold text-emerald-400 block mb-0.5">Mapeamento de Bioma & Radar SAR</span>
+              <span class="text-[10px] uppercase font-bold text-emerald-400 block mb-0.5">Bioma Cearense & Radar SAR</span>
               <strong class="text-white text-sm block mb-1">${biomeData.namePt}</strong>
               <div class="mb-2 font-mono text-[11px] bg-slate-900/90 p-2 rounded-lg border border-slate-800">
-                <span class="text-slate-400 block text-[9px] uppercase">Classificação Ecológica:</span>
+                <span class="text-slate-400 block text-[9px] uppercase">Classificação Fitofisionômica:</span>
                 <strong class="text-emerald-300">${biomeData.biomePt}</strong>
               </div>
               <p class="text-slate-300 leading-relaxed text-[11px]">${biomeData.featuresPt}</p>
@@ -1212,17 +1239,33 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
         layersRef.current.activeSar = biomeGroup;
       });
     } else if (sarOverlayMode === "water_mask") {
-      // RENDER REAL WATER MASK OVERLAYS ON TOP OF THE ORIGINAL SAR RADAR MAP TOGETHER WITH THE BLUE INDICATOR POINTS
+      // RENDER WATER MASK: FULL SAR RADAR MAP + ULTRA-DARK CONTRAST MASK ON NON-WATER + VIBRANT HIGHLIGHT ON ALL WATER BODIES
       import("leaflet").then((L) => {
         const maskLayers: any[] = [];
 
-        // Prepend the original SAR mosaic so it sits directly underneath the water masks & blue points
+        // 1. Add the complete Sentinel-1 SAR radar mosaic underneath
         if (layersRef.current.sarMosaicGroup) {
           maskLayers.push(layersRef.current.sarMosaicGroup);
         }
 
-        // 1. DYNAMIC WATER MASK POLYGONS DELINEATING ACTUAL WATER BODIES
-        // Castanhão Mask (scales with 5-year timeline from 0 km² in 1985 to 325 km² in 2004, down to 38 km² in 2016)
+        // 2. Ultra-dark mask over non-water land so the SAR texture is deeply dimmed
+        const cearaBoundaryCoords = [
+          [-2.78, -40.50], [-2.85, -39.80], [-3.15, -39.00], [-3.70, -38.40],
+          [-4.42, -37.76], [-4.80, -37.25], [-5.05, -37.35], [-5.50, -37.60],
+          [-6.50, -38.45], [-7.55, -38.60], [-7.85, -39.00], [-7.50, -39.75],
+          [-7.15, -40.35], [-6.40, -41.25], [-5.00, -41.40], [-3.60, -41.20],
+          [-2.90, -41.00]
+        ];
+        const darkLandMask = L.default.polygon(cearaBoundaryCoords as [number, number][], {
+          color: "#020617",
+          weight: 1,
+          fillColor: "#020617",
+          fillOpacity: 0.82, // Very dark mask over non-water areas, preserving subtle SAR texture
+          interactive: false
+        });
+        maskLayers.push(darkLandMask);
+
+        // 3. Highlighted Water Bodies (Glow in intense cyan #00E5FF on the dark radar canvas)
         if (currentMilestone.year >= 2000) {
           const isDroughtApex = currentMilestone.year === 2016 || currentMilestone.year === 2018;
           const castanhaoPolyCoords = isDroughtApex 
@@ -1230,78 +1273,81 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
             : WATER_BODY_POLYGONS.castanhaoFull;
 
           const castanhaoWaterMask = L.default.polygon(castanhaoPolyCoords as [number, number][], {
-            color: "#00E5FF",
+            color: "#FFFFFF",
             weight: 2.5,
             dashArray: isDroughtApex ? "4, 4" : undefined,
             fillColor: "#00E5FF",
-            fillOpacity: isDroughtApex ? 0.35 : 0.60
+            fillOpacity: isDroughtApex ? 0.65 : 0.92
           });
 
           castanhaoWaterMask.bindPopup(`
-            <div class="p-2 font-sans text-xs max-w-xs">
-              <strong class="text-cyan-400 font-bold block mb-1">Máscara Hídrica Ativa: Açude Castanhão</strong>
+            <div class="p-2.5 font-sans text-xs max-w-xs">
+              <strong class="text-cyan-400 font-bold text-sm block mb-1">Máscara Hídrica em Destaque: Açude Castanhão</strong>
               <span class="text-white font-mono text-[11px] block mb-1">
                 Ano ${currentMilestone.year}: ${currentMilestone.castanhaoAreaKm2} km² (${currentMilestone.castanhaoStoragePct}% de volume)
               </span>
-              <p class="text-slate-300 text-[11px]">
+              <p class="text-slate-300 text-[11px] leading-relaxed">
                 ${isDroughtApex 
-                  ? "Ápice da seca: espelho d'água retraído para a fossa profunda junto ao barramento; leito perimetral exposto com alta reflectância em radar." 
-                  : "Lâmina d'água plena gerando espalhamento especular absoluto (reflexão para longe do radar, σ⁰ < -22 dB)."}
+                  ? "Ápice da megaseca: espelho d'água retraído para a fossa profunda junto ao barramento; solo perimetral exposto." 
+                  : "Lâmina d'água plena em destaque sobre o mosaico radar SAR (espalhamento especular com reflexão total σ⁰ < -22 dB)."}
               </p>
             </div>
           `);
           maskLayers.push(castanhaoWaterMask);
         }
 
-        // Açude Orós Lake Mask
+        // Açude Orós Lake Mask (Highlighted)
         const orosWaterMask = L.default.polygon(WATER_BODY_POLYGONS.oros as [number, number][], {
-          color: "#00E5FF",
+          color: "#FFFFFF",
           weight: 2,
           fillColor: "#00E5FF",
-          fillOpacity: 0.55
+          fillOpacity: 0.90
         });
-        orosWaterMask.bindPopup(`<strong>Máscara Hídrica: Açude Orós</strong><br/>Espelho d'água de 1.940 mi m³.`);
+        orosWaterMask.bindPopup(`<div class="p-2 font-sans text-xs"><strong class="text-cyan-400 block mb-0.5">Máscara Hídrica: Açude Orós</strong><span class="text-white text-[11px]">Espelho d'água em destaque no radar SAR (1.940 mi m³).</span></div>`);
         maskLayers.push(orosWaterMask);
 
-        // Açude Banabuiú Lake Mask
+        // Açude Banabuiú Lake Mask (Highlighted)
         const banabuiuWaterMask = L.default.polygon(WATER_BODY_POLYGONS.banabuiu as [number, number][], {
-          color: "#00E5FF",
+          color: "#FFFFFF",
           weight: 2,
           fillColor: "#00E5FF",
-          fillOpacity: 0.50
+          fillOpacity: 0.88
         });
+        banabuiuWaterMask.bindPopup(`<div class="p-2 font-sans text-xs"><strong class="text-cyan-400 block mb-0.5">Máscara Hídrica: Açude Banabuiú</strong><span class="text-white text-[11px]">Espelho d'água estratégico do Sertão Central (1.600 mi m³).</span></div>`);
         maskLayers.push(banabuiuWaterMask);
 
-        // Açude Arneiroz II Mask
+        // Açude Arneiroz II Mask (Highlighted)
         const arneirozWaterMask = L.default.polygon(WATER_BODY_POLYGONS.arneiroz as [number, number][], {
-          color: "#00E5FF",
+          color: "#FFFFFF",
           weight: 2,
           fillColor: "#00E5FF",
-          fillOpacity: 0.50
+          fillOpacity: 0.88
         });
+        arneirozWaterMask.bindPopup(`<div class="p-2 font-sans text-xs"><strong class="text-cyan-400 block mb-0.5">Máscara Hídrica: Açude Arneiroz II</strong><span class="text-white text-[11px]">Represa de retenção de cabeceira nos Inhamuns (197 mi m³).</span></div>`);
         maskLayers.push(arneirozWaterMask);
 
-        // Açude Trussu Mask
+        // Açude Trussu Mask (Highlighted)
         const trussuWaterMask = L.default.polygon(WATER_BODY_POLYGONS.trussu as [number, number][], {
-          color: "#00E5FF",
+          color: "#FFFFFF",
           weight: 2,
           fillColor: "#00E5FF",
-          fillOpacity: 0.50
+          fillOpacity: 0.88
         });
+        trussuWaterMask.bindPopup(`<div class="p-2 font-sans text-xs"><strong class="text-cyan-400 block mb-0.5">Máscara Hídrica: Açude Trussu</strong><span class="text-white text-[11px]">Açude regulador da bacia do Alto Jaguaribe / Iguatu (301 mi m³).</span></div>`);
         maskLayers.push(trussuWaterMask);
 
-        // Aracati Estuary Water & Aquaculture Pond Mask
+        // Aracati Estuary Water & Aquaculture Pond Mask (Highlighted)
         const aracatiWaterMask = L.default.polygon(WATER_BODY_POLYGONS.aracatiEstuary as [number, number][], {
-          color: "#06B6D4",
-          weight: 2,
-          fillColor: "#06B6D4",
-          fillOpacity: 0.65
+          color: "#38BDF8",
+          weight: 2.5,
+          fillColor: "#00E5FF",
+          fillOpacity: 0.90
         });
         aracatiWaterMask.bindPopup(`
-          <div class="p-2 font-sans text-xs">
-            <strong class="text-cyan-400 font-bold block mb-1">Máscara Estuarina & Viveiros de Carcinicultura</strong>
+          <div class="p-2.5 font-sans text-xs max-w-xs">
+            <strong class="text-cyan-400 font-bold block mb-1">Máscara Hídrica Estuarina & Viveiros</strong>
             <span class="text-slate-200 text-[11px] block">Área de viveiros em ${currentMilestone.year}: ${currentMilestone.aquaculturePondAreaHa} ha</span>
-            <p class="text-slate-300 text-[10px] mt-1">Lâmina d'água saturada e canais de maré delimitados por contraste radar.</p>
+            <p class="text-slate-300 text-[10px] mt-1 leading-relaxed">Canais de maré e tanques aquícolas com espelhamento especular de radar contrastando com a planície salgada.</p>
           </div>
         `);
         maskLayers.push(aracatiWaterMask);
@@ -1476,14 +1522,6 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
               {t("Off", "Desligar")}
             </button>
           </div>
-
-          {/* Tile Loading Indicator */}
-          {mapTilesLoading && (
-            <div className="flex items-center space-x-1.5 rounded-xl border border-cyan-500/40 bg-slate-900/95 px-2.5 py-1 text-xs font-mono text-cyan-300 shadow-xl backdrop-blur-md animate-pulse">
-              <Loader2 className="h-3.5 w-3.5 animate-spin text-cyan-400" />
-              <span>{t("Streaming...", "Carregando...")}</span>
-            </div>
-          )}
         </div>
 
         {/* Right Cluster: Dam Quick Focus + Ecological Risks + Fullscreen */}
@@ -1536,6 +1574,14 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
         </div>
 
       </div>
+
+      {/* FLOATING NON-SHIFTING TILE STREAMING INDICATOR (Positioned Below Search / Dam Bar) */}
+      {mapTilesLoading && (
+        <div className="absolute top-[58px] left-4 z-20 flex items-center space-x-2 rounded-xl border border-cyan-500/50 bg-slate-900/95 px-3 py-1 text-xs font-mono text-cyan-300 shadow-2xl backdrop-blur-md animate-pulse pointer-events-none">
+          <Loader2 className="h-3.5 w-3.5 animate-spin text-cyan-400" />
+          <span>{t("Streaming Radar Tiles (SAR RTC & Basemap)...", "Carregando Camadas SAR & Base...")}</span>
+        </div>
+      )}
 
       {/* TOP-LEFT 5-YEAR SATELLITE & SAR MISSION TIMESTAMP BADGE (Collapsible) */}
       <div className="absolute top-16 left-4 z-10 max-w-xs sm:max-w-sm rounded-2xl border border-slate-700/80 bg-slate-900/95 p-3 backdrop-blur-md shadow-2xl transition-all">
@@ -1605,35 +1651,40 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
               onClick={() => setIsLegendCollapsed(false)}
               className="cursor-pointer pt-1 flex items-center justify-between text-[10px] font-mono text-emerald-300 hover:text-emerald-200"
             >
-              <span>{t("5 Biome Classes active", "5 Classes de Bioma ativas")}</span>
+              <span>{t("6 Biome Classes active", "6 Classes de Bioma ativas")}</span>
               <span className="text-emerald-400 ml-2">▲</span>
             </div>
           ) : (
             <div className="space-y-1 text-[11px] pt-0.5">
               <div className="flex items-center space-x-2">
-                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#22C55E" }} />
-                <span className="text-white font-medium">{t("Inhamuns Thorny Caatinga", "Caatinga dos Inhamuns")}</span>
-                <span className="text-[9px] text-slate-400 font-mono ml-auto">(HV Vol.)</span>
-              </div>
-              <div className="flex items-center space-x-2">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#16A34A" }} />
-                <span className="text-white font-medium">{t("Sertão Central Caatinga", "Caatinga do Sertão Central")}</span>
+                <span className="text-white font-medium">{t("Sertão Central Caatinga", "Caatinga Depressão Sertaneja")}</span>
                 <span className="text-[9px] text-slate-400 font-mono ml-auto">(Crystalline)</span>
               </div>
               <div className="flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#22C55E" }} />
+                <span className="text-white font-medium">{t("Inhamuns Upland Caatinga", "Caatinga dos Inhamuns")}</span>
+                <span className="text-[9px] text-slate-400 font-mono ml-auto">(HV Vol.)</span>
+              </div>
+              <div className="flex items-center space-x-2">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#84CC16" }} />
-                <span className="text-white font-medium">{t("Jaguaribe Riparian Gallery (APP)", "Mata Ciliar Ripária (APP)")}</span>
+                <span className="text-white font-medium">{t("Jaguaribe Riparian Gallery (APP)", "Mata Ciliar Ripária (APP 610km)")}</span>
                 <span className="text-[9px] text-slate-400 font-mono ml-auto">(Anti-erosion)</span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#10B981" }} />
-                <span className="text-white font-medium">{t("Aracati Estuarine Mangroves", "Manguezais de Aracati")}</span>
+                <span className="text-white font-medium">{t("Aracati Estuarine Mangroves", "Manguezais de Aracati & Fortim")}</span>
                 <span className="text-[9px] text-slate-400 font-mono ml-auto">(HH-VV Dbl.)</span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#EAB308" }} />
-                <span className="text-white font-medium">{t("Hypersaline Flats / Apicuns", "Apicuns & Planícies Salgadas")}</span>
+                <span className="text-white font-medium">{t("Hypersaline Flats / Apicuns", "Apicuns & Salgados")}</span>
                 <span className="text-[9px] text-slate-400 font-mono ml-auto">(Surface)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#059669" }} />
+                <span className="text-white font-medium">{t("Moist Forest Relicts (Brejos)", "Brejos de Altitude (Serras)")}</span>
+                <span className="text-[9px] text-slate-400 font-mono ml-auto">(Orographic)</span>
               </div>
             </div>
           )}
@@ -1960,6 +2011,34 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
                       </div>
                     </div>
                   </div>
+
+                  {/* Socio-Hydrogeological Context: What is an Açude? */}
+                  <div className="rounded-xl border border-cyan-500/40 bg-gradient-to-b from-cyan-950/40 to-slate-900/90 p-3.5 mb-3">
+                    <div className="flex items-center space-x-2 text-cyan-400 font-mono text-xs font-bold uppercase mb-2">
+                      <Mountain className="h-4 w-4" />
+                      <span>{t("Hydrogeological Context: What is an Açude?", "Contexto Hidrogeológico: O que é um Açude no Semiárido?")}</span>
+                    </div>
+                    <p className="text-slate-200 text-xs leading-relaxed mb-2">
+                      {t(
+                        "In Ceará, over 75% of the land is underlain by impermeable Precambrian crystalline bedrock. Unlike sedimentary basins with deep subterranean aquifers (like the Guarani), water cannot penetrate deep into solid rock. Rains run off immediately in violent seasonal flash floods, causing natural rivers like the Jaguaribe to run completely dry for 6 to 9 months of the year ('the largest dry river in the world').",
+                        "No Ceará, mais de 75% do território repousa sobre rochas cristalinas pré-cambrianas impermeáveis. Sem aquíferos subterrâneos profundos de fácil recarga (ao contrário de bacias sedimentares), as chuvas escorrem rapidamente em enxurradas torrenciais, e rios como o Jaguaribe secavam totalmente na estiagem ('o maior rio seco do mundo')."
+                      )}
+                    </p>
+                    <p className="text-slate-200 text-xs leading-relaxed mb-2">
+                      {t(
+                        "Therefore, an 'açude' is not a mere artificial pond: it is an indispensable life-support megastructure created by damming intermittent river canyons with compacted zoned earthfill and riprap rock armor. It captures the violent seasonal runoff of the short 3-month rainy season ('quadra chuvosa') to store billions of cubic meters, securing drinking water, cattle herds, and downstream irrigated agriculture across multi-year megadroughts.",
+                        "Por isso, o 'açude' não é um simples lago: é uma infraestrutura de sobrevivência vital. Ao barrar boqueirões e calhas com paredões de terra compactada e enrocamento de pedras, o açude armazena as enxurradas da curta 'quadra chuvosa' (fevereiro a maio) para abastecer cidades, rebanhos e perímetros agrícolas durante megassecas plurianuais de até 6 anos."
+                      )}
+                    </p>
+                    <div className="rounded-lg bg-black/50 p-2.5 border border-cyan-500/20 text-[11px] font-mono text-cyan-300">
+                      <strong>{t("Role of SAR Microwave Remote Sensing:", "Papel do Radar de Micro-ondas SAR:")}</strong>{" "}
+                      {t(
+                        "Synthetic Aperture Radar pierces cloud cover to delineate the water surface mirror (σ⁰ < -22 dB) and uses repeat-pass InSAR interferometry (γ > 0.90) to detect millimeter-level crest settlement under drought decompression.",
+                        "Satélites SAR perfuram nuvens para medir a lâmina d'água especular (σ⁰ < -22 dB) e usam interferometria InSAR repetida para monitorar estabilidade e assentamento milimétrico da crista sob descompressão hidrostática."
+                      )}
+                    </div>
+                  </div>
+
                   <p>
                     {t(
                       "Synthetic Aperture Radar detects water via specular reflection: smooth open water acts as a mirror, deflecting incident microwave pulses away and creating jet-black polygons in both HH and VV polarizations.",

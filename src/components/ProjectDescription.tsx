@@ -17,7 +17,14 @@ import {
   X, 
   Sparkles,
   HelpCircle,
-  ArrowRight
+  ArrowRight,
+  Users,
+  History,
+  Wheat,
+  ShieldAlert,
+  SunMedium,
+  BookOpen,
+  Compass
 } from "lucide-react";
 
 export default function ProjectDescription() {
@@ -209,6 +216,170 @@ export default function ProjectDescription() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* SOCIO-HISTORICAL-CULTURAL CONTEXT & WATER ACCESS IN CEARÁ */}
+        <div className="mb-20 rounded-3xl border border-rose-500/30 bg-gradient-to-b from-[#0E1726] via-[#0A111E] to-[#060D18] p-7 lg:p-10 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-rose-500/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Section Heading */}
+          <div className="max-w-3xl mb-10">
+            <div className="inline-flex items-center space-x-2 rounded-full border border-rose-500/30 bg-rose-950/40 px-3.5 py-1 text-xs font-semibold text-rose-300 mb-3">
+              <History className="h-3.5 w-3.5 text-rose-400" />
+              <span>{t("Socio-Historical & Human Geography", "Geografia Socio-Histórica & Humana")}</span>
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              {t(
+                "Socio-Historical Context & The Geography of Water in Ceará's Semiarid",
+                "Contexto Socio-Histórico-Cultural e a Geografia do Acesso à Água no Ceará"
+              )}
+            </h3>
+            <p className="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
+              {t(
+                "Water access in Ceará is not merely a technical challenge of storage and conveyance — it is a foundational pillar of human survival, cultural resilience, and socio-spatial justice deeply etched into centuries of collective memory across the Caatinga.",
+                "O acesso à água no Ceará não é apenas uma questão de engenharia hidráulica — é um pilar estruturante de sobrevivência, resistência cultural e justiça socioambiental forjado em séculos de memória coletiva no sertão da Caatinga."
+              )}
+            </p>
+          </div>
+
+          {/* 4 Thematic Deep-Dive Pillars */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            
+            {/* Pillar 1: Crystalline Hydrogeology & The "Largest Dry River in the World" */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4 hover:border-slate-700 transition-colors">
+              <div className="flex items-center space-x-3">
+                <div className="p-2.5 rounded-xl bg-cyan-950/80 border border-cyan-500/30 text-cyan-400">
+                  <Droplets className="h-5 w-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-mono font-bold text-cyan-400 block tracking-wider">
+                    {t("Hydrogeological Basement", "Geologia & Hidrografia")}
+                  </span>
+                  <h4 className="text-base font-bold text-white">
+                    {t("Crystalline Bedrock & 'The Largest Dry River'", "Embasamento Cristalino & 'O Maior Rio Seco'")}
+                  </h4>
+                </div>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {t(
+                  "Unlike southern Brazil or the Amazon with porous sedimentary aquifers (like the Guarani), more than 75% of Ceará rests over Precambrian impermeable crystalline rock with thin soils (Neossolos). Rainfall cannot infiltrate deep underground. Natural rivers are strictly intermittent: before dams, the Jaguaribe completely stopped flowing for 6 to 8 months every year, historically dubbed 'the largest dry river in the world'. Over 90% of rain is lost to violent torrents or evaporated under 3,000 hours of equatorial sunlight annually.",
+                  "Diferente do Sul do Brasil ou da Amazônia, com bacias sedimentares permeáveis (Aquífero Guarani), mais de 75% do território cearense assenta-se sobre embasamento cristalino pré-cambriano com solos rasos (Neossolos e Luvissolos). Não há aquíferos profundos de recarga fácil. Os rios são naturalmente intermitentes: antes das barragens, o Jaguaribe secava totalmente de julho a janeiro, consagrado como 'o maior rio seco do mundo'. Até 90% das chuvas perdem-se em enxurradas bruscas ou evaporam sob 3.000 horas de insolação anual."
+                )}
+              </p>
+
+              <div className="rounded-xl bg-black/40 p-3 border border-slate-800 text-xs font-mono text-cyan-300 flex items-center justify-between">
+                <span>{t("Crystalline Coverage:", "Área Cristalina:")} <strong>75.3%</strong></span>
+                <span>{t("Natural Intermittency:", "Regime Natural:")} <strong>0 m³/s (6–8 mo/yr)</strong></span>
+              </div>
+            </div>
+
+            {/* Pillar 2: Water Access Geography: From Açudagem to Decentralized Cisterns */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4 hover:border-slate-700 transition-colors">
+              <div className="flex items-center space-x-3">
+                <div className="p-2.5 rounded-xl bg-amber-950/80 border border-amber-500/30 text-amber-400">
+                  <Compass className="h-5 w-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-mono font-bold text-amber-400 block tracking-wider">
+                    {t("Water Infrastructure", "Infraestrutura de Sobrevivência")}
+                  </span>
+                  <h4 className="text-base font-bold text-white">
+                    {t("From 'Açudagem' to Rainwater Cisterns & Tankers", "Da Açudagem às Cisternas de Placa & Carros-Pipa")}
+                  </h4>
+                </div>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {t(
+                  "To capture erratic runoff on solid rock, Ceará developed the engineering of 'açudagem' — building over 30,000 reservoirs of all sizes, crowned by giants like Açude Cedro (1890, ordered by Dom Pedro II), Orós (1961), and Castanhão (2002). In rural areas, water security was transformed by the 'Convivência com o Semiárido' movement: the P1MC program installed over 350,000 decentralized 16,000-liter rainwater harvesting cisterns ('cisternas de placa') connected to family house roofs, freeing women and children from walking hours to fetch brackish water. Yet in multiannual droughts, the Army's 'Operação Carro-Pipa' remains an essential lifeline.",
+                  "Para reter as águas sobre a rocha impermeável, consolidou-se a política da açudagem — hoje com mais de 30 mil represas no Ceará, desde o Açude Cedro (1890, iniciado por D. Pedro II), passando por Orós (1961) até o Castanhão (2002). No meio rural, a segurança hídrica descentralizada nasceu com o paradigma da Convivência com o Semiárido: o Programa 1 Milhão de Cisternas (P1MC) instalou mais de 350 mil cisternas de placa (16.000 litros) captando água de chuva em telhados rurais, libertando mulheres e crianças de longas caminhadas. Em secas duradouras, a Operação Carro-Pipa do Exército ainda abastece emergencialmente centenas de comunidades."
+                )}
+              </p>
+
+              <div className="rounded-xl bg-black/40 p-3 border border-slate-800 text-xs font-mono text-amber-300 flex items-center justify-between">
+                <span>{t("Cisterns Installed:", "Cisternas no CE:")} <strong>&gt; 350,000</strong></span>
+                <span>{t("Standard Capacity:", "Capacidade Padrão:")} <strong>16,000 L (Drinking)</strong></span>
+              </div>
+            </div>
+
+            {/* Pillar 3: 5.4 Million People Impacted & Family Agriculture Struggles */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4 hover:border-slate-700 transition-colors">
+              <div className="flex items-center space-x-3">
+                <div className="p-2.5 rounded-xl bg-rose-950/80 border border-rose-500/30 text-rose-400">
+                  <Users className="h-5 w-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-mono font-bold text-rose-400 block tracking-wider">
+                    {t("Human & Agricultural Impact", "Impacto Humano & Agrícola")}
+                  </span>
+                  <h4 className="text-base font-bold text-white">
+                    {t("5.4 Million People & Rainfed Family Farming", "5,4 Milhões de Pessoas & Agricultura de Sequeiro")}
+                  </h4>
+                </div>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {t(
+                  "Over 5.4 million people in Ceará (and 28 million across Brazil's Semiarid) live directly under drought vulnerability. More than 80% of rural establishments are smallholder family farms practicing rainfed agriculture ('agricultura familiar de sequeiro'). Farmers plant staple crops (corn, cowpea beans / feijão-caupi, cassava) synchronized with the fleeting 3-month 'quadra chuvosa' (February to May). When mid-season dry spells ('veranicos') or multiannual droughts strike, crop collapse ranges from 80% to 100%, devastating family food security and wiping out livestock feed supplies.",
+                  "Mais de 5,4 milhões de pessoas no Ceará (e 28 milhões em todo o Semiárido) vivem sob vulnerabilidade climática crônica. Mais de 80% dos estabelecimentos rurais pertencem à agricultura familiar de sequeiro. Os agricultores sincronizam o plantio de culturas de subsistência (milho, feijão-caupi e mandioca) com a curta quadra chuvosa (fevereiro a maio). Quando ocorrem veranicos prolongados ou anos de seca consecutiva, a quebra de safra atinge de 80% a 100%, dizimando a renda familiar, exaurindo forragem para caprinos e bovinos e exigindo o acionamento emergencial do Garantia-Safra."
+                )}
+              </p>
+
+              <div className="rounded-xl bg-black/40 p-3 border border-slate-800 text-xs font-mono text-rose-300 flex items-center justify-between">
+                <span>{t("Affected Population:", "População Atingida:")} <strong>5.4M (CE) / 28M (NE)</strong></span>
+                <span>{t("Drought Crop Loss:", "Perda em Megaseca:")} <strong>80%–100%</strong></span>
+              </div>
+            </div>
+
+            {/* Pillar 4: Historical Memory & The Teleconnection: Sertão ↔ Mangroves */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4 hover:border-slate-700 transition-colors">
+              <div className="flex items-center space-x-3">
+                <div className="p-2.5 rounded-xl bg-emerald-950/80 border border-emerald-500/30 text-emerald-400">
+                  <TreePine className="h-5 w-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-mono font-bold text-emerald-400 block tracking-wider">
+                    {t("Culture & Ecological Continuum", "Memória Histórica & Teleconexão")}
+                  </span>
+                  <h4 className="text-base font-bold text-white">
+                    {t("The Living Chain: From Sertão to Coastal Mangroves", "A Cadeia Viva: Do Sertão aos Manguezais")}
+                  </h4>
+                </div>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {t(
+                  "Ceará's culture carries the traumatic memory of catastrophic historical droughts: the Great Drought of 1877–1879, the 1915 drought immortalized by Rachel de Queiroz in 'O Quinze', the 1932 drought marked by concentration camps in Senador Pompeu, and the modern 2012–2017 megadrought. Yet the Jaguaribe Basin is a single living continuum: decisions made at Castanhão 300 km upstream directly govern coastal artisanal fishing and mangrove health in Aracati and Fortim. When gates close to save reservoir water, the marine salinity wedge surges 32 km upstream, salinizing municipal wells and choking mangrove crab nurseries upon which thousands of traditional fishing families depend.",
+                  "A cultura cearense carrega a cicatriz das secas históricas: a Grande Seca de 1877–1879, a Seca de 1915 imortalizada por Rachel de Queiroz em 'O Quinze', a seca de 1932 marcada pelos campos de concentração de retirantes em Senador Pompeu e Quixadá, e a recente megaseca de 2012–2017. Essa bacia é um organismo único: o que acontece no Castanhão reverbera a 610 km de distância na foz de Aracati. Reter água na seca salva o sertanejo, mas paralisa a vazão doce para o estuário, empurrando a cunha salina marinha 32 km adentro, salinizando poços de várzea e ameaçando comunidades tradicionais de catadores de caranguejo e pescadores artesanais."
+                )}
+              </p>
+
+              <div className="rounded-xl bg-black/40 p-3 border border-slate-800 text-xs font-mono text-emerald-300 flex items-center justify-between">
+                <span>{t("Ecological Teleconnection:", "Eixo Teleconectado:")} <strong>610 km (Inhamuns → Foz)</strong></span>
+                <span>{t("Salinity Surge:", "Avanço Salino:")} <strong>+32 km inland</strong></span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Cultural & Literary Quote Callout */}
+          <div className="rounded-2xl border border-rose-500/20 bg-black/40 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center space-x-3">
+              <BookOpen className="h-5 w-5 text-rose-400 shrink-0" />
+              <p className="text-xs text-slate-300 italic">
+                {t(
+                  '"In the vastness of the Caatinga, the sertanejo does not fight against nature: he learns the rhythm of the stars, the signs of the Rain Prophets, and the resilience of roots that slumber until the return of water."',
+                  '"Na imensidão da Caatinga, o sertanejo não luta contra a natureza: aprende o ritmo dos astros, os sinais dos Profetas da Chuva e a tenacidade das raízes que adormecem até o retorno das águas." — EcoPulse NE'
+                )}
+              </p>
+            </div>
+            <span className="text-[10px] font-mono text-rose-300 uppercase px-3 py-1 rounded-full bg-rose-950/60 border border-rose-500/30 whitespace-nowrap">
+              {t("Cultural Heritage", "Patrimônio Sertanejo")}
+            </span>
+          </div>
+
         </div>
 
         {/* 5-Step Radar Data Architecture */}

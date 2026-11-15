@@ -28,7 +28,8 @@ import {
   Calculator,
   BookOpen,
   X,
-  Code2
+  Code2,
+  Target
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -348,7 +349,8 @@ export default function SARBiophysicalDashboard() {
 
   // Active analysis preset: Drought Peak (2016) vs Wet Recovery (2024) vs Pre-Dam Baseline (1985)
   const [selectedScenario, setSelectedScenario] = useState<"drought" | "recovery" | "baseline">("drought");
-  const [activeTab, setActiveTab] = useState<"polarimetry" | "dielectric" | "insar" | "estuary">("polarimetry");
+  const [activeTab, setActiveTab] = useState<"dielectric" | "insar" | "polarimetry" | "estuary">("dielectric");
+  const [probeDepthCm, setProbeDepthCm] = useState<number>(15);
 
   // Tab 1 Sub-states: Tidal simulation (High vs Low)
   const [tidalState, setTidalState] = useState<"high" | "low">("high");
@@ -533,10 +535,57 @@ export default function SARBiophysicalDashboard() {
             </div>
           </div>
 
+          {/* Quick-Jump Timeline Milestone Chips */}
+          <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-slate-800/80">
+            <span className="text-[11px] font-mono text-slate-400 uppercase font-bold flex items-center space-x-1.5">
+              <span>{t("Milestones:", "Marcos Históricos:")}</span>
+            </span>
+            <button
+              onClick={() => setSelectedScenario("baseline")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all flex items-center space-x-1.5 ${
+                selectedScenario === "baseline"
+                  ? "bg-cyan-500/30 text-cyan-200 border border-cyan-400 shadow-md shadow-cyan-950/60"
+                  : "bg-slate-900/80 text-cyan-400 border border-cyan-500/20 hover:bg-cyan-950/40"
+              }`}
+            >
+              <span>🌊</span>
+              <span>2004 Sangria (100% {t("Spillway", "Vertedouro")})</span>
+            </button>
+            <button
+              onClick={() => setSelectedScenario("drought")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all flex items-center space-x-1.5 ${
+                selectedScenario === "drought"
+                  ? "bg-rose-500/30 text-rose-200 border border-rose-400 shadow-md shadow-rose-950/60"
+                  : "bg-slate-900/80 text-rose-400 border border-rose-500/20 hover:bg-rose-950/40"
+              }`}
+            >
+              <span>🔥</span>
+              <span>2016 Megaseca (5.2% {t("Apex", "Ápice")})</span>
+            </button>
+            <button
+              onClick={() => setSelectedScenario("recovery")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all flex items-center space-x-1.5 ${
+                selectedScenario === "recovery"
+                  ? "bg-blue-500/30 text-blue-200 border border-blue-400 shadow-md shadow-blue-950/60"
+                  : "bg-slate-900/80 text-blue-400 border border-blue-500/20 hover:bg-blue-950/40"
+              }`}
+            >
+              <span>💧</span>
+              <span>2022 PISF ({t("Transposition", "Transposição")})</span>
+            </button>
+            <button
+              onClick={() => setSelectedScenario("recovery")}
+              className="px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-slate-900/80 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-950/40 transition-all flex items-center space-x-1.5"
+            >
+              <span>🛰️</span>
+              <span>2024–2026 NISAR ({t("Dual L+S Orbit", "Órbita Dupla L+S")})</span>
+            </button>
+          </div>
+
           {/* Area Chart Container */}
-          <div className="h-80 w-full mt-6">
+          <div className="h-96 w-full mt-6">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={normalizedTimeSeriesData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart data={normalizedTimeSeriesData} margin={{ top: 52, right: 25, left: -10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="areaDielectric" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#00E5FF" stopOpacity={0.4} />
@@ -594,9 +643,57 @@ export default function SARBiophysicalDashboard() {
                     return null;
                   }}
                 />
-                <ReferenceLine x={2004} stroke="#06B6D4" strokeDasharray="3 3" label={{ value: "2004 Sangria", fill: "#06B6D4", fontSize: 9, position: "top" }} />
-                <ReferenceLine x={2016} stroke="#EF4444" strokeDasharray="3 3" label={{ value: "2016 Megaseca", fill: "#EF4444", fontSize: 9, position: "top" }} />
-                <ReferenceLine x={2022} stroke="#3B82F6" strokeDasharray="3 3" label={{ value: "2022 PISF", fill: "#3B82F6", fontSize: 9, position: "top" }} />
+                <ReferenceLine 
+                  x={2004} 
+                  stroke="#00E5FF" 
+                  strokeWidth={2}
+                  strokeDasharray="4 4" 
+                  label={(props: any) => {
+                    const x = props.viewBox?.x ?? 0;
+                    return (
+                      <g transform={`translate(${x}, 10)`}>
+                        <rect x={-54} y={0} width={108} height={26} rx={7} fill="#083344" stroke="#00E5FF" strokeWidth={1.5} />
+                        <text x={0} y={17} fill="#E0F7FA" fontSize={11} fontWeight={700} textAnchor="middle" fontFamily="sans-serif">
+                          🌊 2004 Sangria
+                        </text>
+                      </g>
+                    );
+                  }} 
+                />
+                <ReferenceLine 
+                  x={2016} 
+                  stroke="#F43F5E" 
+                  strokeWidth={2}
+                  strokeDasharray="4 4" 
+                  label={(props: any) => {
+                    const x = props.viewBox?.x ?? 0;
+                    return (
+                      <g transform={`translate(${x}, 10)`}>
+                        <rect x={-60} y={0} width={120} height={26} rx={7} fill="#4C0519" stroke="#F43F5E" strokeWidth={1.5} />
+                        <text x={0} y={17} fill="#FFE4E6" fontSize={11} fontWeight={700} textAnchor="middle" fontFamily="sans-serif">
+                          🔥 2016 Megaseca
+                        </text>
+                      </g>
+                    );
+                  }} 
+                />
+                <ReferenceLine 
+                  x={2022} 
+                  stroke="#3B82F6" 
+                  strokeWidth={2}
+                  strokeDasharray="4 4" 
+                  label={(props: any) => {
+                    const x = props.viewBox?.x ?? 0;
+                    return (
+                      <g transform={`translate(${x}, 10)`}>
+                        <rect x={-50} y={0} width={100} height={26} rx={7} fill="#172554" stroke="#3B82F6" strokeWidth={1.5} />
+                        <text x={0} y={17} fill="#DBEAFE" fontSize={11} fontWeight={700} textAnchor="middle" fontFamily="sans-serif">
+                          💧 2022 PISF
+                        </text>
+                      </g>
+                    );
+                  }} 
+                />
 
                 {(selectedMetricMode === "all" || selectedMetricMode === "dielectric") && (
                   <Area
@@ -894,44 +991,48 @@ export default function SARBiophysicalDashboard() {
           <div className="flex flex-wrap items-center justify-between border-b border-slate-800 pb-4 mb-6 gap-3">
             <div className="flex items-center space-x-2 text-sm overflow-x-auto pb-1 max-w-full">
               <button
-                onClick={() => setActiveTab("polarimetry")}
-                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 ${
-                  activeTab === "polarimetry"
-                    ? "bg-rose-500/20 text-rose-300 border border-rose-500/40"
-                    : "text-slate-400 hover:text-white"
-                }`}
-              >
-                {t("1. Double-Bounce & Mangrove Roots", "1. Double-Bounce & Raízes de Mangue")}
-              </button>
-              <button
                 onClick={() => setActiveTab("dielectric")}
-                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 ${
+                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 flex items-center space-x-1.5 ${
                   activeTab === "dielectric"
-                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
+                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                {t("2. Dielectric Moisture & Penetration", "2. Umidade Dielétrica & Penetração")}
+                <span>💧</span>
+                <span>{t("1. Dielectric Moisture (0–30 cm)", "1. Umidade Dielétrica (0–30 cm)")}</span>
               </button>
               <button
                 onClick={() => setActiveTab("insar")}
-                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 ${
+                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 flex items-center space-x-1.5 ${
                   activeTab === "insar"
-                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                {t("3. InSAR Coherence: Rigid vs Decorrelated", "3. Coerência InSAR: Rígido vs Decorrelacionado")}
+                <span>🛡️</span>
+                <span>{t("2. InSAR Coherence: Dam Stability", "2. Coerência InSAR: Estabilidade de Açudes")}</span>
+              </button>
+              <button
+                onClick={() => setActiveTab("polarimetry")}
+                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 flex items-center space-x-1.5 ${
+                  activeTab === "polarimetry"
+                    ? "bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <span>🌿</span>
+                <span>{t("3. Pauli Double-Bounce & Mangroves", "3. Diedro Duplo de Pauli & Manguezais")}</span>
               </button>
               <button
                 onClick={() => setActiveTab("estuary")}
-                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 ${
+                className={`rounded-lg px-3.5 py-1.5 font-bold transition-all shrink-0 flex items-center space-x-1.5 ${
                   activeTab === "estuary"
-                    ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                    ? "bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                {t("4. River Flow & Biological Effluents", "4. Vazão Fluvial & Efluentes Biológicos")}
+                <span>🌊</span>
+                <span>{t("4. River Flow & Biological Effluents", "4. Vazão Fluvial & Efluentes Biológicos")}</span>
               </button>
             </div>
 
@@ -940,277 +1041,187 @@ export default function SARBiophysicalDashboard() {
             </span>
           </div>
 
-          {/* TAB 1: POLARIMETRY & CORRELATED DOUBLE-BOUNCE VS MANGROVE TIDAL FLOODING */}
-          {activeTab === "polarimetry" && (
-            <div className="space-y-8">
+          {/* TAB 1: DIELECTRIC MOISTURE & SUBSURFACE PENETRATION (0–30 CM) */}
+          {activeTab === "dielectric" && (
+            <div className="space-y-6">
+              {/* Pedagogical Callout Banner */}
+              <div className="rounded-2xl border border-cyan-500/40 bg-gradient-to-r from-cyan-950/40 via-slate-900 to-cyan-950/30 p-5 shadow-lg flex items-start space-x-3.5">
+                <div className="p-2.5 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 shrink-0 mt-0.5">
+                  <Target className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-bold text-white flex items-center space-x-2">
+                    <span>{t("🎯 What this chart measures & Radar Physics:", "🎯 Para que serve este gráfico & Física de Radar:")}</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">L-Band (λ = 24.2 cm)</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    {t(
+                      "Optical satellites (like Landsat or Sentinel-2) only record surface reflectance from dry leaves, registering dormant Caatinga as dead biomass. In contrast, 24.2 cm L-band microwaves penetrate through the dry canopy into the soil profile down to 30 cm. Because liquid water has a relative dielectric permittivity (ε ≈ 80) drastically higher than dry soil minerals (ε ≈ 3.2), radar phase shifts directly calculate true root-zone volumetric moisture (θ_v), revealing whether deep taproots are in viable drought dormancy or dead.",
+                      "Satélites ópticos (Sentinel-2, Landsat) captam apenas a luz solar na copa ressecada e registram a Caatinga dormente como biomassa morta. Já as micro-ondas ativas de banda L (24,2 cm) atravessam o dossel seco e penetram até 30 cm no solo. Como a água líquida tem permissividade dielétrica (ε ≈ 80) muito superior à dos minerais secos (ε ≈ 3,2), a mudança de fase do radar calcula a umidade volumétrica profunda (θ_v), revelando se as raízes pivotantes continuam hidratadas e viáveis."
+                    )}
+                  </p>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div className="lg:col-span-7 space-y-4">
-                  <div className="flex items-center space-x-2 text-rose-400 text-xs font-bold uppercase tracking-wider">
-                    <Radio className="h-4 w-4" />
-                    <span>{t("Full-Polarimetric Decomposition (NISAR L-Band / Sentinel-1 C-SAR)", "Decomposição Polarimétrica (NISAR Banda L / Sentinel-1 C-SAR)")}</span>
+                  <div className="flex items-center space-x-2 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+                    <Droplet className="h-4 w-4" />
+                    <span>{t("Permittivity & Soil Hydrology", "Permissividade & Hidrologia do Solo")}</span>
                   </div>
-                  
                   <h3 className="text-2xl font-bold text-white">
                     {t(
-                      "Double-Bounce Dihedral Physics: Correlating Tidal Flooding with Mangrove Stilt Roots",
-                      "Física do Diedro (Double-Bounce): Correlacionando Inundação de Maré com Raízes Escora de Mangue"
+                      "L-Band Microwave Dielectric Constant (ε): Root-Zone Moisture",
+                      "Constante Dielétrica de Micro-ondas Banda L (ε): Umidade Subsuperficial"
                     )}
                   </h3>
-
                   <p className="text-slate-300 text-sm leading-relaxed">
                     {t(
-                      "Double-bounce scattering requires an orthogonal 90° corner reflector (diedro). In coastal wetlands like Aracati, this geometric condition occurs when the horizontal specular water mirror meets the vertical stilt roots of Rhizophora mangle or pneumatophores of Avicennia germinans during high tide.",
-                      "O espalhamento por reflexão dupla (double-bounce) exige um refletor de canto ortogonal de 90° (diedro). No estuário de Aracati, essa condição geométrica ocorre quando a lâmina d'água especular horizontal encontra as raízes-escora verticais do mangue-vermelho (Rhizophora mangle) ou pneumatóforos de Avicennia germinans na preamar."
+                      "Liquid water has an extraordinarily high dielectric constant (ε ≈ 80) compared to dry minerals (ε ≈ 3.5). By emitting 24-cm wavelength pulses, NISAR measures true subsurface root-zone moisture up to 30 cm deep — revealing whether Caatinga scrub is in drought-induced dormancy or permanent mortality.",
+                      "A água líquida possui uma constante dielétrica extremamente alta (ε ≈ 80) frente a minerais secos (ε ≈ 3,5). Ao emitir pulsos de 24 cm de comprimento de onda, o NISAR mede a umidade subsuperficial até 30 cm de profundidade — revelando se a Caatinga está apenas dormente ou se sofreu mortalidade permanente."
                     )}
                   </p>
 
-                  {/* Why Optical Satellites Fail vs SAR Penetration */}
-                  <div className="rounded-2xl border border-rose-500/30 bg-rose-950/20 p-4 space-y-3">
-                    <div className="flex items-center space-x-2 text-rose-300 font-bold text-xs">
-                      <Zap className="h-4 w-4 text-rose-400" />
-                      <span>{t("Why Optical Satellites Fail Beneath Canopies", "Por Que Sensores Ópticos Falham sob o Dossel")}</span>
+                  <div className="grid grid-cols-2 gap-4 pt-2">
+                    <div className="rounded-xl border border-cyan-500/30 bg-cyan-950/20 p-4">
+                      <span className="text-xs text-slate-400 block">{t("Radar Penetration Depth", "Profundidade de Penetração")}</span>
+                      <span className="text-2xl font-mono font-bold text-cyan-300">{curr.penetrationCm} cm</span>
+                      <span className="text-[10px] text-slate-400 block mt-1">
+                        {curr.penetrationCm > 20 
+                          ? t("High penetration: Desiccated soil profile", "Alta penetração: Perfil de solo dessecado")
+                          : t("Attenuated: High water content in root layer", "Atenuado: Alto teor de água nas raízes")}
+                      </span>
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {t(
-                        "Optical sensors (Sentinel-2, Landsat) cannot penetrate dense leafy canopies (LAI > 3.5). The green canopy umbrella reflects visible and NIR photons, reporting 'dry forest' even when the forest floor is submerged under 1.5 meters of water. In contrast, active microwaves (NISAR L-band λ = 24.2 cm and Sentinel-1 C-band λ = 5.6 cm) pierce canopy gaps, reflect off the flooded water sheet onto vertical roots, and return directly to the antenna.",
-                        "Sensores ópticos (Sentinel-2, Landsat) não penetram o dossel foliar denso (IAF > 3,5). A copa funciona como um guarda-chuva que reflete luz visível e IVP, indicando 'floresta seca' mesmo com 1,5 metro de maré inundando o chão. Já as micro-ondas ativas (NISAR Banda L λ = 24,2 cm e Sentinel-1 Banda C λ = 5,6 cm) penetram as folhas, refletem na água contra as raízes verticais e retornam diretamente à antena."
-                      )}
-                    </p>
+                    <div className="rounded-xl border border-cyan-500/30 bg-cyan-950/20 p-4">
+                      <span className="text-xs text-slate-400 block">{t("Volumetric Soil Moisture", "Umidade Volumétrica")}</span>
+                      <span className="text-2xl font-mono font-bold text-white">{curr.moistureVolPct}% m³/m³</span>
+                      <span className="text-[10px] text-slate-400 block mt-1">
+                        {curr.moistureVolPct < 8 
+                          ? t("Wilting point exceeded (severe drought)", "Ponto de murcha ultrapassado (seca severa)")
+                          : t("Adequate for physiological activity", "Adequado para atividade fisiológica")}
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Polarimetric Pauli Red Channel Formulation */}
-                  <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4 font-mono text-xs text-slate-300 space-y-2">
-                    <div className="flex justify-between items-center text-rose-300 font-bold border-b border-slate-800 pb-2">
-                      <span>{t("Pauli Red Channel (Dihedral Reflection):", "Canal Vermelho de Pauli (Reflexão Diédrica):")}</span>
-                      <span>Pd = ½ |S_HH - S_VV|²</span>
+                  {/* Interactive Probe Depth Slider */}
+                  <div className="rounded-xl border border-slate-700 bg-slate-900/80 p-4 space-y-3">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-mono font-bold text-cyan-300 flex items-center space-x-1.5">
+                        <Sliders className="h-3.5 w-3.5" />
+                        <span>{t("Virtual Microwave Radar Depth Sounder:", "Sonda Virtual de Profundidade de Radar:")}</span>
+                      </span>
+                      <span className="font-mono font-bold text-white bg-cyan-500/20 border border-cyan-500/40 px-2 py-0.5 rounded">
+                        {probeDepthCm} cm {t("Depth", "Profundidade")}
+                      </span>
                     </div>
-                    <p className="text-[11px] text-slate-400 pt-1">
-                      {t(
-                        "Two consecutive Fresnel reflections (water surface → tree trunk) produce a 180° (π radian) phase shift between horizontal (HH) and vertical (VV) electric field vectors. This destructive interference in HH+VV and constructive reinforcement in HH-VV concentrates double-bounce power strictly into the Pauli Red channel.",
-                        "Duas reflexões consecutivas de Fresnel (lâmina d'água → tronco) geram uma mudança de fase de 180° (π radianos) entre os vetores de campo HH e VV. Esse reforço construtivo em HH-VV concentra a energia do diedro exclusivamente no canal Vermelho de Pauli."
-                      )}
-                    </p>
+                    <input 
+                      type="range"
+                      min="2"
+                      max="30"
+                      step="1"
+                      value={probeDepthCm}
+                      onChange={(e) => setProbeDepthCm(parseInt(e.target.value))}
+                      className="w-full accent-cyan-400 cursor-pointer h-2 bg-slate-800 rounded-lg"
+                    />
+                    <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-mono pt-1">
+                      <div className="p-2 rounded bg-slate-950 border border-slate-800">
+                        <span className="text-slate-400 block">{t("Estimated ε at", "ε Estimado a")} {probeDepthCm} cm:</span>
+                        <strong className="text-cyan-300 text-xs">
+                          {(curr.dielectric * (1 + 0.012 * probeDepthCm)).toFixed(1)}
+                        </strong>
+                      </div>
+                      <div className="p-2 rounded bg-slate-950 border border-slate-800">
+                        <span className="text-slate-400 block">{t("Volumetric θ_v:", "θ_v Volumétrico:")}</span>
+                        <strong className="text-emerald-300 text-xs">
+                          {Math.min(42, Math.max(3, Math.round(curr.moistureVolPct * (1 + 0.015 * probeDepthCm))))}%
+                        </strong>
+                      </div>
+                      <div className="p-2 rounded bg-slate-950 border border-slate-800">
+                        <span className="text-slate-400 block">{t("2-Way Attenuation:", "Atenuação de Ida e Volta:")}</span>
+                        <strong className="text-amber-300 text-xs">
+                          -{(0.45 * probeDepthCm * (curr.dielectric / 8)).toFixed(1)} dB
+                        </strong>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Interactive Tidal Simulator Box */}
-                <div className="lg:col-span-5 rounded-2xl bg-black/60 border border-slate-800 p-6 flex flex-col justify-between space-y-6">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-mono text-rose-300 uppercase tracking-wider font-bold">
-                        {t("Tidal Flooding Phase Switcher", "Simulador da Fase da Maré")}
-                      </span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
-                        Aracati Estuary
-                      </span>
+                {/* Subsurface Depth Cross Section (Larger & Expansive) */}
+                <div className="lg:col-span-5 rounded-2xl bg-black/60 border border-slate-800 p-6 flex flex-col justify-between space-y-4">
+                  <div className="flex items-center justify-between text-xs font-mono text-cyan-300 uppercase tracking-widest">
+                    <span>{t("Soil Profile Penetration Profile", "Perfil de Penetração no Perfil de Solo")}</span>
+                    <span className="text-[10px] text-slate-400">0 to 30 cm</span>
+                  </div>
+
+                  <div className="relative h-64 w-full border border-slate-700 rounded-xl overflow-hidden flex flex-col">
+                    {/* Surface layer (0 - 5 cm) */}
+                    <div className="h-16 bg-amber-900/40 border-b border-amber-600/30 flex items-center justify-between px-3 text-[10px] text-amber-200">
+                      <div>
+                        <span className="font-bold block">0–5 cm: {t("Surface Crust", "Crosta Superficial")}</span>
+                        <span className="text-[9px] text-slate-300">{t("Optical & C-Band Limit", "Limite Óptico & Banda C")}</span>
+                      </div>
+                      <span className="font-mono">ε ≈ {curr.dielectric.toFixed(1)}</span>
                     </div>
 
-                    {/* High vs Low Tide Buttons */}
-                    <div className="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl border border-slate-800 mb-5">
-                      <button
-                        onClick={() => setTidalState("high")}
-                        className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center space-x-1.5 ${
-                          tidalState === "high"
-                            ? "bg-rose-600 text-white shadow-lg shadow-rose-900/50"
-                            : "text-slate-400 hover:text-white"
-                        }`}
+                    {/* Root zone layer (5 - 30 cm) */}
+                    <div 
+                      className="flex-1 transition-all duration-700 flex flex-col items-center justify-center text-xs font-bold text-white relative"
+                      style={{
+                        background: `linear-gradient(to bottom, rgba(8, 145, 178, ${curr.dielectric / 25}), #050B14)`
+                      }}
+                    >
+                      {/* Interactive Probe Line Marker */}
+                      <div 
+                        className="absolute left-0 right-0 border-t-2 border-dashed border-cyan-400 flex items-center justify-between px-3 transition-all duration-200 pointer-events-none"
+                        style={{ top: `${(probeDepthCm / 30) * 100}%` }}
                       >
-                        <Waves className="h-3.5 w-3.5" />
-                        <span>{t("Preamar / High Tide (+3.0 m)", "Preamar / Maré Alta (+3,0 m)")}</span>
-                      </button>
-                      <button
-                        onClick={() => setTidalState("low")}
-                        className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center space-x-1.5 ${
-                          tidalState === "low"
-                            ? "bg-amber-600 text-white shadow-lg shadow-amber-900/50"
-                            : "text-slate-400 hover:text-white"
-                        }`}
-                      >
-                        <Droplet className="h-3.5 w-3.5" />
-                        <span>{t("Baixa-mar / Low Tide (+0.2 m)", "Baixa-mar / Maré Baixa (+0,2 m)")}</span>
-                      </button>
-                    </div>
+                        <span className="bg-cyan-500 text-black text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                          Sonda: {probeDepthCm} cm
+                        </span>
+                        <span className="text-[9px] text-cyan-300 font-mono bg-black/70 px-1 rounded">
+                          L-Band Peak
+                        </span>
+                      </div>
 
-                    {/* Dynamic Diagram Representation */}
-                    <div className="rounded-xl border border-slate-700 bg-slate-950/80 p-4 space-y-3">
-                      {tidalState === "high" ? (
-                        <>
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-rose-400 flex items-center space-x-1">
-                              <span className="h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse" />
-                              <span>{t("Active Dihedral Resonance", "Ressonância Diédrica Ativa")}</span>
-                            </span>
-                            <span className="text-xs font-mono text-rose-300 font-bold">+8.4 dB Backscatter Spike</span>
-                          </div>
-                          
-                          {/* Visual ASCII / SVG Representation of Corner Reflector */}
-                          <div className="h-28 w-full rounded-lg bg-gradient-to-b from-slate-900 to-rose-950/30 border border-rose-500/20 relative flex items-center justify-center overflow-hidden">
-                            <div className="absolute top-2 left-4 text-[10px] font-mono text-cyan-300">
-                              Radar Beam (λ = 24 cm) ↘
-                            </div>
-                            <div className="absolute bottom-2 left-0 right-0 h-4 bg-cyan-600/40 border-t border-cyan-400/60 flex items-center px-3">
-                              <span className="text-[9px] font-mono text-cyan-200">
-                                {t("Specular Water Sheet (ε ≈ 80)", "Lâmina D'água Especular (ε ≈ 80)")}
-                              </span>
-                            </div>
-                            <div className="absolute bottom-4 right-12 w-6 h-16 bg-amber-800/80 rounded-t border-l-2 border-rose-400 flex items-center justify-center">
-                              <span className="text-[8px] font-mono text-white -rotate-90">Root / Tronco</span>
-                            </div>
-                            <div className="absolute bottom-4 right-16 text-rose-400 text-xs font-bold">
-                              90° Diedro ↗
-                            </div>
-                          </div>
-
-                          <div className="text-[11px] text-slate-300 leading-relaxed">
-                            <strong className="text-rose-300">{t("Sub-canopy flood detected:", "Inundação sob o dossel detectada:")}</strong>{" "}
-                            {t(
-                              "The water acts as a mirror with reflection coefficient R ≈ 0.85, directing the microwave into stilt roots and bouncing it directly back to the satellite. Pauli Red channel lights up intensely.",
-                              "A água atua como espelho com coeficiente R ≈ 0,85, direcionando o feixe para as raízes escora e de volta ao satélite. O canal Vermelho de Pauli acende com intensidade máxima."
-                            )}
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-amber-400 flex items-center space-x-1">
-                              <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-                              <span>{t("Corner Reflector Collapsed", "Refletor de Canto Colapsado")}</span>
-                            </span>
-                            <span className="text-xs font-mono text-slate-400 font-bold">-7.2 dB Signal Loss</span>
-                          </div>
-
-                          {/* Visual ASCII / SVG Representation of Low Tide Mud */}
-                          <div className="h-28 w-full rounded-lg bg-gradient-to-b from-slate-900 to-amber-950/20 border border-slate-700 relative flex items-center justify-center overflow-hidden">
-                            <div className="absolute top-2 left-4 text-[10px] font-mono text-slate-400">
-                              Radar Beam ↘ Diffuse Scatter
-                            </div>
-                            <div className="absolute bottom-2 left-0 right-0 h-4 bg-amber-950 border-t border-amber-800 flex items-center px-3">
-                              <span className="text-[9px] font-mono text-amber-300">
-                                {t("Rough Exposed Mudflat (No Specular Mirror)", "Lamaçais Rugosos Expostos (Sem Espelho)")}
-                              </span>
-                            </div>
-                            <div className="absolute bottom-4 right-12 w-6 h-16 bg-amber-900/60 rounded-t flex items-center justify-center">
-                              <span className="text-[8px] font-mono text-slate-400 -rotate-90">Root / Tronco</span>
-                            </div>
-                          </div>
-
-                          <div className="text-[11px] text-slate-300 leading-relaxed">
-                            <strong className="text-amber-300">{t("Exposed tidal mudflats:", "Lamaçais de maré expostos:")}</strong>{" "}
-                            {t(
-                              "Tidal water receded. Substrate roughness causes diffuse single scattering and attenuation into saturated silts. Dihedral reflection vanishes, extinguishing the Pauli Red response.",
-                              "A maré recuou. A rugosidade da lama gera espalhamento difuso simples e atenuação nos sedimentos. A reflexão diédrica cessa, extinguindo o sinal Vermelho de Pauli."
-                            )}
-                          </div>
-                        </>
-                      )}
+                      <div className="text-center px-4 z-10">
+                        <span className="text-cyan-400 block font-mono text-sm">NISAR L-Band Active Zone (λ = 24.2 cm)</span>
+                        <span className="text-[10px] text-slate-300">{t("Probing Taproot Hydrology (Caatinga Roots)", "Sondando Hidrologia de Raízes da Caatinga")}</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* 3 Polarimetric Pauli Channels Breakdown */}
-                  <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
-                    <div className="p-2 rounded-lg bg-rose-950/40 border border-rose-500/30">
-                      <span className="text-rose-400 font-bold block">{t("Red Channel", "Canal Vermelho")}</span>
-                      <span className="text-white text-xs">{tidalState === "high" ? "52%" : "14%"}</span>
-                      <span className="text-slate-400 block mt-0.5">{t("Double Bounce", "Reflexão Dupla")}</span>
-                    </div>
-                    <div className="p-2 rounded-lg bg-emerald-950/40 border border-emerald-500/30">
-                      <span className="text-emerald-400 font-bold block">{t("Green Channel", "Canal Verde")}</span>
-                      <span className="text-white text-xs">34%</span>
-                      <span className="text-slate-400 block mt-0.5">{t("Canopy Volume", "Volume Copa")}</span>
-                    </div>
-                    <div className="p-2 rounded-lg bg-blue-950/40 border border-blue-500/30">
-                      <span className="text-blue-400 font-bold block">{t("Blue Channel", "Canal Azul")}</span>
-                      <span className="text-white text-xs">{tidalState === "high" ? "14%" : "52%"}</span>
-                      <span className="text-slate-400 block mt-0.5">{t("Surface Mud", "Lama Difusa")}</span>
-                    </div>
-                  </div>
+                  <p className="text-[11px] text-slate-400 text-center">
+                    {t(
+                      "While Sentinel-2 sees dead gray brushwood, NISAR detects subsurface moisture reserves sustaining survival.",
+                      "Enquanto o Sentinel-2 vê galhos cinzentos mortos, o NISAR detecta reservas hídricas profundas mantendo a sobrevivência."
+                    )}
+                  </p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* TAB 2: DIELECTRIC MOISTURE */}
-          {activeTab === "dielectric" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-4">
-                <div className="flex items-center space-x-2 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-                  <Droplet className="h-4 w-4" />
-                  <span>{t("Permittivity & Soil Hydrology", "Permissividade & Hidrologia do Solo")}</span>
-                </div>
-                <h3 className="text-2xl font-bold text-white">
-                  {t(
-                    "L-Band Microwave Dielectric Constant (ε): Root-Zone Moisture",
-                    "Constante Dielétrica de Micro-ondas Banda L (ε): Umidade Subsuperficial"
-                  )}
-                </h3>
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  {t(
-                    "Liquid water has an extraordinarily high dielectric constant (ε ≈ 80) compared to dry minerals (ε ≈ 3.5). By emitting 24-cm wavelength pulses, NISAR measures true subsurface root-zone moisture up to 30 cm deep — revealing whether Caatinga scrub is in drought-induced dormancy or permanent mortality.",
-                    "A água líquida possui uma constante dielétrica extremamente alta (ε ≈ 80) frente a minerais secos (ε ≈ 3,5). Ao emitir pulsos de 24 cm de comprimento de onda, o NISAR mede a umidade subsuperficial até 30 cm de profundidade — revelando se a Caatinga está apenas dormente ou se sofreu mortalidade permanente."
-                  )}
-                </p>
-
-                <div className="grid grid-cols-2 gap-4 pt-3">
-                  <div className="rounded-xl border border-cyan-500/30 bg-cyan-950/20 p-4">
-                    <span className="text-xs text-slate-400 block">{t("Radar Penetration Depth", "Profundidade de Penetração")}</span>
-                    <span className="text-2xl font-mono font-bold text-cyan-300">{curr.penetrationCm} cm</span>
-                    <span className="text-[10px] text-slate-400 block mt-1">
-                      {curr.penetrationCm > 20 
-                        ? t("High penetration: Desiccated soil profile", "Alta penetração: Perfil de solo dessecado")
-                        : t("Attenuated: High water content in root layer", "Atenuado: Alto teor de água nas raízes")}
-                    </span>
-                  </div>
-                  <div className="rounded-xl border border-cyan-500/30 bg-cyan-950/20 p-4">
-                    <span className="text-xs text-slate-400 block">{t("Volumetric Soil Moisture", "Umidade Volumétrica")}</span>
-                    <span className="text-2xl font-mono font-bold text-white">{curr.moistureVolPct}% m³/m³</span>
-                    <span className="text-[10px] text-slate-400 block mt-1">
-                      {curr.moistureVolPct < 8 
-                        ? t("Wilting point exceeded (severe drought)", "Ponto de murcha ultrapassado (seca severa)")
-                        : t("Adequate for physiological activity", "Adequado para atividade fisiológica")}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Subsurface Depth Cross Section */}
-              <div className="lg:col-span-5 rounded-2xl bg-black/60 border border-slate-800 p-6 flex flex-col justify-between">
-                <div className="text-xs font-mono text-cyan-300 uppercase tracking-widest text-center mb-4">
-                  {t("Soil Profile Penetration Profile", "Perfil de Penetração no Perfil de Solo")}
-                </div>
-
-                <div className="relative h-48 w-full border border-slate-700 rounded-xl overflow-hidden flex flex-col">
-                  {/* Surface layer (0 - 5 cm) */}
-                  <div className="h-1/4 bg-amber-900/40 border-b border-amber-600/30 flex items-center justify-between px-3 text-[10px] text-amber-200">
-                    <span>0–5 cm (Optical & C-Band limit)</span>
-                    <span>ε ≈ {curr.dielectric.toFixed(1)}</span>
-                  </div>
-                  {/* Root zone layer (5 - 30 cm) */}
-                  <div 
-                    className="flex-1 transition-all duration-700 flex items-center justify-center text-xs font-bold text-white"
-                    style={{
-                      background: `linear-gradient(to bottom, rgba(8, 145, 178, ${curr.dielectric / 25}), #050B14)`
-                    }}
-                  >
-                    <div className="text-center px-4">
-                      <span className="text-cyan-400 block font-mono text-sm">NISAR L-Band Active Zone</span>
-                      <span className="text-[10px] text-slate-300">{t("Probing Taproot Hydrology", "Sondando Hidrologia de Raízes Pivotantes")}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <p className="text-[11px] text-slate-400 text-center mt-3">
-                  {t(
-                    "While Sentinel-2 sees dead gray brushwood, NISAR detects subsurface moisture reserves sustaining survival.",
-                    "Enquanto o Sentinel-2 vê galhos cinzentos mortos, o NISAR detecta reservas hídricas profundas mantendo a sobrevivência."
-                  )}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 3: INSAR COHERENCE: RIGID VS DECORRELATED + INTERACTIVE DAM SELECTOR */}
+          {/* TAB 2: INSAR COHERENCE: RIGID VS DECORRELATED + INTERACTIVE DAM SELECTOR */}
           {activeTab === "insar" && (
-            <div className="space-y-8">
+            <div className="space-y-6">
+              {/* Pedagogical Callout Banner */}
+              <div className="rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-emerald-950/30 p-5 shadow-lg flex items-start space-x-3.5">
+                <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0 mt-0.5">
+                  <Target className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-bold text-white flex items-center space-x-2">
+                    <span>{t("🎯 What this tool measures & Radar Physics:", "🎯 Para que serve este gráfico & Física de Radar:")}</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">DInSAR Interferometry</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    {t(
+                      "DInSAR (Differential Interferometric Synthetic Aperture Radar) tracks millimeter-level crest settlement and rebound on earthen and rockfill dams. Dam rock armor and concrete spillways act as stationary radar reflectors that preserve microwave phase (γ > 0.85) across 12-day repeat satellite passes. By contrast, moving reservoir water decorrelates completely (γ < 0.15). Subtracting phase pairs (Δφ) isolates hydrostatic deformation without requiring cost-prohibitive physical ground geodetic sensors.",
+                      "A Interferometria DInSAR monitora deslocamentos milimétricos de crista em barragens de terra e enrocamento. O enrocamento de pedras e o vertedouro de concreto atuam como refletores estacionários, preservando a fase do radar (γ > 0,85) entre passagens orbitais repetidas de 12 dias. Já o espelho d'água oscilante se descorrela por completo (γ < 0,15). A subtração de fase (Δφ) isola assentamentos e recargas hidrostáticas com precisão milimétrica, dispensando sensores físicos caros no solo."
+                    )}
+                  </p>
+                </div>
+              </div>
               
               {/* Interactive Dam Selector Strip */}
               <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800">
@@ -1376,9 +1387,236 @@ export default function SARBiophysicalDashboard() {
             </div>
           )}
 
+          {/* TAB 3: PAULI DOUBLE-BOUNCE & CORRELATED MANGROVE TIDAL FLOODING */}
+          {activeTab === "polarimetry" && (
+            <div className="space-y-6">
+              {/* Pedagogical Callout Banner */}
+              <div className="rounded-2xl border border-rose-500/40 bg-gradient-to-r from-rose-950/40 via-slate-900 to-rose-950/30 p-5 shadow-lg flex items-start space-x-3.5">
+                <div className="p-2.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 shrink-0 mt-0.5">
+                  <Target className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-bold text-white flex items-center space-x-2">
+                    <span>{t("🎯 What this tool measures & Radar Physics:", "🎯 Para que serve este gráfico & Física de Radar:")}</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Pauli Red Channel (Pd)</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    {t(
+                      "Pauli polarimetric decomposition unmasks hidden tidal inundations beneath dense mangrove canopies. Optical sensors see only green leaves (LAI > 3.5) and cannot detect floodwater below. At high tide, the flat water surface forms an orthogonal 90° corner reflector (diedro) with the vertical stilt roots of Rhizophora mangle. The resulting double reflection causes a 180° phase flip between HH and VV polarizations, concentrating radar backscatter into the Pauli Red channel (Pd = ½|HH - VV|²) with an extraordinary +8.4 dB power spike.",
+                      "A decomposição polarimétrica de Pauli desmascara inundações de maré ocultas sob copas densas de manguezais. Câmeras ópticas enxergam apenas folhas verdes (IAF > 3,5) e não detectam a água no chão da floresta. Na maré cheia, a lâmina d'água plana forma um refletor de canto ortogonal de 90° (diedro) com as raízes escora verticais do mangue-vermelho (Rhizophora mangle). As duas reflexões sucessivas geram inversão de fase de 180° entre polarizações HH e VV, concentrando a energia no canal Vermelho de Pauli (Pd = ½|HH - VV|²) com um pico de +8,4 dB."
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="flex items-center space-x-2 text-rose-400 text-xs font-bold uppercase tracking-wider">
+                    <Radio className="h-4 w-4" />
+                    <span>{t("Full-Polarimetric Decomposition (NISAR L-Band / Sentinel-1 C-SAR)", "Decomposição Polarimétrica (NISAR Banda L / Sentinel-1 C-SAR)")}</span>
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold text-white">
+                    {t(
+                      "Double-Bounce Dihedral Physics: Correlating Tidal Flooding with Mangrove Stilt Roots",
+                      "Física do Diedro (Double-Bounce): Correlacionando Inundação de Maré com Raízes Escora de Mangue"
+                    )}
+                  </h3>
+
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    {t(
+                      "Double-bounce scattering requires an orthogonal 90° corner reflector (diedro). In coastal wetlands like Aracati, this geometric condition occurs when the horizontal specular water mirror meets the vertical stilt roots of Rhizophora mangle or pneumatophores of Avicennia germinans during high tide.",
+                      "O espalhamento por reflexão dupla (double-bounce) exige um refletor de canto ortogonal de 90° (diedro). No estuário de Aracati, essa condição geométrica ocorre quando a lâmina d'água especular horizontal encontra as raízes-escora verticais do mangue-vermelho (Rhizophora mangle) ou pneumatóforos de Avicennia germinans na preamar."
+                    )}
+                  </p>
+
+                  {/* Why Optical Satellites Fail vs SAR Penetration */}
+                  <div className="rounded-2xl border border-rose-500/30 bg-rose-950/20 p-4 space-y-3">
+                    <div className="flex items-center space-x-2 text-rose-300 font-bold text-xs">
+                      <Zap className="h-4 w-4 text-rose-400" />
+                      <span>{t("Why Optical Satellites Fail Beneath Canopies", "Por Que Sensores Ópticos Falham sob o Dossel")}</span>
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      {t(
+                        "Optical sensors (Sentinel-2, Landsat) cannot penetrate dense leafy canopies (LAI > 3.5). The green canopy umbrella reflects visible and NIR photons, reporting 'dry forest' even when the forest floor is submerged under 1.5 meters of water. In contrast, active microwaves (NISAR L-band λ = 24.2 cm and Sentinel-1 C-band λ = 5.6 cm) pierce canopy gaps, reflect off the flooded water sheet onto vertical roots, and return directly to the antenna.",
+                        "Sensores ópticos (Sentinel-2, Landsat) não penetram o dossel foliar denso (IAF > 3,5). A copa funciona como um guarda-chuva que reflete luz visível e IVP, indicando 'floresta seca' mesmo com 1,5 metro de maré inundando o chão. Já as micro-ondas ativas (NISAR Banda L λ = 24,2 cm e Sentinel-1 Banda C λ = 5,6 cm) penetram as folhas, refletem na água contra as raízes verticais e retornam diretamente à antena."
+                      )}
+                    </p>
+                  </div>
+
+                  {/* Polarimetric Pauli Red Channel Formulation */}
+                  <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4 font-mono text-xs text-slate-300 space-y-2">
+                    <div className="flex justify-between items-center text-rose-300 font-bold border-b border-slate-800 pb-2">
+                      <span>{t("Pauli Red Channel (Dihedral Reflection):", "Canal Vermelho de Pauli (Reflexão Diédrica):")}</span>
+                      <span>Pd = ½ |S_HH - S_VV|²</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 pt-1">
+                      {t(
+                        "Two consecutive Fresnel reflections (water surface → tree trunk) produce a 180° (π radian) phase shift between horizontal (HH) and vertical (VV) electric field vectors. This destructive interference in HH+VV and constructive reinforcement in HH-VV concentrates double-bounce power strictly into the Pauli Red channel.",
+                        "Duas reflexões consecutivas de Fresnel (lâmina d'água → tronco) geram uma mudança de fase de 180° (π radianos) entre os vetores de campo HH e VV. Esse reforço construtivo em HH-VV concentra a energia do diedro exclusivamente no canal Vermelho de Pauli."
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Interactive Tidal Simulator Box (Larger & Expansive) */}
+                <div className="lg:col-span-5 rounded-2xl bg-black/60 border border-slate-800 p-6 flex flex-col justify-between space-y-6">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-xs font-mono text-rose-300 uppercase tracking-wider font-bold">
+                        {t("Tidal Flooding Phase Switcher", "Simulador da Fase da Maré")}
+                      </span>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                        Aracati Estuary
+                      </span>
+                    </div>
+
+                    {/* High vs Low Tide Buttons */}
+                    <div className="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl border border-slate-800 mb-5">
+                      <button
+                        onClick={() => setTidalState("high")}
+                        className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center space-x-1.5 ${
+                          tidalState === "high"
+                            ? "bg-rose-600 text-white shadow-lg shadow-rose-900/50"
+                            : "text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        <Waves className="h-3.5 w-3.5" />
+                        <span>{t("Preamar / High Tide (+3.0 m)", "Preamar / Maré Alta (+3,0 m)")}</span>
+                      </button>
+                      <button
+                        onClick={() => setTidalState("low")}
+                        className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center space-x-1.5 ${
+                          tidalState === "low"
+                            ? "bg-amber-600 text-white shadow-lg shadow-amber-900/50"
+                            : "text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        <Droplet className="h-3.5 w-3.5" />
+                        <span>{t("Baixa-mar / Low Tide (+0.2 m)", "Baixa-mar / Maré Baixa (+0,2 m)")}</span>
+                      </button>
+                    </div>
+
+                    {/* Dynamic Diagram Representation (Larger h-36) */}
+                    <div className="rounded-xl border border-slate-700 bg-slate-950/80 p-4 space-y-3">
+                      {tidalState === "high" ? (
+                        <>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-rose-400 flex items-center space-x-1">
+                              <span className="h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse" />
+                              <span>{t("Active Dihedral Resonance", "Ressonância Diédrica Ativa")}</span>
+                            </span>
+                            <span className="text-xs font-mono text-rose-300 font-bold">+8.4 dB Backscatter Spike</span>
+                          </div>
+                          
+                          {/* Visual Representation of Corner Reflector */}
+                          <div className="h-36 w-full rounded-lg bg-gradient-to-b from-slate-900 via-rose-950/20 to-rose-950/40 border border-rose-500/30 relative flex items-center justify-center overflow-hidden">
+                            <div className="absolute top-2 left-4 text-[10px] font-mono text-cyan-300 flex items-center space-x-1">
+                              <span>Radar Beam (λ = 24 cm)</span>
+                              <span className="text-rose-400">↘</span>
+                            </div>
+                            <div className="absolute bottom-2 left-0 right-0 h-6 bg-cyan-500/30 border-t-2 border-cyan-400/80 flex items-center px-3">
+                              <span className="text-[10px] font-mono text-cyan-200 font-bold">
+                                {t("Specular Water Sheet (ε ≈ 80, Reflection R ≈ 0.85)", "Lâmina D'água Especular (ε ≈ 80, R ≈ 0,85)")}
+                              </span>
+                            </div>
+                            <div className="absolute bottom-6 right-16 w-8 h-24 bg-amber-800/90 rounded-t border-l-2 border-rose-400 flex items-center justify-center shadow-lg">
+                              <span className="text-[9px] font-mono text-white -rotate-90 whitespace-nowrap font-bold">Stilt Root / Tronco</span>
+                            </div>
+                            <div className="absolute bottom-7 right-24 text-rose-400 text-xs font-bold bg-black/60 px-1.5 py-0.5 rounded border border-rose-500/40">
+                              90° Diedro ↗
+                            </div>
+                          </div>
+
+                          <div className="text-[11px] text-slate-300 leading-relaxed">
+                            <strong className="text-rose-300">{t("Sub-canopy flood detected:", "Inundação sob o dossel detectada:")}</strong>{" "}
+                            {t(
+                              "The water acts as a mirror with reflection coefficient R ≈ 0.85, directing the microwave into stilt roots and bouncing it directly back to the satellite. Pauli Red channel lights up intensely.",
+                              "A água atua como espelho com coeficiente R ≈ 0,85, direcionando o feixe para as raízes escora e de volta ao satélite. O canal Vermelho de Pauli acende com intensidade máxima."
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-amber-400 flex items-center space-x-1">
+                              <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+                              <span>{t("Corner Reflector Collapsed", "Refletor de Canto Colapsado")}</span>
+                            </span>
+                            <span className="text-xs font-mono text-slate-400 font-bold">-7.2 dB Signal Loss</span>
+                          </div>
+
+                          {/* Visual Representation of Low Tide Mud */}
+                          <div className="h-36 w-full rounded-lg bg-gradient-to-b from-slate-900 to-amber-950/30 border border-slate-700 relative flex items-center justify-center overflow-hidden">
+                            <div className="absolute top-2 left-4 text-[10px] font-mono text-slate-400">
+                              Radar Beam ↘ Diffuse Scatter
+                            </div>
+                            <div className="absolute bottom-2 left-0 right-0 h-6 bg-amber-950 border-t-2 border-amber-700 flex items-center px-3">
+                              <span className="text-[10px] font-mono text-amber-300 font-bold">
+                                {t("Rough Exposed Mudflat (No Specular Mirror)", "Lamaçais Rugosos Expostos (Sem Espelho)")}
+                              </span>
+                            </div>
+                            <div className="absolute bottom-6 right-16 w-8 h-24 bg-amber-900/60 rounded-t flex items-center justify-center">
+                              <span className="text-[9px] font-mono text-slate-400 -rotate-90 whitespace-nowrap">Stilt Root / Tronco</span>
+                            </div>
+                          </div>
+
+                          <div className="text-[11px] text-slate-300 leading-relaxed">
+                            <strong className="text-amber-300">{t("Exposed tidal mudflats:", "Lamaçais de maré expostos:")}</strong>{" "}
+                            {t(
+                              "Tidal water receded. Substrate roughness causes diffuse single scattering and attenuation into saturated silts. Dihedral reflection vanishes, extinguishing the Pauli Red response.",
+                              "A maré recuou. A rugosidade da lama gera espalhamento difuso simples e atenuação nos sedimentos. A reflexão diédrica cessa, extinguindo o sinal Vermelho de Pauli."
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 3 Polarimetric Pauli Channels Breakdown */}
+                  <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
+                    <div className="p-2 rounded-lg bg-rose-950/40 border border-rose-500/30">
+                      <span className="text-rose-400 font-bold block">{t("Red Channel", "Canal Vermelho")}</span>
+                      <span className="text-white text-xs font-bold">{tidalState === "high" ? "52%" : "14%"}</span>
+                      <span className="text-slate-400 block mt-0.5">{t("Double Bounce", "Reflexão Dupla")}</span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-emerald-950/40 border border-emerald-500/30">
+                      <span className="text-emerald-400 font-bold block">{t("Green Channel", "Canal Verde")}</span>
+                      <span className="text-white text-xs font-bold">34%</span>
+                      <span className="text-slate-400 block mt-0.5">{t("Canopy Volume", "Volume Copa")}</span>
+                    </div>
+                    <div className="p-2 rounded-lg bg-blue-950/40 border border-blue-500/30">
+                      <span className="text-blue-400 font-bold block">{t("Blue Channel", "Canal Azul")}</span>
+                      <span className="text-white text-xs font-bold">{tidalState === "high" ? "14%" : "52%"}</span>
+                      <span className="text-slate-400 block mt-0.5">{t("Surface Mud", "Lama Difusa")}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* TAB 4: ESTUARINE HYDRODYNAMICS, FLOW REGIMES & BIOLOGICAL EFFLUENTS */}
           {activeTab === "estuary" && (
-            <div className="space-y-8">
+            <div className="space-y-6">
+              {/* Pedagogical Callout Banner */}
+              <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-950/40 via-slate-900 to-amber-950/30 p-5 shadow-lg flex items-start space-x-3.5">
+                <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 shrink-0 mt-0.5">
+                  <Target className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-bold text-white flex items-center space-x-2">
+                    <span>{t("🎯 What this tool measures & Radar Physics:", "🎯 Para que serve este gráfico & Física de Radar:")}</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Estuarine Advection-Dispersion</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    {t(
+                      "Correlates upstream reservoir storage releases with coastal salinity intrusion and shrimp aquaculture effluent residence time. When Castanhão gates close during droughts, river discharge drops to 0–5 m³/s, allowing ocean saltwater (35 PSU) to advance 32 km upstream to Jaguaruana. Estuarine residence time jumps from < 48 hours to > 35 days, trapping aquaculture pond effluents and triggering nocturnal hypoxia. Releasing programmed flood pulses flushes the entire estuary into the Atlantic, diluting organic waste by over 100-fold.",
+                      "Correlaciona as descargas das barragens a montante com a intrusão salina costeira e o tempo de residência dos efluentes da carcinicultura. Quando as comportas do Castanhão fecham na seca, a vazão cai para 0–5 m³/s, permitindo que a água salgada oceânica (35 PSU) avance 32 km até Jaguaruana. O tempo de renovação estuarina sobe de < 48 horas para > 35 dias, aprisionando efluentes aquícolas e gerando hipóxia noturna. A liberação de pulsos de cheia lava o estuário inteiro no Atlântico, diluindo a carga orgânica em mais de 100 vezes."
+                    )}
+                  </p>
+                </div>
+              </div>
               
               {/* Header & Context */}
               <div className="max-w-3xl space-y-3">
