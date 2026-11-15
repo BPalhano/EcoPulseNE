@@ -247,7 +247,7 @@ export default function InteractiveBasinMap() {
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   // Map Layer Modes: Free open layers without API key prompts!
-  const [baseMapStyle, setBaseMapStyle] = useState<"dark" | "satellite" | "osm">("dark");
+  const [baseMapStyle, setBaseMapStyle] = useState<"dark" | "satellite" | "osm">("satellite");
   const [sarOverlayMode, setSarOverlayMode] = useState<"none" | "sentinel1_rtc" | "dielectric_heatmap" | "insar_coherence">("sentinel1_rtc");
 
   // Off-Canvas Sidebar State
@@ -421,6 +421,13 @@ export default function InteractiveBasinMap() {
         `);
       });
 
+      // Force recalculation of container dimensions to ensure all map tiles load completely
+      setTimeout(() => {
+        if (map && isMounted) {
+          map.invalidateSize();
+        }
+      }, 350);
+
     }
 
     initMap();
@@ -461,14 +468,27 @@ export default function InteractiveBasinMap() {
     }
 
     if (sarOverlayMode === "sentinel1_rtc") {
-      // Live genuine Sentinel-1 RTC tile layer from Planetary Computer Titiler
+      // Live genuine multi-swath Sentinel-1 RTC tile layers covering the entire Jaguaribe Basin:
+      // Swath 1: Lower Jaguaribe / Aracati Estuary
+      // Swath 2: Middle Jaguaribe / Açude Castanhão & Orós
+      // Swath 3: Upper Jaguaribe / Sertão dos Inhamuns (Tauá)
       import("leaflet").then((L) => {
-        const s1Tile = L.default.tileLayer(
+        const s1Lower = L.default.tileLayer(
           "https://planetarycomputer.microsoft.com/api/data/v1/item/tiles/WebMercatorQuad/{z}/{x}/{y}@1x.png?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231024T080949_20231024T081014_050904_0622D4_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png",
-          { opacity: 0.85, attribution: "ESA / Copernicus Sentinel-1 RTC (ASF / Planetary Computer)" }
+          { opacity: 0.85, attribution: "Copernicus Sentinel-1 RTC Lower Jaguaribe" }
         );
-        s1Tile.addTo(map);
-        layersRef.current.sarOverlay = s1Tile;
+        const s1Middle = L.default.tileLayer(
+          "https://planetarycomputer.microsoft.com/api/data/v1/item/tiles/WebMercatorQuad/{z}/{x}/{y}@1x.png?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231228T081758_20231228T081823_051852_064395_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png",
+          { opacity: 0.85, attribution: "Copernicus Sentinel-1 RTC Castanhão & Orós" }
+        );
+        const s1Upper = L.default.tileLayer(
+          "https://planetarycomputer.microsoft.com/api/data/v1/item/tiles/WebMercatorQuad/{z}/{x}/{y}@1x.png?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231122T081825_20231122T081850_051327_06316D_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png",
+          { opacity: 0.85, attribution: "Copernicus Sentinel-1 RTC Inhamuns" }
+        );
+
+        const group = L.default.layerGroup([s1Lower, s1Middle, s1Upper]);
+        group.addTo(map);
+        layersRef.current.sarOverlay = group;
       });
     } else if (sarOverlayMode === "dielectric_heatmap") {
       // Procedural Dielectric Soil Permittivity Overlay
@@ -486,7 +506,19 @@ export default function InteractiveBasinMap() {
         layersRef.current.sarOverlay = rect;
       });
     }
+
+    // Force map to recalculate size and load all tiles cleanly
+    map.invalidateSize();
   }, [sarOverlayMode, currentMilestone]);
+
+  // Recalculate viewport size when entering/exiting fullscreen
+  useEffect(() => {
+    if (mapInstanceRef.current) {
+      setTimeout(() => {
+        mapInstanceRef.current.invalidateSize();
+      }, 300);
+    }
+  }, [isFullScreen]);
 
   return (
     <section 

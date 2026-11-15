@@ -162,10 +162,10 @@ const HOTSPOTS: HotspotScenario[] = [
     },
     sarMeta: {
       mission: "Copernicus Sentinel-1A / C-SAR (ESA / ASF DAAC / OPERA)",
-      granule: "S1A_IW_GRDH_1SDV_20231024T080949_20231024T081014_rtc",
-      product: "Radiometric Terrain Corrected (RTC) Gamma0",
-      date: "2023-10-24",
-      polarizations: "Dual-Pol VV + VH"
+      granule: "S1A_IW_GRDH_1SDV_20231228T081758_20231228T081823_051852_064395_rtc",
+      product: "Radiometric Terrain Corrected (RTC) Gamma0 Backscatter",
+      date: "2023-12-28",
+      polarizations: "Dual-Pol VV + VH (Swath 051852 Track 082)"
     },
     opticalObservationEn: "Sun-glint, turbid algae sediment, and cloud shadows distort optical water boundary classification during critical reservoir depletion.",
     opticalObservationPt: "Reflexos solares, turbidez e sombras de nuvens distorcem o mapeamento óptico do espelho d'água durante o esvaziamento do açude.",

@@ -77,16 +77,16 @@
       "tile_url": "https://planetarycomputer.microsoft.com/api/data/v1/item/tilejson.json?collection=sentinel-2-l2a&item=S2B_MSIL2A_20231030T130249_R095_T24MWV_20231030T210400&assets=visual&asset_bidx=visual%7C1,2,3&nodata=0&format=png"
     },
     "sar": {
-      "granule": "S1A_IW_GRDH_1SDV_20231024T080949_20231024T081014_050904_0622D4_rtc",
+      "granule": "S1A_IW_GRDH_1SDV_20231228T081758_20231228T081823_051852_064395_rtc",
       "mission": "Copernicus Sentinel-1A / C-SAR (ESA/ASF/OPERA)",
-      "datetime": "2023-10-24T08:10:02.082376Z",
+      "datetime": "2023-12-28T08:18:11.128654Z",
       "polarizations": [
         "VV",
         "VH"
       ],
       "product": "Radiometric Terrain Corrected (RTC) Gamma0 Backscatter",
       "file": "/images/real_satellite/castanhao_sar_real.png",
-      "tile_url": "https://planetarycomputer.microsoft.com/api/data/v1/item/tilejson.json?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231024T080949_20231024T081014_050904_0622D4_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png"
+      "tile_url": "https://planetarycomputer.microsoft.com/api/data/v1/item/tilejson.json?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231228T081758_20231228T081823_051852_064395_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png"
     }
   }
 }
