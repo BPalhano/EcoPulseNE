@@ -26,9 +26,9 @@ export default function AuthorshipSection() {
       rolePt: "Coautor & Desenvolvedor de Sistemas Científicos",
       affiliationEn: "Federal University of Ceará (UFC)",
       affiliationPt: "Universidade Federal do Ceará (UFC)",
-      expertiseEn: "Software Architecture, Remote Sensing Integration & Data Engineering",
-      expertisePt: "Arquitetura de Software, Integração de Sensoriamento Remoto & Engenharia de Dados",
-      scholarUrl: "https://scholar.google.com/citations?user=327pTpUAAAAJ",
+      expertiseEn: "Software-Defined Radio (SDR), Cybernetics & Distributed Systems",
+      expertisePt: "Rádio Definido por Software (SDR), Cibersegurança & Sistemas Distribuídos",
+      scholarUrl: "https://scholar.google.com/citations?user=GeFWM58AAAAJ",
       photoSrc: "/authors/ruan_pereira_square.jpg"
     }
   ];

@@ -93,7 +93,7 @@ This project proudly integrates open-access datasets from:
 
 * **Igor Braga Palhano** ([@BPalhano](https://github.com/BPalhano)) — Project Lead, Remote Sensing & Optimization ([Google Scholar](https://scholar.google.com/citations?user=kWYVL0cAAAAJ))  
   *Wireless Telecommunications Research Group (GTEL) / Federal University of Ceará (UFC)*
-* **Ruan Pereira Alves** ([@ruanpereira](https://github.com/ruanpereira)) — Core Developer, Scientific Systems Architecture ([Google Scholar](https://scholar.google.com/citations?user=327pTpUAAAAJ))  
+* **Ruan Pereira Alves** ([@ruanpereira](https://github.com/ruanpereira)) — Core Developer, Scientific Systems Architecture ([Google Scholar](https://scholar.google.com/citations?user=GeFWM58AAAAJ))  
   *Federal University of Ceará (UFC)*
 
 ---
