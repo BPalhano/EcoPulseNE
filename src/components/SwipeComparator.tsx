@@ -279,14 +279,14 @@ export default function SwipeComparator() {
         {/* COMPARISON STAGE */}
         {viewMode === "split" ? (
           /* SPLIT SLIDER VIEW */
-          <div className="relative w-full aspect-[16/9] max-h-[580px] rounded-3xl overflow-hidden border border-slate-800 bg-black shadow-2xl select-none group">
+          <div className="relative w-full aspect-[3/2] max-h-[620px] rounded-3xl overflow-hidden border border-slate-800 bg-black shadow-2xl select-none group">
             
             {/* UNDER LAYER: REAL SENTINEL-1 SAR RTC RADAR */}
             <div className="absolute inset-0 w-full h-full">
               <img
                 src={hotspot.sarImage}
                 alt="Copernicus Sentinel-1 SAR RTC Real Imagery"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover select-none pointer-events-none"
               />
               {/* SAR Label Overlay */}
               <div className="absolute top-4 right-4 rounded-xl border border-emerald-500/40 bg-black/80 px-3.5 py-1.5 backdrop-blur-md text-right">
@@ -300,16 +300,15 @@ export default function SwipeComparator() {
               </div>
             </div>
 
-            {/* OVER LAYER: REAL SENTINEL-2 OPTICAL L2A (Clipped by slider position) */}
+            {/* OVER LAYER: REAL SENTINEL-2 OPTICAL L2A (Clipped by clip-path without resizing!) */}
             <div 
-              className="absolute inset-0 h-full overflow-hidden"
-              style={{ width: `${sliderPosition}%` }}
+              className="absolute inset-0 w-full h-full pointer-events-none select-none overflow-hidden"
+              style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
             >
               <img
                 src={hotspot.opticalImage}
                 alt="Copernicus Sentinel-2 Optical Real Imagery"
-                className="absolute inset-0 w-full h-full object-cover max-w-none"
-                style={{ width: "100%", minWidth: "100%" }}
+                className="w-full h-full object-cover select-none pointer-events-none"
               />
               {/* Optical Label Overlay */}
               <div className="absolute top-4 left-4 rounded-xl border border-amber-500/40 bg-black/80 px-3.5 py-1.5 backdrop-blur-md">
@@ -325,7 +324,7 @@ export default function SwipeComparator() {
 
             {/* INTERACTIVE SPLIT DIVIDER HANDLE */}
             <div 
-              className="absolute top-0 bottom-0 z-30 cursor-ew-resize flex items-center justify-center"
+              className="absolute top-0 bottom-0 z-30 cursor-ew-resize flex items-center justify-center pointer-events-none"
               style={{ left: `calc(${sliderPosition}% - 16px)`, width: "32px" }}
             >
               <div className="w-1 h-full bg-cyan-400 shadow-[0_0_12px_#00E5FF]" />
@@ -334,7 +333,7 @@ export default function SwipeComparator() {
               </div>
             </div>
 
-            {/* Range Slider Invisible Controller */}
+            {/* Range Slider Controller */}
             <input
               type="range"
               min={0}
@@ -381,11 +380,11 @@ export default function SwipeComparator() {
                 </span>
                 <span className="font-mono text-[10px] text-slate-400">{hotspot.opticalMeta.date}</span>
               </div>
-              <div className="relative aspect-[16/9] w-full">
+              <div className="relative aspect-[3/2] w-full overflow-hidden">
                 <img
                   src={hotspot.opticalImage}
                   alt="Optical Sentinel-2"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover select-none"
                 />
               </div>
             </div>
@@ -399,11 +398,11 @@ export default function SwipeComparator() {
                 </span>
                 <span className="font-mono text-[10px] text-slate-400">{hotspot.sarMeta.date}</span>
               </div>
-              <div className="relative aspect-[16/9] w-full">
+              <div className="relative aspect-[3/2] w-full overflow-hidden">
                 <img
                   src={hotspot.sarImage}
                   alt="SAR Sentinel-1 RTC"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover select-none"
                 />
               </div>
             </div>

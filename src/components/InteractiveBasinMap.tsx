@@ -21,7 +21,11 @@ import {
   Info,
   ShieldCheck,
   ChevronRight,
-  Radio
+  Radio,
+  AlertTriangle,
+  Mountain,
+  Home,
+  Fish
 } from "lucide-react";
 import {
   AreaChart,
@@ -33,7 +37,7 @@ import {
   ReferenceLine
 } from "recharts";
 
-interface HistoricalMilestone {
+export interface HistoricalMilestone {
   year: number;
   label: string;
   castanhaoStoragePct: number;
@@ -47,8 +51,8 @@ interface HistoricalMilestone {
   climateContextPt: string;
 }
 
-// 15+ Historical Milestones spanning 1985 to 2026 for fluid temporal dynamics
-const HISTORICAL_TIMELINE: HistoricalMilestone[] = [
+// 15 Historical Milestones spanning 1985 to 2026
+export const HISTORICAL_TIMELINE: HistoricalMilestone[] = [
   {
     year: 1985,
     label: "1985 - Pre-Dam Natural Regime",
@@ -233,9 +237,292 @@ const HISTORICAL_TIMELINE: HistoricalMilestone[] = [
   }
 ];
 
+// 12 GENUINE SENTINEL-1 RTC GRANULES COVERING 100% OF CEARÁ
+const CEARA_S1_RTC_GRANULES = [
+  // Pass 1: East Ceará (Track 082) - Coast to South
+  "S1A_IW_GRDH_1SDV_20231129T080854_20231129T080923_051429_0634EA_rtc",
+  "S1A_IW_GRDH_1SDV_20231129T080923_20231129T080948_051429_0634EA_rtc",
+  "S1A_IW_GRDH_1SDV_20231129T080948_20231129T081013_051429_0634EA_rtc",
+  "S1A_IW_GRDH_1SDV_20231129T081013_20231129T081038_051429_0634EA_rtc",
+
+  // Pass 2: Central Ceará (Track 010) - Sobral to Inhamuns
+  "S1A_IW_GRDH_1SDV_20231122T081735_20231122T081800_051327_06316D_rtc",
+  "S1A_IW_GRDH_1SDV_20231122T081800_20231122T081825_051327_06316D_rtc",
+  "S1A_IW_GRDH_1SDV_20231122T081825_20231122T081850_051327_06316D_rtc",
+  "S1A_IW_GRDH_1SDV_20231122T081850_20231122T081915_051327_06316D_rtc",
+
+  // Pass 3: West Ceará (Track 155) - Camocim to Ibiapaba & Crateús
+  "S1A_IW_GRDH_1SDV_20231127T082535_20231127T082604_051400_0633E3_rtc",
+  "S1A_IW_GRDH_1SDV_20231127T082604_20231127T082629_051400_0633E3_rtc",
+  "S1A_IW_GRDH_1SDV_20231127T082629_20231127T082654_051400_0633E3_rtc",
+  "S1A_IW_GRDH_1SDV_20231127T082654_20231127T082719_051400_0633E3_rtc"
+];
+
+// APPROXIMATED WATER CONCENTRATION & ALLUVIAL MOISTURE POINTS (Replacing crude blue box)
+interface WaterConcentrationPoint {
+  id: string;
+  name: string;
+  category: "mega_reservoir" | "alluvial_corridor" | "groundwater_karst" | "estuarine_wetland";
+  coords: [number, number];
+  radiusMeters: number;
+  epsilonBase: number;
+  depthCm: string;
+  volumeOrCapacity: string;
+  descEn: string;
+  descPt: string;
+}
+
+const WATER_CONCENTRATION_POINTS: WaterConcentrationPoint[] = [
+  // 1. Perennial Reservoirs (Lâmina Hídrica & Sedimentos Saturados)
+  {
+    id: "castanhao",
+    name: "Açude Castanhão (Alto Santo / Jaguaribara)",
+    category: "mega_reservoir",
+    coords: [-5.50, -38.45],
+    radiusMeters: 16000,
+    epsilonBase: 26.5,
+    depthCm: "0–30 cm (Interface água-sedimento)",
+    volumeOrCapacity: "6.700.000.000 m³ (Capacidade máxima)",
+    descEn: "Latin America's largest earthen reservoir. Open water produces specular dropout; high dielectric permittivity (ε ≈ 26.5) saturates perimeter lacustrine alluvium.",
+    descPt: "Maior reservatório de terra da América Latina. O espelho d'água reflete o radar para longe; a alta permissividade dielétrica (ε ≈ 26,5) satura o aluvião lacustre perimetral."
+  },
+  {
+    id: "oros",
+    name: "Açude Orós (Médio Jaguaribe)",
+    category: "mega_reservoir",
+    coords: [-6.10, -38.92],
+    radiusMeters: 11000,
+    epsilonBase: 25.0,
+    depthCm: "0–30 cm",
+    volumeOrCapacity: "1.940.000.000 m³",
+    descEn: "Second largest reservoir in Ceará, key hydrological buffer between Upper and Middle Jaguaribe.",
+    descPt: "Segundo maior açude do Ceará, regulador estratégico entre o Alto e o Médio Jaguaribe."
+  },
+  {
+    id: "banabuiu",
+    name: "Açude Banabuiú (Bacia do Banabuiú)",
+    category: "mega_reservoir",
+    coords: [-5.32, -38.92],
+    radiusMeters: 8500,
+    epsilonBase: 22.4,
+    depthCm: "0–25 cm",
+    volumeOrCapacity: "1.600.000.000 m³",
+    descEn: "Third largest reservoir in Ceará. Crucial tributary water storage for Sertão Central.",
+    descPt: "Terceiro maior açude cearense. Reservatório chave no Sertão Central."
+  },
+  {
+    id: "arneiroz",
+    name: "Açude Arneiroz II (Alto Jaguaribe)",
+    category: "mega_reservoir",
+    coords: [-6.32, -40.16],
+    radiusMeters: 6000,
+    epsilonBase: 20.5,
+    depthCm: "0–25 cm",
+    volumeOrCapacity: "197.000.000 m³",
+    descEn: "Upper Jaguaribe headwater regulatory reservoir in the Inhamuns semi-arid zone.",
+    descPt: "Açude de cabeceira do Alto Jaguaribe nos Inhamuns, retém vazões torrenciais."
+  },
+  {
+    id: "trussu",
+    name: "Açude Roberto Costa / Trussu (Iguatu)",
+    category: "mega_reservoir",
+    coords: [-6.28, -39.38],
+    radiusMeters: 6500,
+    epsilonBase: 21.0,
+    depthCm: "0–25 cm",
+    volumeOrCapacity: "300.000.000 m³",
+    descEn: "Perennial tributary storage feeding the fertile Iguatu floodplain and Rio Salgado confluence.",
+    descPt: "Armazenamento perene que irriga a várzea fértil de Iguatu e deságua no Salgado."
+  },
+  {
+    id: "lima_campos",
+    name: "Açude Lima Campos (Icó)",
+    category: "mega_reservoir",
+    coords: [-6.40, -38.95],
+    radiusMeters: 5000,
+    epsilonBase: 19.8,
+    depthCm: "0–20 cm",
+    volumeOrCapacity: "66.300.000 m³",
+    descEn: "Historic irrigation reservoir supporting ancient riparian fruit orchards along Rio Salgado.",
+    descPt: "Açude histórico que sustenta os perímetros irrigados tradicionais de Icó."
+  },
+  {
+    id: "araras",
+    name: "Açude Araras / Paulo Sarasate (Noroeste)",
+    category: "mega_reservoir",
+    coords: [-4.23, -40.67],
+    radiusMeters: 9000,
+    epsilonBase: 23.5,
+    depthCm: "0–30 cm",
+    volumeOrCapacity: "1.000.000.000 m³",
+    descEn: "Fourth largest reservoir in Ceará, controlling the Rio Acaraú basin in the northwest.",
+    descPt: "Quarto maior açude do estado, regulador central da Bacia do Acaraú no noroeste."
+  },
+
+  // 2. Alluvial Riparian Aquifers (Aquíferos Aluvionares Subterrâneos)
+  {
+    id: "alluvium_alto",
+    name: "Aquífero Aluvionar do Alto Jaguaribe (Tauá - Arneiroz)",
+    category: "alluvial_corridor",
+    coords: [-6.05, -40.22],
+    radiusMeters: 14000,
+    epsilonBase: 16.5,
+    depthCm: "15–30 cm (Sondagem Banda L)",
+    volumeOrCapacity: "Reserva Aluvionar Subsuperficial",
+    descEn: "Coarse fluvial sand deposits store shallow subsurface groundwater even when surface riverbed runs completely dry. NISAR L-band detects root-zone moisture through sandy overburden.",
+    descPt: "Depósitos arenosos fluviais armazenam água subsuperficial mesmo quando a superfície do rio seca. O SAR de Banda L penetra a areia seca e detecta a umidade retida nas raízes."
+  },
+  {
+    id: "alluvium_medio",
+    name: "Várzea Aluvial do Médio Jaguaribe (Icó - Jaguaribe)",
+    category: "alluvial_corridor",
+    coords: [-5.95, -38.65],
+    radiusMeters: 16000,
+    epsilonBase: 18.0,
+    depthCm: "15–30 cm",
+    volumeOrCapacity: "Várzea Fértil de Alta Retenção",
+    descEn: "Broad floodway with organic silt and sand layers. Crucial natural water filtration zone sustaining agriculture.",
+    descPt: "Calha larga de inundação com silte e areia. Zona de amortecimento e filtro natural que mantém a umidade no solo."
+  },
+  {
+    id: "alluvium_salgado",
+    name: "Corredor Aluvionar do Rio Salgado (Cariri - Icó)",
+    category: "alluvial_corridor",
+    coords: [-6.65, -38.98],
+    radiusMeters: 15000,
+    epsilonBase: 19.2,
+    depthCm: "15–30 cm",
+    volumeOrCapacity: "Fluxo Perenizado do Cariri",
+    descEn: "Main perennial tributary of the Jaguaribe, channeling groundwater drainage from the Chapada do Araripe.",
+    descPt: "Principal afluente perene do Jaguaribe, drenando águas subterrâneas da Chapada do Araripe."
+  },
+  {
+    id: "alluvium_baixo",
+    name: "Planície Aluvial do Baixo Jaguaribe (Limoeiro - Russas)",
+    category: "alluvial_corridor",
+    coords: [-5.02, -38.00],
+    radiusMeters: 18000,
+    epsilonBase: 20.0,
+    depthCm: "10–30 cm",
+    volumeOrCapacity: "Polo de Irrigação & Aquífero Livre",
+    descEn: "Deep sediment floodplain supporting dense banana, melon, and fruit agriculture through sub-irrigation.",
+    descPt: "Planície profunda de sedimentos que sustenta a fruticultura irrigada por lençol freático acessível."
+  },
+
+  // 3. Groundwater Infiltration & Karst / Sandstone Aquifers
+  {
+    id: "karst_apodi",
+    name: "Aquífero Cárstico da Chapada do Apodi (Quixeré / Potiguar)",
+    category: "groundwater_karst",
+    coords: [-5.18, -37.75],
+    radiusMeters: 12000,
+    epsilonBase: 16.8,
+    depthCm: "20–30 cm (Fraturas cársticas)",
+    volumeOrCapacity: "Reserva Carbonática Transfronteiriça",
+    descEn: "Permeable limestone and sandstone karst with high secondary porosity, forming a vital drought refuge aquifer.",
+    descPt: "Calcários e arenitos com alta porosidade cárstica, constituindo aquífero estratégico de reserva contra a seca."
+  },
+  {
+    id: "sandstone_araripe",
+    name: "Bacia Sedimentar do Araripe (Juazeiro do Norte / Crato)",
+    category: "groundwater_karst",
+    coords: [-7.22, -39.35],
+    radiusMeters: 17000,
+    epsilonBase: 19.5,
+    depthCm: "15–30 cm",
+    volumeOrCapacity: "Aquíferos Exú e Missão Velha",
+    descEn: "Abundant perennial spring water recharge emerging from Cretaceous sandstone escarpments.",
+    descPt: "Recarga perene abundante que brota nas encostas de arenito da Bacia do Araripe, alimentando o Salgado."
+  },
+
+  // 4. Estuarine & Coastal Wetlands
+  {
+    id: "estuary_aracati",
+    name: "Complexo Estuarino de Aracati / Fortim (Manguezais)",
+    category: "estuarine_wetland",
+    coords: [-4.42, -37.76],
+    radiusMeters: 12000,
+    epsilonBase: 28.0,
+    depthCm: "0–30 cm (Saturação hipersalina mareal)",
+    volumeOrCapacity: "Estuário Aberto & 3.700 ha de Viveiros",
+    descEn: "Tidal mangrove sump and 3,700 ha of shrimp ponds. Permanent saturated conditions yield highest dielectric return (ε > 26).",
+    descPt: "Complexo de manguezais e 3.700 ha de viveiros de camarão. Saturação hídrica permanente produz máxima constante dielétrica (ε > 26)."
+  }
+];
+
+// ECOLOGICAL PROBLEMATIZATION & MITIGATION MARKERS
+interface EcologicalMarker {
+  id: string;
+  category: "erosion" | "siltation" | "settlement" | "aquaculture";
+  coords: [number, number];
+  titleEn: string;
+  titlePt: string;
+  color: string;
+  problemEn: string;
+  problemPt: string;
+  mitigationEn: string;
+  mitigationPt: string;
+}
+
+const ECOLOGICAL_MARKERS: EcologicalMarker[] = [
+  {
+    id: "erosion_saboeiro",
+    category: "erosion",
+    coords: [-6.54, -39.90],
+    titleEn: "Riverbank Landslides & Gully Erosion (Saboeiro)",
+    titlePt: "Desmoronamento de Barrancos & Voçorocas (Saboeiro)",
+    color: "#F59E0B",
+    problemEn: "Severe bank failure and collapse (desbarrancamento) along deforested river margins during flash flood whiplash.",
+    problemPt: "Desmoronamento em massa de barrancos fluviais e avanço de voçorocas por desmatamento ciliar e pisoteio de gado.",
+    mitigationEn: "Riparian bioengineering using crib walls, stone riprap, vetiver grass, and native tree reforestation (Juazeiro, Aroeira).",
+    mitigationPt: "Bioengenharia de taludes com enrocamento de pedra, paliçadas vivas e reflorestamento com Juazeiro e Aroeira."
+  },
+  {
+    id: "siltation_jaguaribara",
+    category: "siltation",
+    coords: [-5.58, -38.58],
+    titleEn: "Riverbed Siltation at Castanhão Delta (Jaguaribara)",
+    titlePt: "Assoreamento da Calha na Entrada do Castanhão",
+    color: "#FB923C",
+    problemEn: "Massive accumulation of eroded sand choked the riverbed, forming extensive emergent sandbars and reducing reservoir storage.",
+    problemPt: "Sedimentos carreados da bacia alta acumulam-se no delta do açude, criando bancos de areia e reduzindo o volume útil.",
+    mitigationEn: "Upstream check-dams to trap coarse sand; contour plowing; surgical hydraulic dredging of critical bottlenecks.",
+    mitigationPt: "Bacias e barragens sucessivas de retenção de sedimentos; terraceamento agrícola em curvas de nível; dragagem seletiva."
+  },
+  {
+    id: "settlements_iguatu",
+    category: "settlement",
+    coords: [-6.36, -39.30],
+    titleEn: "Vulnerable Riparian Settlements (Iguatu Floodway)",
+    titlePt: "Moradias em Várzeas Vulneráveis a Inundação (Iguatu)",
+    color: "#F43F5E",
+    problemEn: "Informal urban occupation expanded into dry floodways during droughts, facing severe flooding during extreme wet pulses.",
+    problemPt: "Moradias avançaram sobre o leito seco durante estiagens, sofrendo inundações severas e desalojamentos nas cheias.",
+    mitigationEn: "SAR-based binding floodway hazard zoning; planned resettlement to safe elevated terrain; real-time early warning telemetry sirens.",
+    mitigationPt: "Zoneamento de risco hidrológico por satélite SAR; reassentamento habitacional planejado; sirenes integradas à FUNCEME."
+  },
+  {
+    id: "aquaculture_aracati",
+    category: "aquaculture",
+    coords: [-4.44, -37.78],
+    titleEn: "Carciniculture & Estuarine Flushing (Aracati / Fortim)",
+    titlePt: "Carcinicultura & Descargas Ecológicas (Aracati)",
+    color: "#06B6D4",
+    problemEn: "Over 3,700 ha of shrimp ponds discharge nutrient-rich effluents into stagnant tidal creeks when upstream dams cut river flow.",
+    problemPt: "Mais de 3.700 ha de viveiros de camarão concentram efluentes orgânicos quando o Castanhão fecha as comportas na estiagem.",
+    mitigationEn: "Synchronized ecological freshwater flushing pulses from Castanhão timed with spring ebb tides; RAS settling basins and mangrove biofilters.",
+    mitigationPt: "Vazões ecológicas de lavagem sincronizadas do Castanhão em marés de sizígia; bacias de decantação e filtros de manguezal."
+  }
+];
+
 type MetricType = "storage" | "biomass" | "dielectric" | "salinity";
 
-export default function InteractiveBasinMap() {
+interface InteractiveBasinMapProps {
+  externalSelectedYear?: number;
+  onYearChange?: (year: number) => void;
+}
+
+export default function InteractiveBasinMap({ externalSelectedYear, onYearChange }: InteractiveBasinMapProps) {
   const { t } = useLanguage();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -246,25 +533,50 @@ export default function InteractiveBasinMap() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
-  // Map Layer Modes: Free open layers without API key prompts!
+  // Map Layer Modes
   const [baseMapStyle, setBaseMapStyle] = useState<"dark" | "satellite" | "osm">("satellite");
-  const [sarOverlayMode, setSarOverlayMode] = useState<"none" | "sentinel1_rtc" | "dielectric_heatmap" | "insar_coherence">("sentinel1_rtc");
+  const [sarOverlayMode, setSarOverlayMode] = useState<"none" | "sentinel1_rtc" | "dielectric_heatmap">("sentinel1_rtc");
+  const [showEcologicalRisks, setShowEcologicalRisks] = useState<boolean>(true);
 
   // Off-Canvas Sidebar State
   const [activeMetricDrawer, setActiveMetricDrawer] = useState<MetricType | null>(null);
 
   const currentMilestone = HISTORICAL_TIMELINE[selectedYearIdx];
 
+  // Sync with external year prop from HistoricalSlideDeck
+  useEffect(() => {
+    if (externalSelectedYear !== undefined) {
+      const idx = HISTORICAL_TIMELINE.findIndex(m => m.year === externalSelectedYear);
+      if (idx !== -1 && idx !== selectedYearIdx) {
+        setSelectedYearIdx(idx);
+      }
+    }
+  }, [externalSelectedYear]);
+
+  // Notify parent of year change
+  const handleYearChange = (idx: number) => {
+    setSelectedYearIdx(idx);
+    if (onYearChange) {
+      onYearChange(HISTORICAL_TIMELINE[idx].year);
+    }
+  };
+
   // Auto-play animation loop
   useEffect(() => {
     let interval: any;
     if (isPlaying) {
       interval = setInterval(() => {
-        setSelectedYearIdx((prev) => (prev + 1) % HISTORICAL_TIMELINE.length);
-      }, 2000);
+        setSelectedYearIdx((prev) => {
+          const nextIdx = (prev + 1) % HISTORICAL_TIMELINE.length;
+          if (onYearChange) {
+            onYearChange(HISTORICAL_TIMELINE[nextIdx].year);
+          }
+          return nextIdx;
+        });
+      }, 2200);
     }
     return () => clearInterval(interval);
-  }, [isPlaying]);
+  }, [isPlaying, onYearChange]);
 
   // Initialize Leaflet Map
   useEffect(() => {
@@ -293,18 +605,15 @@ export default function InteractiveBasinMap() {
 
       L.control.zoom({ position: "topright" }).addTo(map);
 
-      // BASE TILE PROVIDERS (100% Free, Reliable, Zero API Key Prompts)
-      // 1. Esri Dark Gray Canvas (Clean, elegant, no tokens)
+      // BASE TILE PROVIDERS
       const darkTile = L.tileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-        { attribution: "Esri &mdash; Open Data" }
+        { attribution: "Esri Dark Canvas" }
       );
-      // 2. Esri World Imagery (High-res satellite)
       const satelliteTile = L.tileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        { attribution: "Tiles &copy; Esri &mdash; Earthstar Geographics" }
+        { attribution: "Tiles &copy; Esri World Imagery" }
       );
-      // 3. OpenStreetMap Carto
       const osmTile = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         { attribution: "&copy; OpenStreetMap contributors" }
@@ -317,6 +626,26 @@ export default function InteractiveBasinMap() {
       if (baseMapStyle === "satellite") satelliteTile.addTo(map);
       else if (baseMapStyle === "osm") osmTile.addTo(map);
       else darkTile.addTo(map);
+
+      // PRELOAD ALL 12 GENUINE SENTINEL-1 RTC RADAR SWATHS (Covering 100% of Ceará)
+      const s1Layers = CEARA_S1_RTC_GRANULES.map((granule) => {
+        return L.tileLayer(
+          `https://planetarycomputer.microsoft.com/api/data/v1/item/tiles/WebMercatorQuad/{z}/{x}/{y}@1x.png?collection=sentinel-1-rtc&item=${granule}&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png`,
+          {
+            opacity: 0.85,
+            maxZoom: 15,
+            attribution: "Copernicus Sentinel-1 RTC Radar Mosaic (ESA / NASA ASF)"
+          }
+        );
+      });
+      const sarMosaicGroup = L.layerGroup(s1Layers);
+      layersRef.current.sarMosaicGroup = sarMosaicGroup;
+
+      // Add SAR layer immediately on mount so it is preloaded and ready
+      if (sarOverlayMode === "sentinel1_rtc") {
+        sarMosaicGroup.addTo(map);
+        layersRef.current.activeSar = sarMosaicGroup;
+      }
 
       // REAL GENUINE RIO JAGUARIBE HYDROGRAPHY (3,250 vertices from official GeoJSON)
       try {
@@ -334,8 +663,8 @@ export default function InteractiveBasinMap() {
             onEachFeature: (feature, layer) => {
               layer.bindPopup(`
                 <div class="p-2 font-sans text-xs">
-                  <strong class="text-cyan-400 font-bold text-sm block">Rio Jaguaribe (Traçado Real Cartográfico)</strong>
-                  <p class="text-slate-300 mt-1">Extensão de 610 km. Hidrografia oficial digitalizada com 3.250 vértices, da nascente nos Inhamuns à foz em Aracati.</p>
+                  <strong class="text-cyan-400 font-bold text-sm block">Rio Jaguaribe (Traçado Oficial Cartográfico)</strong>
+                  <p class="text-slate-300 mt-1">Extensão de 610 km com 3.250 vértices digitalizados. Conecta as nascentes pedregosas dos Inhamuns à foz estuarina em Aracati.</p>
                 </div>
               `);
             }
@@ -363,13 +692,13 @@ export default function InteractiveBasinMap() {
         fillOpacity: 0.04
       }).addTo(map);
 
-      // KEY HOTSPOT PINS & STORYTELLING WAYPOINTS
+      // KEY HOTSPOT WAYPOINTS
       const hotspots = [
         {
           name: "Sertão dos Inhamuns (Tauá)",
           role: "Nascente & Caatinga",
           coords: [-5.90, -40.29],
-          desc: "Zona de nascente pedregosa. O SAR de Banda L penetra a dormência estacional ('mata branca') e mede a madeira viva preservada.",
+          desc: "Zona de cabeceira pedregosa. O SAR de Banda L penetra a dormência estacional ('mata branca') e mede a biomassa viva preservada.",
           color: "#10B981"
         },
         {
@@ -390,14 +719,14 @@ export default function InteractiveBasinMap() {
           name: "Jaguaruana (Limite Cunha Salina)",
           role: "Ponto Crítico de Salinização",
           coords: [-4.75, -37.85],
-          desc: "Em 2016, a retenção total no Castanhão permitiu que a cunha marinha penetrasse 32 km até aqui.",
+          desc: "Em 2016, com a retenção no Castanhão, a maré hipersalina penetrou 32 km rio acima até aqui.",
           color: "#F59E0B"
         },
         {
           name: "Estuário de Aracati / Fortim",
           role: "Manguezais & Carcinicultura",
           coords: [-4.42, -37.76],
-          desc: "Foz no Atlântico. O SAR polarimétrico (HH-VV) detecta raízes alagadas por baixo da copa e delimita tanques de cultivo com diques reflexivos.",
+          desc: "Foz no Atlântico. O SAR polarimétrico (HH-VV) detecta raízes de mangue alagadas e delimita viveiros de carcinicultura.",
           color: "#F43F5E"
         }
       ];
@@ -409,7 +738,7 @@ export default function InteractiveBasinMap() {
           color: "#FFFFFF",
           weight: 2,
           opacity: 1,
-          fillOpacity: 0.9
+          fillOpacity: 0.95
         }).addTo(map);
 
         marker.bindPopup(`
@@ -421,7 +750,45 @@ export default function InteractiveBasinMap() {
         `);
       });
 
-      // Force recalculation of container dimensions to ensure all map tiles load completely
+      // ECOLOGICAL CHALLENGES & MITIGATION LAYER
+      const riskMarkers = ECOLOGICAL_MARKERS.map((rm) => {
+        const m = L.circleMarker(rm.coords, {
+          radius: 11,
+          fillColor: rm.color,
+          color: "#FFFFFF",
+          weight: 2.5,
+          opacity: 1,
+          fillOpacity: 0.9
+        });
+
+        m.bindPopup(`
+          <div class="p-2.5 font-sans text-xs max-w-xs">
+            <div class="flex items-center space-x-1.5 text-amber-400 font-mono text-[10px] font-bold uppercase mb-1">
+              <span>⚠️ Ponto Crítico Ecológico</span>
+            </div>
+            <strong class="text-white text-sm block mb-1.5" style="color: ${rm.color}">
+              ${rm.titlePt}
+            </strong>
+            <div class="mb-2 text-slate-300 leading-relaxed bg-black/40 p-2 rounded-lg border border-slate-800">
+              <strong class="text-amber-300 text-[10px] uppercase block mb-0.5">Diagnóstico:</strong>
+              ${rm.problemPt}
+            </div>
+            <div class="text-emerald-300 leading-relaxed bg-emerald-950/30 p-2 rounded-lg border border-emerald-500/30">
+              <strong class="text-emerald-400 text-[10px] uppercase block mb-0.5">Medida de Correção:</strong>
+              ${rm.mitigationPt}
+            </div>
+          </div>
+        `);
+        return m;
+      });
+
+      const ecologicalGroup = L.layerGroup(riskMarkers);
+      layersRef.current.ecologicalGroup = ecologicalGroup;
+      if (showEcologicalRisks) {
+        ecologicalGroup.addTo(map);
+      }
+
+      // Force recalculation of container dimensions
       setTimeout(() => {
         if (map && isMounted) {
           map.invalidateSize();
@@ -446,7 +813,6 @@ export default function InteractiveBasinMap() {
     if (!mapInstanceRef.current || !layersRef.current.dark) return;
     const map = mapInstanceRef.current;
 
-    // Remove existing
     map.removeLayer(layersRef.current.dark);
     map.removeLayer(layersRef.current.satellite);
     map.removeLayer(layersRef.current.osm);
@@ -456,58 +822,107 @@ export default function InteractiveBasinMap() {
     else layersRef.current.dark.addTo(map);
   }, [baseMapStyle]);
 
-  // Handle SAR Overlay Switching
+  // Handle Ecological Risk Layer Toggle
+  useEffect(() => {
+    if (!mapInstanceRef.current || !layersRef.current.ecologicalGroup) return;
+    const map = mapInstanceRef.current;
+
+    if (showEcologicalRisks) {
+      if (!map.hasLayer(layersRef.current.ecologicalGroup)) {
+        layersRef.current.ecologicalGroup.addTo(map);
+      }
+    } else {
+      if (map.hasLayer(layersRef.current.ecologicalGroup)) {
+        map.removeLayer(layersRef.current.ecologicalGroup);
+      }
+    }
+  }, [showEcologicalRisks]);
+
+  // Handle SAR Overlay Switching & Dielectric Water Points
   useEffect(() => {
     if (!mapInstanceRef.current) return;
     const map = mapInstanceRef.current;
 
-    // Clear previous overlay
-    if (layersRef.current.sarOverlay) {
-      map.removeLayer(layersRef.current.sarOverlay);
-      delete layersRef.current.sarOverlay;
+    // Remove active SAR or Dielectric overlay
+    if (layersRef.current.activeSar) {
+      map.removeLayer(layersRef.current.activeSar);
+      delete layersRef.current.activeSar;
     }
 
-    if (sarOverlayMode === "sentinel1_rtc") {
-      // Live genuine multi-swath Sentinel-1 RTC tile layers covering the entire Jaguaribe Basin:
-      // Swath 1: Lower Jaguaribe / Aracati Estuary
-      // Swath 2: Middle Jaguaribe / Açude Castanhão & Orós
-      // Swath 3: Upper Jaguaribe / Sertão dos Inhamuns (Tauá)
-      import("leaflet").then((L) => {
-        const s1Lower = L.default.tileLayer(
-          "https://planetarycomputer.microsoft.com/api/data/v1/item/tiles/WebMercatorQuad/{z}/{x}/{y}@1x.png?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231024T080949_20231024T081014_050904_0622D4_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png",
-          { opacity: 0.85, attribution: "Copernicus Sentinel-1 RTC Lower Jaguaribe" }
-        );
-        const s1Middle = L.default.tileLayer(
-          "https://planetarycomputer.microsoft.com/api/data/v1/item/tiles/WebMercatorQuad/{z}/{x}/{y}@1x.png?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231228T081758_20231228T081823_051852_064395_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png",
-          { opacity: 0.85, attribution: "Copernicus Sentinel-1 RTC Castanhão & Orós" }
-        );
-        const s1Upper = L.default.tileLayer(
-          "https://planetarycomputer.microsoft.com/api/data/v1/item/tiles/WebMercatorQuad/{z}/{x}/{y}@1x.png?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231122T081825_20231122T081850_051327_06316D_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png",
-          { opacity: 0.85, attribution: "Copernicus Sentinel-1 RTC Inhamuns" }
-        );
-
-        const group = L.default.layerGroup([s1Lower, s1Middle, s1Upper]);
-        group.addTo(map);
-        layersRef.current.sarOverlay = group;
-      });
+    if (sarOverlayMode === "sentinel1_rtc" && layersRef.current.sarMosaicGroup) {
+      layersRef.current.sarMosaicGroup.addTo(map);
+      layersRef.current.activeSar = layersRef.current.sarMosaicGroup;
     } else if (sarOverlayMode === "dielectric_heatmap") {
-      // Procedural Dielectric Soil Permittivity Overlay
+      // PROCEDURAL DIELECTRIC WATER CONCENTRATION & ALLUVIAL MOISTURE POINTS
       import("leaflet").then((L) => {
-        const bounds: [[number, number], [number, number]] = [[-7.5, -41.0], [-4.0, -37.0]];
-        const dielectricColor = currentMilestone.soilDielectricEpsilon < 6 ? "#EF4444" : currentMilestone.soilDielectricEpsilon < 12 ? "#F59E0B" : "#06B6D4";
-        const rect = L.default.rectangle(bounds, {
-          color: dielectricColor,
-          weight: 1,
-          fillColor: dielectricColor,
-          fillOpacity: 0.25,
-          dashArray: "2, 4"
-        }).addTo(map);
-        rect.bindPopup(`<strong>Permissividade Dielétrica Média (ε): ${currentMilestone.soilDielectricEpsilon}</strong><br/>Profundidade sondada: 0 a 30 cm via Banda L.`);
-        layersRef.current.sarOverlay = rect;
+        const dielectricMarkers = WATER_CONCENTRATION_POINTS.map((pt) => {
+          // Dynamic permittivity scaled to the selected multi-decadal timeline milestone
+          const dynamicEpsilon = Math.max(
+            3.5, 
+            Number((pt.epsilonBase * (currentMilestone.soilDielectricEpsilon / 12.4)).toFixed(1))
+          );
+          
+          // Color based on dielectric permittivity (ε)
+          const color = dynamicEpsilon >= 22 
+            ? "#00E5FF" // Saturated Open Water
+            : dynamicEpsilon >= 16 
+            ? "#10B981" // Alluvial Aquifer / Moist Subsurface
+            : dynamicEpsilon >= 10 
+            ? "#F59E0B" // Root-zone Moisture
+            : "#EF4444"; // Dry Crust Stress
+
+          // Outer halo indicating microwave dielectric gradient
+          const halo = L.default.circle(pt.coords, {
+            radius: pt.radiusMeters * (dynamicEpsilon / 18),
+            color: color,
+            weight: 1.5,
+            dashArray: "3, 5",
+            fillColor: color,
+            fillOpacity: 0.18
+          });
+
+          // Core circle
+          const core = L.default.circleMarker(pt.coords, {
+            radius: 8,
+            color: "#FFFFFF",
+            weight: 2,
+            fillColor: color,
+            fillOpacity: 0.85
+          });
+
+          const popupContent = `
+            <div class="p-2 font-sans text-xs max-w-xs">
+              <span class="text-[10px] uppercase font-bold text-cyan-400 block mb-0.5">Ponto de Concentração Hídrica & Umidade</span>
+              <strong class="text-white text-sm block mb-1.5">${pt.name}</strong>
+              <div class="grid grid-cols-2 gap-1.5 mb-2 font-mono text-[11px] bg-slate-900/80 p-2 rounded-lg border border-slate-800">
+                <div>
+                  <span class="text-slate-400 block text-[9px] uppercase">Permissividade (ε):</span>
+                  <strong class="text-cyan-300">${dynamicEpsilon}</strong>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[9px] uppercase">Penetração Banda L:</span>
+                  <strong class="text-emerald-300">${pt.depthCm}</strong>
+                </div>
+              </div>
+              <p class="text-slate-300 leading-relaxed text-[11px]">${pt.descPt}</p>
+              <span class="text-[10px] text-slate-400 font-mono block mt-1.5 pt-1 border-t border-slate-800">
+                ${pt.volumeOrCapacity}
+              </span>
+            </div>
+          `;
+
+          halo.bindPopup(popupContent);
+          core.bindPopup(popupContent);
+
+          return L.default.layerGroup([halo, core]);
+        });
+
+        const dielectricGroup = L.default.layerGroup(dielectricMarkers);
+        dielectricGroup.addTo(map);
+        layersRef.current.activeSar = dielectricGroup;
       });
     }
 
-    // Force map to recalculate size and load all tiles cleanly
     map.invalidateSize();
   }, [sarOverlayMode, currentMilestone]);
 
@@ -577,7 +992,7 @@ export default function InteractiveBasinMap() {
               sarOverlayMode === "sentinel1_rtc" ? "bg-emerald-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
             }`}
           >
-            {t("Sentinel-1 RTC Radar", "Sentinel-1 RTC Real")}
+            {t("Full Ceará Radar Mosaic", "Mosaico Radar Ceará Todo")}
           </button>
           <button
             onClick={() => setSarOverlayMode("dielectric_heatmap")}
@@ -585,7 +1000,7 @@ export default function InteractiveBasinMap() {
               sarOverlayMode === "dielectric_heatmap" ? "bg-emerald-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
             }`}
           >
-            {t("Dielectric ε Moisture", "Umidade Dielétrica ε")}
+            {t("Water Points & Dielectric ε", "Pontos de Água & Dielétrico ε")}
           </button>
           <button
             onClick={() => setSarOverlayMode("none")}
@@ -596,6 +1011,19 @@ export default function InteractiveBasinMap() {
             {t("Off", "Desativar")}
           </button>
         </div>
+
+        {/* Ecological Risks Layer Toggle */}
+        <button
+          onClick={() => setShowEcologicalRisks(!showEcologicalRisks)}
+          className={`flex items-center space-x-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold backdrop-blur-md shadow-xl transition-all ${
+            showEcologicalRisks
+              ? "border-amber-500/50 bg-amber-950/80 text-amber-300 font-bold"
+              : "border-slate-700/80 bg-slate-900/90 text-slate-400 hover:text-white"
+          }`}
+        >
+          <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
+          <span>{t("Ecological Issues & Mitigation", "Problemas Ecológicos & Correção")}</span>
+        </button>
 
         {/* Fullscreen Toggle */}
         <button
@@ -738,7 +1166,7 @@ export default function InteractiveBasinMap() {
               value={selectedYearIdx}
               onChange={(e) => {
                 setIsPlaying(false);
-                setSelectedYearIdx(Number(e.target.value));
+                handleYearChange(Number(e.target.value));
               }}
               className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400 focus:outline-none"
             />
@@ -749,7 +1177,7 @@ export default function InteractiveBasinMap() {
                   key={m.year}
                   onClick={() => {
                     setIsPlaying(false);
-                    setSelectedYearIdx(idx);
+                    handleYearChange(idx);
                   }}
                   className={`cursor-pointer transition-colors ${
                     idx === selectedYearIdx ? "text-cyan-400 font-bold scale-110" : "hover:text-slate-200"

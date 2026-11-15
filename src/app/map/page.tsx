@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
+import HistoricalSlideDeck from "@/components/HistoricalSlideDeck";
+import EcologicalProblematization from "@/components/EcologicalProblematization";
 import Footer from "@/components/Footer";
 
 const InteractiveBasinMap = dynamic(
@@ -19,11 +21,26 @@ const InteractiveBasinMap = dynamic(
 );
 
 export default function MapPage() {
+  const [activeYear, setActiveYear] = useState<number>(2026);
+
   return (
     <main className="min-h-screen flex flex-col bg-[#050B14] text-slate-100">
       <Header />
       <div className="flex-1 w-full">
-        <InteractiveBasinMap />
+        {/* Main Interactive Radar GIS Observatory */}
+        <InteractiveBasinMap 
+          externalSelectedYear={activeYear} 
+          onYearChange={(year) => setActiveYear(year)} 
+        />
+
+        {/* 5-Year Historical Transformation Slide Deck with Map Sync */}
+        <HistoricalSlideDeck 
+          currentYear={activeYear}
+          onSyncWithMap={(year) => setActiveYear(year)} 
+        />
+
+        {/* Ecological Problematization & Corrective Solutions Guide */}
+        <EcologicalProblematization />
       </div>
       <Footer />
     </main>

@@ -3,6 +3,7 @@
 import React from "react";
 import Header from "@/components/Header";
 import ProjectDescription from "@/components/ProjectDescription";
+import EcologicalProblematization from "@/components/EcologicalProblematization";
 import EducationalGuide from "@/components/EducationalGuide";
 import Footer from "@/components/Footer";
 
@@ -12,6 +13,7 @@ export default function StoryPage() {
       <Header />
       <div className="flex-1 w-full">
         <ProjectDescription />
+        <EcologicalProblematization />
         <EducationalGuide />
       </div>
       <Footer />
