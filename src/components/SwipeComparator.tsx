@@ -410,6 +410,153 @@ export default function SwipeComparator() {
           </div>
         )}
 
+        {/* SAR FALSE-COLOR & PHYSICS DECODER */}
+        <div className="mt-8 rounded-3xl border border-cyan-500/30 bg-gradient-to-r from-slate-900/95 via-[#0A1322] to-slate-900/95 p-6 backdrop-blur-xl shadow-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-4 border-b border-slate-800 gap-2">
+            <div className="flex items-center space-x-2.5">
+              <div className="p-2 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400">
+                <Sliders className="h-4 w-4" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+                  {t("SAR Radar False-Color & Physics Decoder", "Guia de Cores da Composição SAR & Física de Radar")}
+                </h4>
+                <p className="text-[11px] text-slate-400">
+                  {t(
+                    "Understand how microwave backscatter decodes water, live woody biomass, aquatic vegetation, and soil.",
+                    "Entenda como o retroespalhamento de micro-ondas decodifica água, mata viva, vegetação aquática e solo."
+                  )}
+                </p>
+              </div>
+            </div>
+            <span className="text-[10px] font-mono bg-cyan-950/80 text-cyan-300 border border-cyan-500/30 px-2.5 py-1 rounded-full self-start sm:self-auto">
+              Dual-Pol (VV + VH) & Pauli RGB
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3.5">
+            {/* Color 1: Black / Deep Blue */}
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-3.5 flex flex-col justify-between hover:border-cyan-500/40 transition-colors">
+              <div>
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="h-3 w-3 rounded-full bg-[#00E5FF] shadow-[0_0_8px_#00E5FF] border border-white/50" />
+                  <strong className="text-xs text-white">
+                    {t("Deep Blue / Black", "Azul Profundo / Preto")}
+                  </strong>
+                </div>
+                <span className="text-[10px] font-mono text-cyan-400 font-bold block mb-1">
+                  {t("Free Water Surface", "Espelho d'Água Livre")}
+                </span>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  {t(
+                    "Calm water acts as a mirror, reflecting microwaves away from the satellite (specular reflection). Almost zero signal returns (σ⁰ < -22 dB).",
+                    "Água calma age como espelho, refletindo as ondas para longe do satélite (reflexão especular). Praticamente zero eco retorna (σ⁰ < -22 dB)."
+                  )}
+                </p>
+              </div>
+              <span className="text-[9px] font-mono text-slate-500 mt-2 pt-1.5 border-t border-slate-900 block">
+                {t("Physical effect: Specular Low", "Efeito: Reflexão Especular")}
+              </span>
+            </div>
+
+            {/* Color 2: Vibrant Green */}
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/10 p-3.5 flex flex-col justify-between hover:border-emerald-400 transition-colors">
+              <div>
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="h-3 w-3 rounded-full bg-[#10B981] shadow-[0_0_8px_#10B981] border border-white/50" />
+                  <strong className="text-xs text-white">
+                    {t("Vibrant Green", "Verde Vibrante")}
+                  </strong>
+                </div>
+                <span className="text-[10px] font-mono text-emerald-400 font-bold block mb-1">
+                  {t("Living Woody Biomass", "Mata Viva da Caatinga")}
+                </span>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  {t(
+                    "Volume scattering (VH cross-pol). In dry season ('mata branca'), deciduous branches depolarize the radar beam, proving tree structures are alive even with zero leaves!",
+                    "Espalhamento volumétrico (VH). Na seca ('mata branca'), troncos e galhos despolarizam o feixe, provando estrutura viva mesmo sem folhas!"
+                  )}
+                </p>
+              </div>
+              <span className="text-[9px] font-mono text-emerald-500 mt-2 pt-1.5 border-t border-emerald-950 block">
+                {t("Physical effect: Volume Scattering", "Efeito: Espalhamento Volumétrico")}
+              </span>
+            </div>
+
+            {/* Color 3: Green Floating on Water (Aquatic Vegetation) */}
+            <div className="rounded-2xl border border-lime-500/30 bg-lime-950/10 p-3.5 flex flex-col justify-between hover:border-lime-400 transition-colors">
+              <div>
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="h-3 w-3 rounded-full bg-[#84CC16] shadow-[0_0_8px_#84CC16] border border-white/50" />
+                  <strong className="text-xs text-white">
+                    {t("Green Over Water", "Verde Sobre a Água")}
+                  </strong>
+                </div>
+                <span className="text-[10px] font-mono text-lime-400 font-bold block mb-1">
+                  {t("Aquatic Vegetation & Algae", "Vegetação Aquática (Aguapés)")}
+                </span>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  {t(
+                    "Yes! Green patches floating on rivers or reservoirs indicate water hyacinths (macrophytes) and algal blooms thriving on organic effluent loads.",
+                    "Sim! Manchas verdes na água são macrófitas aquáticas flutuantes (aguapés) e algas que proliferam com efluentes orgânicos."
+                  )}
+                </p>
+              </div>
+              <span className="text-[9px] font-mono text-lime-500 mt-2 pt-1.5 border-t border-lime-950 block">
+                {t("Physical effect: Surface Canopy Roughness", "Efeito: Rugosidade de Dossel Emerso")}
+              </span>
+            </div>
+
+            {/* Color 4: Yellow / Gold / Ochre */}
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-950/10 p-3.5 flex flex-col justify-between hover:border-amber-400 transition-colors">
+              <div>
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="h-3 w-3 rounded-full bg-[#F59E0B] shadow-[0_0_8px_#F59E0B] border border-white/50" />
+                  <strong className="text-xs text-white">
+                    {t("Yellow / Ochre", "Amarelo / Dourado")}
+                  </strong>
+                </div>
+                <span className="text-[10px] font-mono text-amber-400 font-bold block mb-1">
+                  {t("Exposed Soil & Arid Crust", "Solo Exposto & Pastagem Seca")}
+                </span>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  {t(
+                    "Rough surface scattering with low volume return. Typical of bare rocky ground, parched agricultural clearings, and sparse dry Caatinga shrublands.",
+                    "Espalhamento superficial rugoso com baixo volume. Típico de solo descoberto, terra pedregosa ressequida, pasto ralo ou solo arado."
+                  )}
+                </p>
+              </div>
+              <span className="text-[9px] font-mono text-amber-500 mt-2 pt-1.5 border-t border-amber-950 block">
+                {t("Physical effect: Surface Roughness (VV)", "Efeito: Rugosidade Superficial (VV)")}
+              </span>
+            </div>
+
+            {/* Color 5: Magenta / Red */}
+            <div className="rounded-2xl border border-rose-500/30 bg-rose-950/10 p-3.5 flex flex-col justify-between hover:border-rose-400 transition-colors">
+              <div>
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="h-3 w-3 rounded-full bg-[#F43F5E] shadow-[0_0_8px_#F43F5E] border border-white/50" />
+                  <strong className="text-xs text-white">
+                    {t("Red / Magenta", "Vermelho / Magenta")}
+                  </strong>
+                </div>
+                <span className="text-[10px] font-mono text-rose-400 font-bold block mb-1">
+                  {t("Double-Bounce / Dams & Mangrove", "Dupla Reflexão (Mangue & Barragens)")}
+                </span>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  {t(
+                    "90° dihedral reflection between water surfaces and vertical structures (flooded mangrove stilt roots, earthen dam crests, and aquaculture dykes).",
+                    "Reflexão em diedro de 90° entre a lâmina d'água e estruturas verticais (raízes de mangue na maré alta, paredões de açudes e diques)."
+                  )}
+                </p>
+              </div>
+              <span className="text-[9px] font-mono text-rose-500 mt-2 pt-1.5 border-t border-rose-950 block">
+                {t("Physical effect: Dihedral Double-Bounce", "Efeito: Diedro Double-Bounce")}
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* SCIENTIFIC EXPLANATION & RADAR PHYSICS POINTERS */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8">
           

@@ -565,8 +565,8 @@ const BIOME_POLYGONS = {
     namePt: "Caatinga da Depressão Sertaneja & Médio Jaguaribe",
     biomeEn: "Crystalline Depression Caatinga (Deciduous Scrub)",
     biomePt: "Caatinga sobre Cristalino Raso da Depressão Sertaneja",
-    color: "#16A34A",
-    borderColor: "#14532D",
+    color: "#F59E0B",
+    borderColor: "#B45309",
     coords: [
       [-4.35, -38.65], [-4.38, -37.75], [-4.95, -37.30], [-5.65, -37.60],
       [-6.25, -38.15], [-6.45, -38.75], [-6.15, -39.15], [-5.55, -39.25],
@@ -581,8 +581,8 @@ const BIOME_POLYGONS = {
     namePt: "Caatinga Arbustiva dos Inhamuns & Alto Jaguaribe",
     biomeEn: "Hyperxerophytic Upland Caatinga",
     biomePt: "Caatinga Hiperxerófila de Planalto Cristalino",
-    color: "#22C55E",
-    borderColor: "#15803D",
+    color: "#EA580C",
+    borderColor: "#9A3412",
     coords: [
       [-5.25, -40.65], [-5.25, -39.85], [-5.85, -39.65], [-6.45, -39.45],
       [-6.95, -39.75], [-7.25, -40.25], [-6.85, -40.95], [-6.05, -40.95],
@@ -597,8 +597,8 @@ const BIOME_POLYGONS = {
     namePt: "Mata Ciliar Ripária do Rio Jaguaribe (APP Fluvial 610 km)",
     biomeEn: "Riparian Alluvial Gallery Forest",
     biomePt: "Mata Ripária Aluvionar Protetora",
-    color: "#84CC16",
-    borderColor: "#4D7C0F",
+    color: "#10B981",
+    borderColor: "#047857",
     coords: [
       [-4.42, -37.76], [-4.60, -37.95], [-4.95, -38.10], [-5.35, -38.35],
       [-5.70, -38.58], [-6.12, -38.88], [-6.25, -39.35], [-6.38, -39.95],
@@ -615,8 +615,8 @@ const BIOME_POLYGONS = {
     namePt: "Manguezais Estuarinos de Aracati & Fortim",
     biomeEn: "Tidal Marine Mangrove",
     biomePt: "Manguezal Estuarino de Maré",
-    color: "#10B981",
-    borderColor: "#047857",
+    color: "#06B6D4",
+    borderColor: "#0891B2",
     coords: [
       [-4.34, -37.68], [-4.40, -37.72], [-4.47, -37.76], [-4.52, -37.82],
       [-4.49, -37.86], [-4.42, -37.80], [-4.35, -37.74]
@@ -630,8 +630,8 @@ const BIOME_POLYGONS = {
     namePt: "Apicuns & Salgados Costeiros de Aracati",
     biomeEn: "Hypersaline Coastal Supratidal Flat",
     biomePt: "Planície Hipersalina Supramareal (Apicum)",
-    color: "#EAB308",
-    borderColor: "#A16207",
+    color: "#E11D48",
+    borderColor: "#9F1239",
     coords: [
       [-4.41, -37.70], [-4.46, -37.74], [-4.52, -37.79], [-4.50, -37.82],
       [-4.44, -37.77], [-4.39, -37.73]
@@ -645,8 +645,8 @@ const BIOME_POLYGONS = {
     namePt: "Brejos de Altitude & Matas Serranas (Pereiro/Baturité)",
     biomeEn: "Subperennial Moist Highland Forest",
     biomePt: "Floresta Úmida Subperenifólia Serrana",
-    color: "#059669",
-    borderColor: "#065F46",
+    color: "#15803D",
+    borderColor: "#14532D",
     coords: [
       [-4.20, -38.90], [-4.40, -38.80], [-4.50, -38.95], [-4.30, -39.10]
     ],
@@ -868,7 +868,7 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
 
   // Map Layer Modes
   const [baseMapStyle, setBaseMapStyle] = useState<"dark" | "satellite" | "osm">("satellite");
-  const [sarOverlayMode, setSarOverlayMode] = useState<"none" | "sentinel1_rtc" | "water_mask" | "vegetation_biomes">("vegetation_biomes");
+  const [sarOverlayMode, setSarOverlayMode] = useState<"none" | "sentinel1_rtc" | "vegetation_biomes">("vegetation_biomes");
   const [showEcologicalRisks, setShowEcologicalRisks] = useState<boolean>(true);
   const [mapTilesLoading, setMapTilesLoading] = useState<boolean>(false);
 
@@ -1238,186 +1238,6 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
         biomeGroup.addTo(map);
         layersRef.current.activeSar = biomeGroup;
       });
-    } else if (sarOverlayMode === "water_mask") {
-      // RENDER WATER MASK: FULL SAR RADAR MAP + ULTRA-DARK CONTRAST MASK ON NON-WATER + VIBRANT HIGHLIGHT ON ALL WATER BODIES
-      import("leaflet").then((L) => {
-        const maskLayers: any[] = [];
-
-        // 1. Add the complete Sentinel-1 SAR radar mosaic underneath
-        if (layersRef.current.sarMosaicGroup) {
-          maskLayers.push(layersRef.current.sarMosaicGroup);
-        }
-
-        // 2. Ultra-dark mask over non-water land so the SAR texture is deeply dimmed
-        const cearaBoundaryCoords = [
-          [-2.78, -40.50], [-2.85, -39.80], [-3.15, -39.00], [-3.70, -38.40],
-          [-4.42, -37.76], [-4.80, -37.25], [-5.05, -37.35], [-5.50, -37.60],
-          [-6.50, -38.45], [-7.55, -38.60], [-7.85, -39.00], [-7.50, -39.75],
-          [-7.15, -40.35], [-6.40, -41.25], [-5.00, -41.40], [-3.60, -41.20],
-          [-2.90, -41.00]
-        ];
-        const darkLandMask = L.default.polygon(cearaBoundaryCoords as [number, number][], {
-          color: "#020617",
-          weight: 1,
-          fillColor: "#020617",
-          fillOpacity: 0.82, // Very dark mask over non-water areas, preserving subtle SAR texture
-          interactive: false
-        });
-        maskLayers.push(darkLandMask);
-
-        // 3. Highlighted Water Bodies (Glow in intense cyan #00E5FF on the dark radar canvas)
-        if (currentMilestone.year >= 2000) {
-          const isDroughtApex = currentMilestone.year === 2016 || currentMilestone.year === 2018;
-          const castanhaoPolyCoords = isDroughtApex 
-            ? WATER_BODY_POLYGONS.castanhaoDrought2016 
-            : WATER_BODY_POLYGONS.castanhaoFull;
-
-          const castanhaoWaterMask = L.default.polygon(castanhaoPolyCoords as [number, number][], {
-            color: "#FFFFFF",
-            weight: 2.5,
-            dashArray: isDroughtApex ? "4, 4" : undefined,
-            fillColor: "#00E5FF",
-            fillOpacity: isDroughtApex ? 0.65 : 0.92
-          });
-
-          castanhaoWaterMask.bindPopup(`
-            <div class="p-2.5 font-sans text-xs max-w-xs">
-              <strong class="text-cyan-400 font-bold text-sm block mb-1">Máscara Hídrica em Destaque: Açude Castanhão</strong>
-              <span class="text-white font-mono text-[11px] block mb-1">
-                Ano ${currentMilestone.year}: ${currentMilestone.castanhaoAreaKm2} km² (${currentMilestone.castanhaoStoragePct}% de volume)
-              </span>
-              <p class="text-slate-300 text-[11px] leading-relaxed">
-                ${isDroughtApex 
-                  ? "Ápice da megaseca: espelho d'água retraído para a fossa profunda junto ao barramento; solo perimetral exposto." 
-                  : "Lâmina d'água plena em destaque sobre o mosaico radar SAR (espalhamento especular com reflexão total σ⁰ < -22 dB)."}
-              </p>
-            </div>
-          `);
-          maskLayers.push(castanhaoWaterMask);
-        }
-
-        // Açude Orós Lake Mask (Highlighted)
-        const orosWaterMask = L.default.polygon(WATER_BODY_POLYGONS.oros as [number, number][], {
-          color: "#FFFFFF",
-          weight: 2,
-          fillColor: "#00E5FF",
-          fillOpacity: 0.90
-        });
-        orosWaterMask.bindPopup(`<div class="p-2 font-sans text-xs"><strong class="text-cyan-400 block mb-0.5">Máscara Hídrica: Açude Orós</strong><span class="text-white text-[11px]">Espelho d'água em destaque no radar SAR (1.940 mi m³).</span></div>`);
-        maskLayers.push(orosWaterMask);
-
-        // Açude Banabuiú Lake Mask (Highlighted)
-        const banabuiuWaterMask = L.default.polygon(WATER_BODY_POLYGONS.banabuiu as [number, number][], {
-          color: "#FFFFFF",
-          weight: 2,
-          fillColor: "#00E5FF",
-          fillOpacity: 0.88
-        });
-        banabuiuWaterMask.bindPopup(`<div class="p-2 font-sans text-xs"><strong class="text-cyan-400 block mb-0.5">Máscara Hídrica: Açude Banabuiú</strong><span class="text-white text-[11px]">Espelho d'água estratégico do Sertão Central (1.600 mi m³).</span></div>`);
-        maskLayers.push(banabuiuWaterMask);
-
-        // Açude Arneiroz II Mask (Highlighted)
-        const arneirozWaterMask = L.default.polygon(WATER_BODY_POLYGONS.arneiroz as [number, number][], {
-          color: "#FFFFFF",
-          weight: 2,
-          fillColor: "#00E5FF",
-          fillOpacity: 0.88
-        });
-        arneirozWaterMask.bindPopup(`<div class="p-2 font-sans text-xs"><strong class="text-cyan-400 block mb-0.5">Máscara Hídrica: Açude Arneiroz II</strong><span class="text-white text-[11px]">Represa de retenção de cabeceira nos Inhamuns (197 mi m³).</span></div>`);
-        maskLayers.push(arneirozWaterMask);
-
-        // Açude Trussu Mask (Highlighted)
-        const trussuWaterMask = L.default.polygon(WATER_BODY_POLYGONS.trussu as [number, number][], {
-          color: "#FFFFFF",
-          weight: 2,
-          fillColor: "#00E5FF",
-          fillOpacity: 0.88
-        });
-        trussuWaterMask.bindPopup(`<div class="p-2 font-sans text-xs"><strong class="text-cyan-400 block mb-0.5">Máscara Hídrica: Açude Trussu</strong><span class="text-white text-[11px]">Açude regulador da bacia do Alto Jaguaribe / Iguatu (301 mi m³).</span></div>`);
-        maskLayers.push(trussuWaterMask);
-
-        // Aracati Estuary Water & Aquaculture Pond Mask (Highlighted)
-        const aracatiWaterMask = L.default.polygon(WATER_BODY_POLYGONS.aracatiEstuary as [number, number][], {
-          color: "#38BDF8",
-          weight: 2.5,
-          fillColor: "#00E5FF",
-          fillOpacity: 0.90
-        });
-        aracatiWaterMask.bindPopup(`
-          <div class="p-2.5 font-sans text-xs max-w-xs">
-            <strong class="text-cyan-400 font-bold block mb-1">Máscara Hídrica Estuarina & Viveiros</strong>
-            <span class="text-slate-200 text-[11px] block">Área de viveiros em ${currentMilestone.year}: ${currentMilestone.aquaculturePondAreaHa} ha</span>
-            <p class="text-slate-300 text-[10px] mt-1 leading-relaxed">Canais de maré e tanques aquícolas com espelhamento especular de radar contrastando com a planície salgada.</p>
-          </div>
-        `);
-        maskLayers.push(aracatiWaterMask);
-
-        // 2. BLUE INDICATOR POINTS & DIELECTRIC TELEMETRY CORES
-        WATER_CONCENTRATION_POINTS.forEach((pt) => {
-          const dynamicEpsilon = Math.max(
-            3.5, 
-            Number((pt.epsilonBase * (currentMilestone.soilDielectricEpsilon / 12.4)).toFixed(1))
-          );
-          
-          const color = dynamicEpsilon >= 22 
-            ? "#00E5FF" 
-            : dynamicEpsilon >= 16 
-            ? "#10B981" 
-            : dynamicEpsilon >= 10 
-            ? "#F59E0B" 
-            : "#EF4444";
-
-          // Pulsing halo
-          const halo = L.default.circle(pt.coords, {
-            radius: pt.radiusMeters * (dynamicEpsilon / 20),
-            color: color,
-            weight: 1.5,
-            dashArray: "3, 5",
-            fillColor: color,
-            fillOpacity: 0.18
-          });
-
-          // Distinct blue indicator core point
-          const core = L.default.circleMarker(pt.coords, {
-            radius: 8,
-            color: "#FFFFFF",
-            weight: 2,
-            fillColor: color,
-            fillOpacity: 0.90
-          });
-
-          const popupContent = `
-            <div class="p-2 font-sans text-xs max-w-xs">
-              <span class="text-[10px] uppercase font-bold text-cyan-400 block mb-0.5">Ponto de Concentração Hídrica & Umidade</span>
-              <strong class="text-white text-sm block mb-1.5">${pt.name}</strong>
-              <div class="grid grid-cols-2 gap-1.5 mb-2 font-mono text-[11px] bg-slate-900/80 p-2 rounded-lg border border-slate-800">
-                <div>
-                  <span class="text-slate-400 block text-[9px] uppercase">Permissividade (ε):</span>
-                  <strong class="text-cyan-300">${dynamicEpsilon}</strong>
-                </div>
-                <div>
-                  <span class="text-slate-400 block text-[9px] uppercase">Penetração Banda L:</span>
-                  <strong class="text-emerald-300">${pt.depthCm}</strong>
-                </div>
-              </div>
-              <p class="text-slate-300 leading-relaxed text-[11px]">${pt.descPt}</p>
-              <span class="text-[10px] text-slate-400 font-mono block mt-1.5 pt-1 border-t border-slate-800">
-                ${pt.volumeOrCapacity}
-              </span>
-            </div>
-          `;
-
-          halo.bindPopup(popupContent);
-          core.bindPopup(popupContent);
-
-          maskLayers.push(halo);
-          maskLayers.push(core);
-        });
-
-        const maskGroup = L.default.layerGroup(maskLayers);
-        maskGroup.addTo(map);
-        layersRef.current.activeSar = maskGroup;
-      });
     }
 
     map.invalidateSize();
@@ -1496,14 +1316,6 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
               }`}
             >
               🌿 {t("Vegetation (Biomes)", "Vegetação (Biomas)")}
-            </button>
-            <button
-              onClick={() => setSarOverlayMode("water_mask")}
-              className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
-                sarOverlayMode === "water_mask" ? "bg-cyan-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
-              }`}
-            >
-              💧 {t("Water Mask", "Máscara Água")}
             </button>
             <button
               onClick={() => setSarOverlayMode("sentinel1_rtc")}
@@ -1624,9 +1436,9 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
         )}
       </div>
 
-      {/* REALLOCATED BOTTOM-LEFT FLOATING BIOME DISCRIMINATION LEGEND */}
+      {/* REALLOCATED BOTTOM-LEFT FLOATING BIOME DISCRIMINATION LEGEND (ELEVATED ABOVE SLIDER) */}
       {sarOverlayMode === "vegetation_biomes" && (
-        <div className="absolute bottom-32 left-4 z-10 max-w-xs sm:max-w-sm rounded-2xl border border-emerald-500/40 bg-slate-900/95 p-3 backdrop-blur-md shadow-2xl animate-in fade-in duration-300 transition-all">
+        <div className="absolute bottom-52 left-4 z-10 max-w-xs sm:max-w-sm rounded-2xl border border-emerald-500/40 bg-slate-900/95 p-3 backdrop-blur-md shadow-2xl animate-in fade-in duration-300 transition-all">
           <div className="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-800">
             <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase flex items-center space-x-1.5">
               <TreePine className="h-3.5 w-3.5" />
@@ -1655,85 +1467,36 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
               <span className="text-emerald-400 ml-2">▲</span>
             </div>
           ) : (
-            <div className="space-y-1 text-[11px] pt-0.5">
+            <div className="space-y-1.5 text-[11px] pt-0.5">
               <div className="flex items-center space-x-2">
-                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#16A34A" }} />
+                <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#F59E0B" }} />
                 <span className="text-white font-medium">{t("Sertão Central Caatinga", "Caatinga Depressão Sertaneja")}</span>
-                <span className="text-[9px] text-slate-400 font-mono ml-auto">(Crystalline)</span>
+                <span className="text-[9px] text-amber-400 font-mono ml-auto">({t("Crystalline", "Cristalino")})</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#22C55E" }} />
+                <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#EA580C" }} />
                 <span className="text-white font-medium">{t("Inhamuns Upland Caatinga", "Caatinga dos Inhamuns")}</span>
-                <span className="text-[9px] text-slate-400 font-mono ml-auto">(HV Vol.)</span>
+                <span className="text-[9px] text-orange-400 font-mono ml-auto">({t("Planalto", "Planalto")})</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#84CC16" }} />
+                <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#10B981" }} />
                 <span className="text-white font-medium">{t("Jaguaribe Riparian Gallery (APP)", "Mata Ciliar Ripária (APP 610km)")}</span>
-                <span className="text-[9px] text-slate-400 font-mono ml-auto">(Anti-erosion)</span>
+                <span className="text-[9px] text-emerald-400 font-mono ml-auto">({t("Riparian", "Ciliar")})</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#10B981" }} />
+                <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#06B6D4" }} />
                 <span className="text-white font-medium">{t("Aracati Estuarine Mangroves", "Manguezais de Aracati & Fortim")}</span>
-                <span className="text-[9px] text-slate-400 font-mono ml-auto">(HH-VV Dbl.)</span>
+                <span className="text-[9px] text-cyan-400 font-mono ml-auto">({t("Tidal", "Maré")})</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#EAB308" }} />
+                <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#E11D48" }} />
                 <span className="text-white font-medium">{t("Hypersaline Flats / Apicuns", "Apicuns & Salgados")}</span>
-                <span className="text-[9px] text-slate-400 font-mono ml-auto">(Surface)</span>
+                <span className="text-[9px] text-rose-400 font-mono ml-auto">({t("Supratidal", "Hipersalino")})</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#059669" }} />
+                <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#15803D" }} />
                 <span className="text-white font-medium">{t("Moist Forest Relicts (Brejos)", "Brejos de Altitude (Serras)")}</span>
-                <span className="text-[9px] text-slate-400 font-mono ml-auto">(Orographic)</span>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* REALLOCATED BOTTOM-LEFT FLOATING WATER MASK LEGEND */}
-      {sarOverlayMode === "water_mask" && (
-        <div className="absolute bottom-32 left-4 z-10 max-w-xs sm:max-w-sm rounded-2xl border border-cyan-500/40 bg-slate-900/95 p-3 backdrop-blur-md shadow-2xl animate-in fade-in duration-300 transition-all">
-          <div className="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-800">
-            <span className="text-[10px] font-mono text-cyan-400 font-bold uppercase flex items-center space-x-1.5">
-              <Droplet className="h-3.5 w-3.5" />
-              <span>{t("Water Mask & Specular Lows", "Máscara Hídrica Especular")}</span>
-            </span>
-            <div className="flex items-center space-x-1">
-              <span className="text-[9px] font-mono bg-cyan-950/80 text-cyan-300 border border-cyan-500/30 px-1.5 py-0.5 rounded">
-                σ⁰ &lt; -22 dB
-              </span>
-              <button
-                onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
-                className="p-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition-colors ml-1"
-                title={isLegendCollapsed ? t("Expand Legend", "Expandir") : t("Collapse Legend", "Minimizar")}
-              >
-                {isLegendCollapsed ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-              </button>
-            </div>
-          </div>
-
-          {isLegendCollapsed ? (
-            <div 
-              onClick={() => setIsLegendCollapsed(false)}
-              className="cursor-pointer pt-1 flex items-center justify-between text-[10px] font-mono text-cyan-300 hover:text-cyan-200"
-            >
-              <span>{t("Specular water reflection active", "Reflexão especular hídrica ativa")}</span>
-              <span className="text-cyan-400 ml-2">▲</span>
-            </div>
-          ) : (
-            <div className="space-y-1 text-[11px] pt-0.5">
-              <div className="flex items-center space-x-2">
-                <span className="h-2 w-2 rounded-full bg-[#00E5FF] flex-shrink-0" />
-                <span className="text-white font-medium">{t("Mega-Reservoirs (Castanhão, Orós, etc.)", "Grandes Açudes (Castanhão, Orós, etc.)")}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="h-2 w-2 rounded-full bg-[#38BDF8] flex-shrink-0" />
-                <span className="text-white font-medium">{t("Riverbed Channel & Alluvial Aquifers", "Calha do Jaguaribe & Várzeas")}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="h-2 w-2 rounded-full bg-[#06B6D4] flex-shrink-0" />
-                <span className="text-white font-medium">{t("Aracati Estuary & Aquaculture Ponds", "Estuário de Aracati & Viveiros")}</span>
+                <span className="text-[9px] text-emerald-300 font-mono ml-auto">({t("Orographic", "Serrano")})</span>
               </div>
             </div>
           )}

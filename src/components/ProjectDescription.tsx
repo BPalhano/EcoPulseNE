@@ -78,7 +78,7 @@ export default function ProjectDescription() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-16">
+        <div className="max-w-3xl mb-12">
           <div className="inline-flex items-center space-x-2 rounded-full border border-cyan-500/30 bg-cyan-950/40 px-3.5 py-1 text-xs font-semibold text-cyan-300 mb-4">
             <Workflow className="h-3.5 w-3.5 text-cyan-400" />
             <span>{t("Scientific Framework & Architecture", "Estrutura Científica & Arquitetura")}</span>
@@ -92,6 +92,101 @@ export default function ProjectDescription() {
               "O EcoPulse NE investiga o encadeamento hidrológico e ecológico direto que liga as megassecas plurianuais na Caatinga semiárida às crises a jusante nos manguezais costeiros, centrado ao longo do corredor de 610 km da Bacia do Rio Jaguaribe no Ceará."
             )}
           </p>
+        </div>
+
+        {/* 30-SECOND PITCH & STORYTELLING: CAATINGA, ENFORCEMENT RISKS & SAR RADAR */}
+        <div className="mb-16 rounded-3xl border border-cyan-500/40 bg-gradient-to-r from-slate-900 via-[#0A162B] to-slate-900 p-6 lg:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-6 mb-6 border-b border-slate-800">
+            <div>
+              <div className="inline-flex items-center space-x-2 rounded-full border border-cyan-500/30 bg-cyan-950/60 px-3 py-1 text-xs font-semibold text-cyan-300 mb-2">
+                <Radio className="h-3.5 w-3.5 text-cyan-400 animate-pulse" />
+                <span>{t("NASA Space Apps Official Pitch Storyboard", "Roteiro Oficial do Pitch de 30 Segundos")}</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-white">
+                {t(
+                  "30-Second Conservation Narrative: The Caatinga & SAR Remote Sensing",
+                  "Narrativa de Preservação em 30 Segundos: A Caatinga & a Tecnologia SAR"
+                )}
+              </h3>
+            </div>
+            <span className="rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-3.5 py-1.5 text-xs font-mono font-bold text-cyan-300">
+              ⏱️ 30s Pitch Breakdown
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Act 1: 00-05s */}
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-950/10 p-5 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">
+                    00:00 – 00:05 (5s)
+                  </span>
+                  <span className="text-xs text-amber-400 font-bold uppercase tracking-wider">Ato 1</span>
+                </div>
+                <h4 className="text-sm font-bold text-white mb-2">
+                  {t("The Caatinga Biome", "Apresentação da Caatinga")}
+                </h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {t(
+                    "South America's only exclusively Brazilian biome: over 840,000 km² supporting 28 million people, characterized by high endemism, extreme seasonal adaptation, and deep cultural memory.",
+                    "O único bioma 100% brasileiro: mais de 840 mil km² e lar de 28 milhões de pessoas, com biodiversidade única adaptada à semiaridez e profunda resistência cultural."
+                  )}
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-amber-500/20 text-[11px] font-mono text-amber-300">
+                🌿 {t("Vibrant, resilient, yet critically fragile", "Bioma vibrante, resiliente e frágil")}
+              </div>
+            </div>
+
+            {/* Act 2: 05-18s */}
+            <div className="rounded-2xl border border-rose-500/30 bg-rose-950/10 p-5 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold">
+                    00:05 – 00:18 (13s)
+                  </span>
+                  <span className="text-xs text-rose-400 font-bold uppercase tracking-wider">Ato 2</span>
+                </div>
+                <h4 className="text-sm font-bold text-white mb-2">
+                  {t("Risks & Enforcement Dilemma", "Risco Atual & Desafio da Fiscalização")}
+                </h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {t(
+                    "Desertification threatens 126,000 km². During the dry season, the Caatinga naturally sheds 100% of its leaves ('mata branca'). Illegal deforestation blends into the dry landscape, creating massive optical blind spots that make satellite policing nearly impossible.",
+                    "A desertificação ameaça 126 mil km². Na seca, a mata perde todas as folhas ('mata branca'). O desmatamento ilegal se camufla na paisagem cinzenta, gerando pontos cegos que barram a fiscalização óptica tradicional."
+                  )}
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-rose-500/20 text-[11px] font-mono text-rose-300">
+                ⚠️ {t("Optical satellites are blinded by dry leaves & dust", "Satélites ópticos são cegados pela seca")}
+              </div>
+            </div>
+
+            {/* Act 3: 18-30s */}
+            <div className="rounded-2xl border border-cyan-500/30 bg-cyan-950/10 p-5 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">
+                    00:18 – 00:30 (12s)
+                  </span>
+                  <span className="text-xs text-cyan-400 font-bold uppercase tracking-wider">Ato 3</span>
+                </div>
+                <h4 className="text-sm font-bold text-white mb-2">
+                  {t("The SAR Radar Solution", "Contribuição da Tecnologia SAR")}
+                </h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {t(
+                    "SAR active microwaves pierce dust, darkness, and clouds. By measuring cross-polarized volume scattering and root dielectric moisture (0–30 cm), SAR instantly proves which trees are living wood versus illegal clear-cuts, powering rapid real-time environmental enforcement.",
+                    "O radar SAR emite micro-ondas que atravessam nuvens, poeira e noite. Pelo espalhamento volumétrico e umidade dielétrica (0–30 cm), o SAR distingue imediatamente madeira viva de corte raso, viabilizando fiscalização em tempo real."
+                  )}
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-cyan-500/20 text-[11px] font-mono text-cyan-300">
+                🛰️ {t("24/7 all-weather environmental intelligence", "Inteligência ambiental 24/7 sem pontos cegos")}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* 2-Column: The Caatinga Impact vs The Mangrove Teleconnection */}

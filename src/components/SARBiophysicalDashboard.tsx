@@ -47,7 +47,8 @@ import BiomassCorrelationSection from "@/components/BiomassCorrelationSection";
 const MULTI_METRIC_TIME_SERIES = [
   {
     year: 1985,
-    label: "1985 - Pre-Castanhão Baseline",
+    labelEn: "1985 - Pre-Castanhão Pristine Baseline",
+    labelPt: "1985 - Linha de Base Pré-Castanhão",
     dielectricEpsilon: 14.5,
     insarDeformationMm: 0.0,
     doubleBouncePct: 45,
@@ -57,7 +58,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 1990,
-    label: "1990 - Seasonal Drought Cycle",
+    labelEn: "1990 - Seasonal Drought Cycle",
+    labelPt: "1990 - Estiagem Sazonal da Caatinga",
     dielectricEpsilon: 9.8,
     insarDeformationMm: -0.4,
     doubleBouncePct: 36,
@@ -67,7 +69,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 1995,
-    label: "1995 - Super Wet Flood Pulse",
+    labelEn: "1995 - Super Wet Monsoon Pulse",
+    labelPt: "1995 - Super Pulso Úmido de Inundação",
     dielectricEpsilon: 18.2,
     insarDeformationMm: +0.6,
     doubleBouncePct: 48,
@@ -77,7 +80,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2000,
-    label: "2000 - Castanhão Construction Earthworks",
+    labelEn: "2000 - Castanhão Construction Earthworks",
+    labelPt: "2000 - Obras de Barramento do Castanhão",
     dielectricEpsilon: 12.0,
     insarDeformationMm: -0.8,
     doubleBouncePct: 38,
@@ -87,7 +91,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2004,
-    label: "2004 - Reservoir Filling & 100% Spillway",
+    labelEn: "2004 - Reservoir Filling & Historic Spillway Sangria",
+    labelPt: "2004 - Sangria Histórica do Castanhão (100%)",
     dielectricEpsilon: 21.0,
     insarDeformationMm: -1.2,
     doubleBouncePct: 52,
@@ -97,7 +102,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2008,
-    label: "2008 - Second Spillway Discharge",
+    labelEn: "2008 - Second Spillway Discharge Era",
+    labelPt: "2008 - Segunda Sangria Plena & Equilíbrio",
     dielectricEpsilon: 19.5,
     insarDeformationMm: -1.4,
     doubleBouncePct: 50,
@@ -107,7 +113,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2012,
-    label: "2012 - Megadrought Inception",
+    labelEn: "2012 - Inception of Decade Megadrought",
+    labelPt: "2012 - Início da Megaseca Decenal",
     dielectricEpsilon: 8.4,
     insarDeformationMm: -2.8,
     doubleBouncePct: 28,
@@ -117,7 +124,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2014,
-    label: "2014 - Deepening Drought & Gates Closed",
+    labelEn: "2014 - Deepening Drought & Downstream Flow Closed",
+    labelPt: "2014 - Agravamento da Seca & Fechamento de Comportas",
     dielectricEpsilon: 5.6,
     insarDeformationMm: -3.9,
     doubleBouncePct: 20,
@@ -127,7 +135,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2016,
-    label: "2016 - Apex Drought (5.2% Storage)",
+    labelEn: "2016 - Apex Drought: Castanhão at 5.2% Storage",
+    labelPt: "2016 - Ápice da Megaseca (Castanhão a 5,2%)",
     dielectricEpsilon: 3.4,
     insarDeformationMm: -4.8,
     doubleBouncePct: 14,
@@ -137,7 +146,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2018,
-    label: "2018 - Drought Trough Persistence",
+    labelEn: "2018 - Critical Dead Volume Persistence",
+    labelPt: "2018 - Persistência do Volume Morto",
     dielectricEpsilon: 4.8,
     insarDeformationMm: -4.2,
     doubleBouncePct: 18,
@@ -147,7 +157,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2020,
-    label: "2020 - Initial Monsoon Greening",
+    labelEn: "2020 - Initial Monsoon Wet Pulses",
+    labelPt: "2020 - Primeiros Pulsos Úmidos de Recarga",
     dielectricEpsilon: 7.9,
     insarDeformationMm: -2.1,
     doubleBouncePct: 27,
@@ -157,7 +168,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2022,
-    label: "2022 - PISF Transposition Arrival",
+    labelEn: "2022 - PISF São Francisco Transposition Inflow",
+    labelPt: "2022 - Chegada das Águas da Transposição (PISF)",
     dielectricEpsilon: 9.6,
     insarDeformationMm: -1.0,
     doubleBouncePct: 33,
@@ -167,7 +179,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2024,
-    label: "2024 - Systemic Recovery Baseline",
+    labelEn: "2024 - Operational Baseline Recovery",
+    labelPt: "2024 - Marco de Recuperação & Linha de Base",
     dielectricEpsilon: 11.8,
     insarDeformationMm: +1.1,
     doubleBouncePct: 36,
@@ -177,7 +190,8 @@ const MULTI_METRIC_TIME_SERIES = [
   },
   {
     year: 2026,
-    label: "2026 - Present: NISAR Dual-Band Era",
+    labelEn: "2026 - Present: NISAR Dual-Band L+S Era",
+    labelPt: "2026 - Presente: Era Operacional NISAR L+S",
     dielectricEpsilon: 12.4,
     insarDeformationMm: +0.8,
     doubleBouncePct: 39,
@@ -368,7 +382,9 @@ export default function SARBiophysicalDashboard() {
 
   const normalizedTimeSeriesData = MULTI_METRIC_TIME_SERIES.map((pt) => ({
     year: pt.year,
-    label: pt.label,
+    labelEn: pt.labelEn,
+    labelPt: pt.labelPt,
+    label: t(pt.labelEn, pt.labelPt),
     dielectricEpsilon: pt.dielectricEpsilon,
     insarDeformationMm: pt.insarDeformationMm,
     doubleBouncePct: pt.doubleBouncePct,
@@ -613,28 +629,48 @@ export default function SARBiophysicalDashboard() {
                       const data = payload[0].payload;
                       return (
                         <div className="rounded-xl border border-slate-700 bg-slate-900/95 p-3.5 shadow-2xl backdrop-blur-md text-xs font-sans max-w-sm">
+                          {/* Milestone Highlighting Badge */}
+                          {data.year === 2004 && (
+                            <div className="mb-2 inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-cyan-950/80 border border-cyan-400 text-cyan-200 text-xs font-bold">
+                              <span>🌊</span>
+                              <span>{t("2004 Historic Spillway Sangria", "2004 Sangria Histórica do Castanhão")}</span>
+                            </div>
+                          )}
+                          {data.year === 2016 && (
+                            <div className="mb-2 inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-rose-950/80 border border-rose-400 text-rose-200 text-xs font-bold">
+                              <span>🔥</span>
+                              <span>{t("2016 Peak Megadrought Apex (5.2% Storage)", "2016 Ápice da Megaseca (5,2% Volume)")}</span>
+                            </div>
+                          )}
+                          {data.year === 2022 && (
+                            <div className="mb-2 inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-blue-950/80 border border-blue-400 text-blue-200 text-xs font-bold">
+                              <span>💧</span>
+                              <span>{t("2022 PISF São Francisco Arrival", "2022 Chegada das Águas do PISF")}</span>
+                            </div>
+                          )}
+
                           <span className="font-mono text-cyan-400 font-bold block mb-1">
-                            {data.label}
+                            {t(data.labelEn, data.labelPt)}
                           </span>
                           <div className="space-y-1.5 font-mono text-[11px] mb-2">
                             <div className="flex justify-between text-cyan-300">
-                              <span>Permissividade Dielétrica (ε):</span>
+                              <span>{t("Soil Dielectric Permittivity (ε):", "Permissividade Dielétrica (ε):")}</span>
                               <strong>{data.dielectricEpsilon}</strong>
                             </div>
                             <div className="flex justify-between text-emerald-300">
-                              <span>Deformação InSAR Crista:</span>
-                              <strong>{data.insarDeformationMm > 0 ? `+${data.insarDeformationMm}` : data.insarDeformationMm} mm/ano</strong>
+                              <span>{t("InSAR Dam Crest Deformation:", "Deformação InSAR Crista:")}</span>
+                              <strong>{data.insarDeformationMm > 0 ? `+${data.insarDeformationMm}` : data.insarDeformationMm} mm/{t("yr", "ano")}</strong>
                             </div>
                             <div className="flex justify-between text-rose-300">
-                              <span>Reflexão Dupla Diedro (Pd):</span>
+                              <span>{t("Dihedral Double-Bounce (Pd):", "Reflexão Dupla Diedro (Pd):")}</span>
                               <strong>{data.doubleBouncePct}%</strong>
                             </div>
                             <div className="flex justify-between text-amber-300">
-                              <span>Cunha Salina a Montante:</span>
+                              <span>{t("Upstream Saline Wedge:", "Cunha Salina a Montante:")}</span>
                               <strong>{data.salinityWedgeKm} km</strong>
                             </div>
                           </div>
-                          <p className="text-[10px] text-slate-300 italic border-t border-slate-800 pt-1.5">
+                          <p className="text-[10px] text-slate-300 italic border-t border-slate-800 pt-1.5 leading-relaxed">
                             {t(data.contextEn, data.contextPt)}
                           </p>
                         </div>
@@ -651,11 +687,9 @@ export default function SARBiophysicalDashboard() {
                   label={(props: any) => {
                     const x = props.viewBox?.x ?? 0;
                     return (
-                      <g transform={`translate(${x}, 10)`}>
-                        <rect x={-54} y={0} width={108} height={26} rx={7} fill="#083344" stroke="#00E5FF" strokeWidth={1.5} />
-                        <text x={0} y={17} fill="#E0F7FA" fontSize={11} fontWeight={700} textAnchor="middle" fontFamily="sans-serif">
-                          🌊 2004 Sangria
-                        </text>
+                      <g transform={`translate(${x}, 14)`}>
+                        <circle cx={0} cy={0} r={12} fill="#083344" stroke="#00E5FF" strokeWidth={1.5} />
+                        <text x={0} y={4} fontSize={12} textAnchor="middle">🌊</text>
                       </g>
                     );
                   }} 
@@ -668,11 +702,9 @@ export default function SARBiophysicalDashboard() {
                   label={(props: any) => {
                     const x = props.viewBox?.x ?? 0;
                     return (
-                      <g transform={`translate(${x}, 10)`}>
-                        <rect x={-60} y={0} width={120} height={26} rx={7} fill="#4C0519" stroke="#F43F5E" strokeWidth={1.5} />
-                        <text x={0} y={17} fill="#FFE4E6" fontSize={11} fontWeight={700} textAnchor="middle" fontFamily="sans-serif">
-                          🔥 2016 Megaseca
-                        </text>
+                      <g transform={`translate(${x}, 14)`}>
+                        <circle cx={0} cy={0} r={12} fill="#4C0519" stroke="#F43F5E" strokeWidth={1.5} />
+                        <text x={0} y={4} fontSize={12} textAnchor="middle">🔥</text>
                       </g>
                     );
                   }} 
@@ -685,11 +717,9 @@ export default function SARBiophysicalDashboard() {
                   label={(props: any) => {
                     const x = props.viewBox?.x ?? 0;
                     return (
-                      <g transform={`translate(${x}, 10)`}>
-                        <rect x={-50} y={0} width={100} height={26} rx={7} fill="#172554" stroke="#3B82F6" strokeWidth={1.5} />
-                        <text x={0} y={17} fill="#DBEAFE" fontSize={11} fontWeight={700} textAnchor="middle" fontFamily="sans-serif">
-                          💧 2022 PISF
-                        </text>
+                      <g transform={`translate(${x}, 14)`}>
+                        <circle cx={0} cy={0} r={12} fill="#172554" stroke="#3B82F6" strokeWidth={1.5} />
+                        <text x={0} y={4} fontSize={12} textAnchor="middle">💧</text>
                       </g>
                     );
                   }} 
@@ -704,6 +734,8 @@ export default function SARBiophysicalDashboard() {
                     fillOpacity={1}
                     fill="url(#areaDielectric)"
                     name="Dielectric ε"
+                    dot={{ r: 3.5, fill: "#083344", stroke: "#00E5FF", strokeWidth: 1.5 }}
+                    activeDot={{ r: 6.5, fill: "#00E5FF", stroke: "#FFFFFF", strokeWidth: 2 }}
                   />
                 )}
                 {(selectedMetricMode === "all" || selectedMetricMode === "insar") && (
@@ -715,6 +747,8 @@ export default function SARBiophysicalDashboard() {
                     fillOpacity={1}
                     fill="url(#areaInsar)"
                     name="InSAR Deformation"
+                    dot={{ r: 3.5, fill: "#064E3B", stroke: "#10B981", strokeWidth: 1.5 }}
+                    activeDot={{ r: 6.5, fill: "#10B981", stroke: "#FFFFFF", strokeWidth: 2 }}
                   />
                 )}
                 {(selectedMetricMode === "all" || selectedMetricMode === "double_bounce") && (
@@ -726,6 +760,8 @@ export default function SARBiophysicalDashboard() {
                     fillOpacity={1}
                     fill="url(#areaDoubleBounce)"
                     name="Double-Bounce"
+                    dot={{ r: 3.5, fill: "#4C0519", stroke: "#F43F5E", strokeWidth: 1.5 }}
+                    activeDot={{ r: 6.5, fill: "#F43F5E", stroke: "#FFFFFF", strokeWidth: 2 }}
                   />
                 )}
                 {(selectedMetricMode === "all" || selectedMetricMode === "salinity") && (
@@ -737,6 +773,8 @@ export default function SARBiophysicalDashboard() {
                     fillOpacity={1}
                     fill="url(#areaSalinity)"
                     name="Salinity Wedge"
+                    dot={{ r: 3.5, fill: "#451A03", stroke: "#F59E0B", strokeWidth: 1.5 }}
+                    activeDot={{ r: 6.5, fill: "#F59E0B", stroke: "#FFFFFF", strokeWidth: 2 }}
                   />
                 )}
               </AreaChart>
