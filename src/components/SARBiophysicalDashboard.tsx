@@ -13,6 +13,7 @@ import {
   TrendingUp, 
   Waves, 
   Flame,
+  Calendar,
   CheckCircle2,
   AlertTriangle,
   XCircle,
@@ -463,21 +464,13 @@ export default function SARBiophysicalDashboard() {
             </p>
           </div>
 
-          {/* Scenario Selector Pills */}
-          <div className="flex items-center rounded-xl border border-slate-700 bg-slate-900/90 p-1.5 shadow-lg">
-            {(["baseline", "drought", "recovery"] as const).map((s) => (
-              <button
-                key={s}
-                onClick={() => setSelectedScenario(s)}
-                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
-                  selectedScenario === s
-                    ? "bg-gradient-to-r from-rose-500 to-amber-500 text-white shadow-md shadow-rose-950/50"
-                    : "text-slate-400 hover:text-slate-200"
-                }`}
-              >
-                {t(scenarios[s].titleEn.split(" ")[0] + " " + scenarios[s].year, scenarios[s].titlePt.split(" ")[0] + " " + scenarios[s].year)}
-              </button>
-            ))}
+          {/* Active Sensor Constellation Badge */}
+          <div className="flex items-center space-x-2.5 rounded-2xl border border-slate-700/80 bg-slate-900/90 px-4 py-2.5 shadow-lg">
+            <Radio className="h-4 w-4 text-cyan-400 animate-pulse" />
+            <div className="text-xs">
+              <span className="text-slate-400 font-mono block text-[10px] uppercase font-bold">{t("Radar Constellation", "Constelação SAR")}</span>
+              <span className="text-white font-semibold font-mono">NISAR L+S · Sentinel-1 C · ALOS-2 L</span>
+            </div>
           </div>
         </div>
 
@@ -666,6 +659,44 @@ export default function SARBiophysicalDashboard() {
             </button>
           </div>
 
+        </div>
+
+        {/* BENCHMARK YEAR & HISTORICAL SCENARIO CONTROL BAR */}
+        <div className="p-4 sm:p-5 rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900/95 via-[#0C1628] to-slate-900/95 mb-6 backdrop-blur-xl shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center space-x-2">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-rose-400 flex items-center space-x-1.5">
+                <Calendar className="h-3.5 w-3.5" />
+                <span>{t("Benchmark Year & Calibrated Radar Scenario", "Ano de Referência & Cenário Radar Calibrado")}</span>
+              </span>
+              <span className="text-xs px-2.5 py-0.5 rounded-full font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                {curr.year}
+              </span>
+            </div>
+            <p className="text-xs text-slate-300">
+              <span className="font-semibold text-white">{t(curr.titleEn, curr.titlePt)}:</span>{" "}
+              {t(curr.descriptionEn, curr.descriptionPt)}
+            </p>
+          </div>
+
+          {/* Scenario Selector Year Buttons */}
+          <div className="flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-700/80 bg-slate-950/90 p-1.5 shadow-inner self-start md:self-auto flex-shrink-0">
+            {(["baseline", "drought", "recovery"] as const).map((s) => (
+              <button
+                key={s}
+                onClick={() => setSelectedScenario(s)}
+                className={`rounded-lg px-3.5 py-2 text-xs font-bold transition-all flex items-center space-x-2 ${
+                  selectedScenario === s
+                    ? "bg-gradient-to-r from-rose-500 to-amber-500 text-white shadow-md shadow-rose-950/50 scale-[1.02]"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                }`}
+              >
+                <span>{s === "baseline" ? "🌱" : s === "drought" ? "🔥" : "💧"}</span>
+                <span className="font-mono">{scenarios[s].year}</span>
+                <span className="text-[11px] font-normal opacity-90">({t(scenarios[s].titleEn.split(" ")[0], scenarios[s].titlePt.split(" ")[0])})</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* 4 Interactive KPI Cards */}

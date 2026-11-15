@@ -28,7 +28,9 @@ import {
   Fish,
   Crosshair,
   Satellite,
-  Loader2
+  Loader2,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import {
   AreaChart,
@@ -852,6 +854,11 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
   const [showEcologicalRisks, setShowEcologicalRisks] = useState<boolean>(true);
   const [mapTilesLoading, setMapTilesLoading] = useState<boolean>(false);
 
+  // Collapsible HUD and Legend states
+  const [isTelemetryHudCollapsed, setIsTelemetryHudCollapsed] = useState<boolean>(false);
+  const [isLegendCollapsed, setIsLegendCollapsed] = useState<boolean>(false);
+  const [isMissionEraCollapsed, setIsMissionEraCollapsed] = useState<boolean>(false);
+
   // Off-Canvas Sidebar State
   const [activeMetricDrawer, setActiveMetricDrawer] = useState<MetricType | null>(null);
 
@@ -1393,327 +1400,439 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
         style={{ filter: currentMissionEra.filterStyle }}
       />
 
-      {/* TOP CONTROL BAR */}
-      <div className="absolute top-4 left-4 z-10 flex flex-wrap items-center gap-2 max-w-[calc(100%-4rem)]">
+      {/* UNIFIED TOP CONTROL BAR */}
+      <div className="absolute top-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
         
-        {/* Base Layer Switcher */}
-        <div className="flex items-center rounded-xl border border-slate-700/80 bg-slate-900/90 p-1 backdrop-blur-md shadow-xl text-xs">
-          <span className="text-[10px] font-bold text-slate-400 uppercase px-2 flex items-center space-x-1">
-            <Layers className="h-3 w-3 text-cyan-400" />
-            <span>{t("Basemap:", "Base:")}</span>
-          </span>
+        {/* Left Cluster: Basemap & SAR Masks */}
+        <div className="flex flex-wrap items-center gap-2 pointer-events-auto">
+          {/* Base Layer Switcher */}
+          <div className="flex items-center rounded-xl border border-slate-700/80 bg-slate-900/95 p-1 backdrop-blur-md shadow-xl text-xs">
+            <span className="text-[10px] font-bold text-slate-400 uppercase px-2 flex items-center space-x-1">
+              <Layers className="h-3 w-3 text-cyan-400" />
+              <span>{t("Basemap:", "Base:")}</span>
+            </span>
+            <button
+              onClick={() => setBaseMapStyle("dark")}
+              className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
+                baseMapStyle === "dark" ? "bg-cyan-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
+              }`}
+            >
+              {t("Dark Canvas", "Escuro")}
+            </button>
+            <button
+              onClick={() => setBaseMapStyle("satellite")}
+              className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
+                baseMapStyle === "satellite" ? "bg-cyan-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
+              }`}
+            >
+              {t("Satellite", "Satélite")}
+            </button>
+            <button
+              onClick={() => setBaseMapStyle("osm")}
+              className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
+                baseMapStyle === "osm" ? "bg-cyan-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
+              }`}
+            >
+              OSM
+            </button>
+          </div>
+
+          {/* SAR Sensor & Mask Overlay Selector */}
+          <div className="flex items-center rounded-xl border border-slate-700/80 bg-slate-900/95 p-1 backdrop-blur-md shadow-xl text-xs">
+            <span className="text-[10px] font-bold text-emerald-400 uppercase px-2 flex items-center space-x-1">
+              <Radio className="h-3 w-3 animate-pulse" />
+              <span>{t("SAR Masks:", "Máscaras SAR:")}</span>
+            </span>
+            <button
+              onClick={() => setSarOverlayMode("vegetation_biomes")}
+              className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
+                sarOverlayMode === "vegetation_biomes" ? "bg-emerald-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
+              }`}
+            >
+              🌿 {t("Vegetation (Biomes)", "Vegetação (Biomas)")}
+            </button>
+            <button
+              onClick={() => setSarOverlayMode("water_mask")}
+              className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
+                sarOverlayMode === "water_mask" ? "bg-cyan-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
+              }`}
+            >
+              💧 {t("Water Mask", "Máscara Água")}
+            </button>
+            <button
+              onClick={() => setSarOverlayMode("sentinel1_rtc")}
+              className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
+                sarOverlayMode === "sentinel1_rtc" ? "bg-emerald-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
+              }`}
+            >
+              📡 {t("SAR Mosaic", "Mosaico SAR")}
+            </button>
+            <button
+              onClick={() => setSarOverlayMode("none")}
+              className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
+                sarOverlayMode === "none" ? "bg-slate-700 text-white font-bold" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              {t("Off", "Desligar")}
+            </button>
+          </div>
+
+          {/* Tile Loading Indicator */}
+          {mapTilesLoading && (
+            <div className="flex items-center space-x-1.5 rounded-xl border border-cyan-500/40 bg-slate-900/95 px-2.5 py-1 text-xs font-mono text-cyan-300 shadow-xl backdrop-blur-md animate-pulse">
+              <Loader2 className="h-3.5 w-3.5 animate-spin text-cyan-400" />
+              <span>{t("Streaming...", "Carregando...")}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Right Cluster: Dam Quick Focus + Ecological Risks + Fullscreen */}
+        <div className="flex flex-wrap items-center gap-2 pointer-events-auto ml-auto">
+          {/* Dam Quick Focus Selector */}
+          <div className="flex items-center rounded-xl border border-slate-700/80 bg-slate-900/95 p-1 backdrop-blur-md shadow-xl text-xs">
+            <span className="text-[10px] font-bold text-cyan-300 uppercase px-2 flex items-center space-x-1">
+              <Crosshair className="h-3 w-3" />
+              <span className="hidden sm:inline">{t("Focus Dam:", "Foco Açude:")}</span>
+            </span>
+            <div className="flex items-center space-x-0.5 sm:space-x-1">
+              {MAJOR_DAMS.map((dam) => (
+                <button
+                  key={dam.id}
+                  onClick={() => handleSelectDam(dam)}
+                  className={`rounded-lg px-2 py-1 text-xs font-semibold transition-all ${
+                    selectedDamId === dam.id
+                      ? "bg-cyan-500 text-black shadow-sm font-bold"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800"
+                  }`}
+                  title={`${dam.name} (${dam.capacityMm3} mi m³)`}
+                >
+                  {dam.name.split(" ")[1]}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Ecological Risks Layer Toggle */}
           <button
-            onClick={() => setBaseMapStyle("dark")}
-            className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
-              baseMapStyle === "dark" ? "bg-cyan-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
+            onClick={() => setShowEcologicalRisks(!showEcologicalRisks)}
+            className={`flex items-center space-x-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold backdrop-blur-md shadow-xl transition-all ${
+              showEcologicalRisks
+                ? "border-amber-500/50 bg-amber-950/80 text-amber-300 font-bold"
+                : "border-slate-700/80 bg-slate-900/95 text-slate-400 hover:text-white"
             }`}
           >
-            {t("Dark Canvas", "Escuro")}
+            <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
+            <span className="hidden md:inline">{t("Ecological Issues", "Problemas Ecológicos")}</span>
           </button>
+
+          {/* Fullscreen Toggle */}
           <button
-            onClick={() => setBaseMapStyle("satellite")}
-            className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
-              baseMapStyle === "satellite" ? "bg-cyan-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
-            }`}
+            onClick={() => setIsFullScreen(!isFullScreen)}
+            className="rounded-xl border border-slate-700/80 bg-slate-900/95 p-2 text-slate-300 hover:text-white hover:bg-slate-800 backdrop-blur-md shadow-xl transition-all"
+            title={isFullScreen ? "Exit Fullscreen" : "Fullscreen Map"}
           >
-            {t("Satellite", "Satélite")}
-          </button>
-          <button
-            onClick={() => setBaseMapStyle("osm")}
-            className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
-              baseMapStyle === "osm" ? "bg-cyan-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
-            }`}
-          >
-            OSM
+            {isFullScreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
           </button>
         </div>
 
-        {/* SAR Sensor & Mask Overlay Selector */}
-        <div className="flex items-center rounded-xl border border-slate-700/80 bg-slate-900/90 p-1 backdrop-blur-md shadow-xl text-xs">
-          <span className="text-[10px] font-bold text-emerald-400 uppercase px-2 flex items-center space-x-1">
-            <Radio className="h-3 w-3 animate-pulse" />
-            <span>{t("SAR Masks / Layers:", "Máscaras SAR / Modos:")}</span>
-          </span>
+      </div>
+
+      {/* TOP-LEFT 5-YEAR SATELLITE & SAR MISSION TIMESTAMP BADGE (Collapsible) */}
+      <div className="absolute top-16 left-4 z-10 max-w-xs sm:max-w-sm rounded-2xl border border-slate-700/80 bg-slate-900/95 p-3 backdrop-blur-md shadow-2xl transition-all">
+        <div className="flex items-center justify-between pb-1 border-b border-slate-800/80">
+          <div className="flex items-center space-x-1.5 text-[10px] font-mono text-cyan-400 font-bold uppercase">
+            <Satellite className="h-3.5 w-3.5 text-cyan-400" />
+            <span>{t("Active Satellite Era", "Era de Satélites")} ({currentMissionEra.yearMin}–{currentMissionEra.yearMax})</span>
+          </div>
           <button
-            onClick={() => setSarOverlayMode("vegetation_biomes")}
-            className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
-              sarOverlayMode === "vegetation_biomes" ? "bg-emerald-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
-            }`}
+            onClick={() => setIsMissionEraCollapsed(!isMissionEraCollapsed)}
+            className="p-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition-colors ml-2"
+            title={isMissionEraCollapsed ? t("Expand Era Details", "Expandir") : t("Collapse Era", "Minimizar")}
           >
-            🌿 {t("Vegetation (Biomes)", "Vegetação (Biomas)")}
-          </button>
-          <button
-            onClick={() => setSarOverlayMode("water_mask")}
-            className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
-              sarOverlayMode === "water_mask" ? "bg-cyan-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
-            }`}
-          >
-            💧 {t("Water Mask (Water Bodies)", "Máscara Hídrica (Água)")}
-          </button>
-          <button
-            onClick={() => setSarOverlayMode("sentinel1_rtc")}
-            className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
-              sarOverlayMode === "sentinel1_rtc" ? "bg-emerald-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
-            }`}
-          >
-            📡 {t("Full Radar Mosaic", "Mosaico Radar Ceará")}
-          </button>
-          <button
-            onClick={() => setSarOverlayMode("none")}
-            className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
-              sarOverlayMode === "none" ? "bg-slate-700 text-white font-bold" : "text-slate-400 hover:text-white"
-            }`}
-          >
-            {t("Off", "Desativar")}
+            {isMissionEraCollapsed ? <ChevronDown className="h-3 w-3" /> : <ChevronUp className="h-3 w-3" />}
           </button>
         </div>
 
-        {/* Tile Loading Indicator */}
-        {mapTilesLoading && (
-          <div className="flex items-center space-x-1.5 rounded-xl border border-cyan-500/40 bg-slate-900/95 px-2.5 py-1 text-xs font-mono text-cyan-300 shadow-xl backdrop-blur-md animate-pulse">
-            <Loader2 className="h-3.5 w-3.5 animate-spin text-cyan-400" />
-            <span>{t("Streaming Tiles...", "Carregando Camadas...")}</span>
+        {isMissionEraCollapsed ? (
+          <div 
+            onClick={() => setIsMissionEraCollapsed(false)}
+            className="cursor-pointer pt-1 flex items-center justify-between text-[10px] font-mono text-slate-300 hover:text-cyan-300"
+          >
+            <span className="truncate">{currentMissionEra.sarMission} ({currentMissionEra.sarBand.split("(")[0].trim()})</span>
+            <span className="text-cyan-400 ml-2">▼</span>
+          </div>
+        ) : (
+          <div className="space-y-1 text-xs pt-1.5">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="text-amber-300 font-bold">Óptico:</span>
+              <span className="font-mono text-white text-[10px]">{currentMissionEra.opticalMission}</span>
+            </div>
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="text-emerald-300 font-bold">Radar SAR:</span>
+              <span className="font-mono text-white text-[10px]">{currentMissionEra.sarMission} ({currentMissionEra.sarBand.split("(")[0]})</span>
+            </div>
+            <div className="mt-1.5 pt-1 border-t border-slate-800 text-[10px] text-slate-300 italic">
+              {t(currentMissionEra.contextEn, currentMissionEra.contextPt)}
+            </div>
           </div>
         )}
-
-        {/* Ecological Risks Layer Toggle */}
-        <button
-          onClick={() => setShowEcologicalRisks(!showEcologicalRisks)}
-          className={`flex items-center space-x-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold backdrop-blur-md shadow-xl transition-all ${
-            showEcologicalRisks
-              ? "border-amber-500/50 bg-amber-950/80 text-amber-300 font-bold"
-              : "border-slate-700/80 bg-slate-900/90 text-slate-400 hover:text-white"
-          }`}
-        >
-          <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
-          <span>{t("Ecological Issues & Mitigation", "Problemas Ecológicos & Correção")}</span>
-        </button>
-
-        {/* Fullscreen Toggle */}
-        <button
-          onClick={() => setIsFullScreen(!isFullScreen)}
-          className="rounded-xl border border-slate-700/80 bg-slate-900/90 p-2 text-slate-300 hover:text-white hover:bg-slate-800 backdrop-blur-md shadow-xl transition-all"
-          title={isFullScreen ? "Exit Fullscreen" : "Fullscreen Map"}
-        >
-          {isFullScreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-        </button>
-
       </div>
 
-      {/* TOP-LEFT 5-YEAR SATELLITE & SAR MISSION TIMESTAMP BADGE */}
-      <div className="absolute top-16 left-4 z-10 max-w-sm rounded-2xl border border-slate-700/80 bg-slate-900/95 p-3.5 backdrop-blur-md shadow-2xl">
-        <div className="flex items-center space-x-2 text-[10px] font-mono text-cyan-400 font-bold uppercase mb-1">
-          <Satellite className="h-3.5 w-3.5 text-cyan-400" />
-          <span>{t("Active 5-Year Satellite Era", "Era de Satélites do Período")} ({currentMissionEra.yearMin}–{currentMissionEra.yearMax})</span>
-        </div>
-        <div className="space-y-1 text-xs">
-          <div className="flex items-center justify-between text-[11px]">
-            <span className="text-amber-300 font-bold">Óptico:</span>
-            <span className="font-mono text-white text-[10px]">{currentMissionEra.opticalMission}</span>
-          </div>
-          <div className="flex items-center justify-between text-[11px]">
-            <span className="text-emerald-300 font-bold">Radar SAR:</span>
-            <span className="font-mono text-white text-[10px]">{currentMissionEra.sarMission} ({currentMissionEra.sarBand.split("(")[0]})</span>
-          </div>
-        </div>
-        <div className="mt-2 pt-1.5 border-t border-slate-800 text-[10px] text-slate-300 italic">
-          {t(currentMissionEra.contextEn, currentMissionEra.contextPt)}
-        </div>
-      </div>
-
-      {/* FLOATING BIOME DISCRIMINATION LEGEND */}
+      {/* REALLOCATED BOTTOM-LEFT FLOATING BIOME DISCRIMINATION LEGEND */}
       {sarOverlayMode === "vegetation_biomes" && (
-        <div className="absolute top-[175px] left-4 z-10 max-w-sm rounded-2xl border border-emerald-500/40 bg-slate-900/95 p-3.5 backdrop-blur-md shadow-2xl animate-in fade-in duration-300">
-          <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800">
+        <div className="absolute bottom-32 left-4 z-10 max-w-xs sm:max-w-sm rounded-2xl border border-emerald-500/40 bg-slate-900/95 p-3 backdrop-blur-md shadow-2xl animate-in fade-in duration-300 transition-all">
+          <div className="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-800">
             <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase flex items-center space-x-1.5">
               <TreePine className="h-3.5 w-3.5" />
               <span>{t("Vegetation Mask (Biomes)", "Máscara de Vegetação (Biomas)")}</span>
             </span>
-            <span className="text-[9px] font-mono bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded">
-              {t("L+C Band SAR", "Radar Banda L+C")}
-            </span>
-          </div>
-          <div className="space-y-1.5 text-[11px]">
-            <div className="flex items-center space-x-2">
-              <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#22C55E" }} />
-              <span className="text-white font-medium">{t("Inhamuns Thorny Caatinga", "Caatinga dos Inhamuns")}</span>
-              <span className="text-[9px] text-slate-400 font-mono ml-auto">(HV Vol.)</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#16A34A" }} />
-              <span className="text-white font-medium">{t("Sertão Central Caatinga", "Caatinga do Sertão Central")}</span>
-              <span className="text-[9px] text-slate-400 font-mono ml-auto">(Crystalline)</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#84CC16" }} />
-              <span className="text-white font-medium">{t("Jaguaribe Riparian Gallery (APP)", "Mata Ciliar Ripária (APP)")}</span>
-              <span className="text-[9px] text-slate-400 font-mono ml-auto">(Anti-erosion)</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#10B981" }} />
-              <span className="text-white font-medium">{t("Aracati Estuarine Mangroves", "Manguezais de Aracati")}</span>
-              <span className="text-[9px] text-slate-400 font-mono ml-auto">(HH-VV Dbl.)</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#EAB308" }} />
-              <span className="text-white font-medium">{t("Hypersaline Flats / Apicuns", "Apicuns & Planícies Salgadas")}</span>
-              <span className="text-[9px] text-slate-400 font-mono ml-auto">(Surface)</span>
+            <div className="flex items-center space-x-1">
+              <span className="text-[9px] font-mono bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded">
+                L+C SAR
+              </span>
+              <button
+                onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
+                className="p-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition-colors ml-1"
+                title={isLegendCollapsed ? t("Expand Legend", "Expandir") : t("Collapse Legend", "Minimizar")}
+              >
+                {isLegendCollapsed ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+              </button>
             </div>
           </div>
+
+          {isLegendCollapsed ? (
+            <div 
+              onClick={() => setIsLegendCollapsed(false)}
+              className="cursor-pointer pt-1 flex items-center justify-between text-[10px] font-mono text-emerald-300 hover:text-emerald-200"
+            >
+              <span>{t("5 Biome Classes active", "5 Classes de Bioma ativas")}</span>
+              <span className="text-emerald-400 ml-2">▲</span>
+            </div>
+          ) : (
+            <div className="space-y-1 text-[11px] pt-0.5">
+              <div className="flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#22C55E" }} />
+                <span className="text-white font-medium">{t("Inhamuns Thorny Caatinga", "Caatinga dos Inhamuns")}</span>
+                <span className="text-[9px] text-slate-400 font-mono ml-auto">(HV Vol.)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#16A34A" }} />
+                <span className="text-white font-medium">{t("Sertão Central Caatinga", "Caatinga do Sertão Central")}</span>
+                <span className="text-[9px] text-slate-400 font-mono ml-auto">(Crystalline)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#84CC16" }} />
+                <span className="text-white font-medium">{t("Jaguaribe Riparian Gallery (APP)", "Mata Ciliar Ripária (APP)")}</span>
+                <span className="text-[9px] text-slate-400 font-mono ml-auto">(Anti-erosion)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#10B981" }} />
+                <span className="text-white font-medium">{t("Aracati Estuarine Mangroves", "Manguezais de Aracati")}</span>
+                <span className="text-[9px] text-slate-400 font-mono ml-auto">(HH-VV Dbl.)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: "#EAB308" }} />
+                <span className="text-white font-medium">{t("Hypersaline Flats / Apicuns", "Apicuns & Planícies Salgadas")}</span>
+                <span className="text-[9px] text-slate-400 font-mono ml-auto">(Surface)</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
-      {/* FLOATING WATER MASK LEGEND */}
+      {/* REALLOCATED BOTTOM-LEFT FLOATING WATER MASK LEGEND */}
       {sarOverlayMode === "water_mask" && (
-        <div className="absolute top-[175px] left-4 z-10 max-w-sm rounded-2xl border border-cyan-500/40 bg-slate-900/95 p-3.5 backdrop-blur-md shadow-2xl animate-in fade-in duration-300">
-          <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800">
+        <div className="absolute bottom-32 left-4 z-10 max-w-xs sm:max-w-sm rounded-2xl border border-cyan-500/40 bg-slate-900/95 p-3 backdrop-blur-md shadow-2xl animate-in fade-in duration-300 transition-all">
+          <div className="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-800">
             <span className="text-[10px] font-mono text-cyan-400 font-bold uppercase flex items-center space-x-1.5">
               <Droplet className="h-3.5 w-3.5" />
               <span>{t("Water Mask & Specular Lows", "Máscara Hídrica Especular")}</span>
             </span>
-            <span className="text-[9px] font-mono bg-cyan-950/80 text-cyan-300 border border-cyan-500/30 px-1.5 py-0.5 rounded">
-              σ⁰ &lt; -22 dB
-            </span>
-          </div>
-          <div className="space-y-1.5 text-[11px]">
-            <div className="flex items-center space-x-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#00E5FF] flex-shrink-0" />
-              <span className="text-white font-medium">{t("Mega-Reservoirs (Castanhão, Orós, etc.)", "Grandes Açudes (Castanhão, Orós, Banabuiú)")}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#38BDF8] flex-shrink-0" />
-              <span className="text-white font-medium">{t("Riverbed Channel & Alluvial Aquifers", "Calha do Jaguaribe & Várzeas Aluviais")}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#06B6D4] flex-shrink-0" />
-              <span className="text-white font-medium">{t("Aracati Estuary & Aquaculture Ponds", "Estuário de Aracati & Viveiros Aquícolas")}</span>
+            <div className="flex items-center space-x-1">
+              <span className="text-[9px] font-mono bg-cyan-950/80 text-cyan-300 border border-cyan-500/30 px-1.5 py-0.5 rounded">
+                σ⁰ &lt; -22 dB
+              </span>
+              <button
+                onClick={() => setIsLegendCollapsed(!isLegendCollapsed)}
+                className="p-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition-colors ml-1"
+                title={isLegendCollapsed ? t("Expand Legend", "Expandir") : t("Collapse Legend", "Minimizar")}
+              >
+                {isLegendCollapsed ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+              </button>
             </div>
           </div>
+
+          {isLegendCollapsed ? (
+            <div 
+              onClick={() => setIsLegendCollapsed(false)}
+              className="cursor-pointer pt-1 flex items-center justify-between text-[10px] font-mono text-cyan-300 hover:text-cyan-200"
+            >
+              <span>{t("Specular water reflection active", "Reflexão especular hídrica ativa")}</span>
+              <span className="text-cyan-400 ml-2">▲</span>
+            </div>
+          ) : (
+            <div className="space-y-1 text-[11px] pt-0.5">
+              <div className="flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full bg-[#00E5FF] flex-shrink-0" />
+                <span className="text-white font-medium">{t("Mega-Reservoirs (Castanhão, Orós, etc.)", "Grandes Açudes (Castanhão, Orós, etc.)")}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full bg-[#38BDF8] flex-shrink-0" />
+                <span className="text-white font-medium">{t("Riverbed Channel & Alluvial Aquifers", "Calha do Jaguaribe & Várzeas")}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full bg-[#06B6D4] flex-shrink-0" />
+                <span className="text-white font-medium">{t("Aracati Estuary & Aquaculture Ponds", "Estuário de Aracati & Viveiros")}</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
-      {/* DAM SELECTOR QUICK BAR (Center-Top) */}
-      <div className="hidden md:flex absolute top-4 right-80 z-10 items-center rounded-xl border border-slate-700/80 bg-slate-900/90 p-1 backdrop-blur-md shadow-xl text-xs">
-        <span className="text-[10px] font-bold text-cyan-300 uppercase px-2 flex items-center space-x-1">
-          <Crosshair className="h-3 w-3" />
-          <span>{t("Select Dam:", "Açude:")}</span>
-        </span>
-        {MAJOR_DAMS.map((dam) => (
-          <button
-            key={dam.id}
-            onClick={() => handleSelectDam(dam)}
-            className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
-              selectedDamId === dam.id
-                ? "bg-cyan-500 text-black shadow-sm font-bold"
-                : "text-slate-300 hover:text-white"
-            }`}
-          >
-            {dam.name.split(" ")[1]}
-          </button>
-        ))}
-      </div>
+      {/* RESTRUCTURED TOP-RIGHT COMPACT TELEMETRY INSPECTOR HUD */}
+      <div className="absolute top-16 right-4 z-10 w-72 sm:w-80">
+        <div className="rounded-2xl border border-slate-700/80 bg-slate-900/95 p-3 backdrop-blur-md shadow-2xl transition-all">
+          
+          {/* HUD Header */}
+          <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div className="flex items-center space-x-1.5">
+              <Activity className="h-3.5 w-3.5 text-cyan-400" />
+              <span className="text-[11px] font-mono font-bold uppercase text-white tracking-wide">
+                {t("SAR Telemetry HUD", "Inspetor de Telemetria SAR")}
+              </span>
+            </div>
+            
+            <div className="flex items-center space-x-1">
+              <button
+                onClick={() => setActiveMetricDrawer("storage")}
+                className="text-[10px] font-mono text-cyan-300 hover:text-cyan-200 px-2 py-0.5 rounded bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-500/30 flex items-center space-x-1 transition-colors"
+                title={t("Open Detailed Metric Drawer", "Abrir Painel Detalhado")}
+              >
+                <span>{t("Drawer", "Abrir")}</span>
+                <ChevronRight className="h-3 w-3" />
+              </button>
+              <button
+                onClick={() => setIsTelemetryHudCollapsed(!isTelemetryHudCollapsed)}
+                className="p-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition-colors"
+                title={isTelemetryHudCollapsed ? t("Expand HUD", "Expandir") : t("Collapse HUD", "Minimizar")}
+              >
+                {isTelemetryHudCollapsed ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronUp className="h-3.5 w-3.5" />}
+              </button>
+            </div>
+          </div>
 
-      {/* TOP-RIGHT CONCISE HUD CARDS (Clickable -> Opens Drawer) */}
-      <div className="absolute top-16 right-4 z-10 flex flex-col gap-2.5 w-64 sm:w-72">
-        
-        {/* Selected Dam Mini Telemetry Card */}
-        <div 
-          onClick={() => setActiveMetricDrawer("storage")}
-          className="cursor-pointer rounded-xl border border-cyan-500/50 bg-slate-900/95 p-3 backdrop-blur-md shadow-xl hover:border-cyan-400 transition-all"
-        >
-          <div className="flex items-center justify-between text-xs mb-1">
-            <span className="text-[10px] uppercase font-bold text-cyan-400">{selectedDam.name.split("(")[0]}</span>
-            <span className="text-[10px] font-mono text-emerald-300">γ = {selectedDam.insarCoherence}</span>
-          </div>
-          <div className="flex items-baseline justify-between">
-            <span className="text-base font-extrabold text-white font-mono">{selectedDam.capacityMm3} mi m³</span>
-            <span className="text-xs text-slate-400">{selectedDam.deformationMmYr} mm/ano</span>
-          </div>
-          <span className="text-[9px] text-cyan-200/80 font-mono block mt-1">
-            {selectedDam.damTypePt.split(" com ")[0]}
-          </span>
+          {/* When Collapsed: Sleek Mini Summary Pill */}
+          {isTelemetryHudCollapsed ? (
+            <div 
+              onClick={() => setIsTelemetryHudCollapsed(false)}
+              className="cursor-pointer pt-2 flex items-center justify-between text-[11px] font-mono text-slate-300 hover:text-cyan-300 transition-colors"
+            >
+              <span>{selectedDam.name.split(" ")[1]}: {selectedDam.insarCoherence}γ</span>
+              <span>•</span>
+              <span className="text-cyan-400">{currentMilestone.castanhaoStoragePct}% vol</span>
+              <span>•</span>
+              <span className="text-amber-400">ε {currentMilestone.soilDielectricEpsilon}</span>
+            </div>
+          ) : (
+            /* When Expanded: Compact 2x2 Telemetry Grid */
+            <div className="pt-2 space-y-2">
+              {/* Focused Dam Mini Ribbon */}
+              <div 
+                onClick={() => setActiveMetricDrawer("storage")}
+                className="cursor-pointer rounded-xl bg-slate-950/70 border border-slate-800 hover:border-cyan-500/40 p-2 flex items-center justify-between text-xs transition-colors"
+              >
+                <div>
+                  <span className="text-[10px] font-bold text-cyan-400 block">{selectedDam.name.split("(")[0]}</span>
+                  <span className="text-[9px] text-slate-400 font-mono">{selectedDam.damTypePt.split(" com ")[0]}</span>
+                </div>
+                <div className="text-right font-mono">
+                  <span className="text-[11px] font-bold text-emerald-300 block">γ = {selectedDam.insarCoherence}</span>
+                  <span className="text-[9px] text-slate-400">{selectedDam.deformationMmYr} mm/ano</span>
+                </div>
+              </div>
+
+              {/* 2x2 Metric Grid */}
+              <div className="grid grid-cols-2 gap-1.5 text-xs">
+                {/* 1. Castanhão Volume */}
+                <div 
+                  onClick={() => setActiveMetricDrawer("storage")}
+                  className="cursor-pointer group rounded-xl border border-cyan-500/30 bg-cyan-950/10 hover:bg-cyan-950/30 hover:border-cyan-400 p-2 transition-all"
+                >
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 mb-0.5">
+                    <span className="flex items-center space-x-1 text-cyan-400">
+                      <Droplet className="h-3 w-3" />
+                      <span>{t("Storage", "Volume")}</span>
+                    </span>
+                    <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  <div className="flex items-baseline space-x-1">
+                    <span className="text-sm font-extrabold font-mono text-white">{currentMilestone.castanhaoStoragePct}%</span>
+                    <span className="text-[9px] text-slate-400">{currentMilestone.castanhaoAreaKm2} km²</span>
+                  </div>
+                </div>
+
+                {/* 2. Caatinga Biomass */}
+                <div 
+                  onClick={() => setActiveMetricDrawer("biomass")}
+                  className="cursor-pointer group rounded-xl border border-emerald-500/30 bg-emerald-950/10 hover:bg-emerald-950/30 hover:border-emerald-400 p-2 transition-all"
+                >
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 mb-0.5">
+                    <span className="flex items-center space-x-1 text-emerald-400">
+                      <TreePine className="h-3 w-3" />
+                      <span>{t("Biomass", "Biomassa")}</span>
+                    </span>
+                    <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  <div className="flex items-baseline space-x-1">
+                    <span className="text-sm font-extrabold font-mono text-white">{currentMilestone.caatingaBiomassIndex}</span>
+                    <span className="text-[9px] text-slate-400">/ 100</span>
+                  </div>
+                </div>
+
+                {/* 3. Soil Dielectric */}
+                <div 
+                  onClick={() => setActiveMetricDrawer("dielectric")}
+                  className="cursor-pointer group rounded-xl border border-amber-500/30 bg-amber-950/10 hover:bg-amber-950/30 hover:border-amber-400 p-2 transition-all"
+                >
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 mb-0.5">
+                    <span className="flex items-center space-x-1 text-amber-400">
+                      <Activity className="h-3 w-3" />
+                      <span>{t("Dielectric ε", "Dielétrico ε")}</span>
+                    </span>
+                    <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  <div className="flex items-baseline space-x-1">
+                    <span className="text-sm font-extrabold font-mono text-white">{currentMilestone.soilDielectricEpsilon}</span>
+                    <span className="text-[9px] text-slate-400">0–30 cm</span>
+                  </div>
+                </div>
+
+                {/* 4. Salinity Wedge */}
+                <div 
+                  onClick={() => setActiveMetricDrawer("salinity")}
+                  className="cursor-pointer group rounded-xl border border-rose-500/30 bg-rose-950/10 hover:bg-rose-950/30 hover:border-rose-400 p-2 transition-all"
+                >
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 mb-0.5">
+                    <span className="flex items-center space-x-1 text-rose-400">
+                      <Waves className="h-3 w-3" />
+                      <span>{t("Saline Wedge", "Cunha Salina")}</span>
+                    </span>
+                    <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  <div className="flex items-baseline space-x-1">
+                    <span className="text-sm font-extrabold font-mono text-white">{currentMilestone.salinityIntrusionKm} km</span>
+                    <span className="text-[9px] text-slate-400">{currentMilestone.aquaculturePondAreaHa} ha</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-1 text-[9px] text-center text-slate-400 font-mono">
+                {t("Click any metric tile to open time series", "Clique no card para abrir série temporal")}
+              </div>
+            </div>
+          )}
+
         </div>
-
-        {/* Card 1: Castanhão Storage */}
-        <div
-          onClick={() => setActiveMetricDrawer("storage")}
-          className="cursor-pointer group rounded-xl border border-cyan-500/40 bg-slate-900/90 p-3 backdrop-blur-md shadow-xl hover:border-cyan-400 hover:bg-slate-800/90 transition-all flex items-center justify-between"
-        >
-          <div className="flex items-center space-x-2.5">
-            <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-400">
-              <Droplet className="h-4 w-4" />
-            </div>
-            <div>
-              <span className="text-[10px] text-slate-400 uppercase font-bold block">{t("Castanhão Storage", "Volume Castanhão")}</span>
-              <span className="text-lg font-mono font-extrabold text-white">{currentMilestone.castanhaoStoragePct}%</span>
-            </div>
-          </div>
-          <div className="flex items-center space-x-1 text-cyan-400 text-xs">
-            <span>{currentMilestone.castanhaoAreaKm2} km²</span>
-            <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </div>
-        </div>
-
-        {/* Card 2: Caatinga Biomass Index */}
-        <div
-          onClick={() => setActiveMetricDrawer("biomass")}
-          className="cursor-pointer group rounded-xl border border-emerald-500/40 bg-slate-900/90 p-3 backdrop-blur-md shadow-xl hover:border-emerald-400 hover:bg-slate-800/90 transition-all flex items-center justify-between"
-        >
-          <div className="flex items-center space-x-2.5">
-            <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
-              <TreePine className="h-4 w-4" />
-            </div>
-            <div>
-              <span className="text-[10px] text-slate-400 uppercase font-bold block">{t("Caatinga Standing Biomass", "Biomassa em Pé")}</span>
-              <span className="text-lg font-mono font-extrabold text-white">{currentMilestone.caatingaBiomassIndex} / 100</span>
-            </div>
-          </div>
-          <div className="flex items-center space-x-1 text-emerald-400 text-xs">
-            <span>HV Vol.</span>
-            <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </div>
-        </div>
-
-        {/* Card 3: Soil Dielectric Constant */}
-        <div
-          onClick={() => setActiveMetricDrawer("dielectric")}
-          className="cursor-pointer group rounded-xl border border-amber-500/40 bg-slate-900/90 p-3 backdrop-blur-md shadow-xl hover:border-amber-400 hover:bg-slate-800/90 transition-all flex items-center justify-between"
-        >
-          <div className="flex items-center space-x-2.5">
-            <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400">
-              <Activity className="h-4 w-4" />
-            </div>
-            <div>
-              <span className="text-[10px] text-slate-400 uppercase font-bold block">{t("Soil Dielectric ε", "Permissividade Dielétrica ε")}</span>
-              <span className="text-lg font-mono font-extrabold text-white">{currentMilestone.soilDielectricEpsilon}</span>
-            </div>
-          </div>
-          <div className="flex items-center space-x-1 text-amber-400 text-xs">
-            <span>0–30 cm</span>
-            <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </div>
-        </div>
-
-        {/* Card 4: Estuarine Salinity Wedge */}
-        <div
-          onClick={() => setActiveMetricDrawer("salinity")}
-          className="cursor-pointer group rounded-xl border border-rose-500/40 bg-slate-900/90 p-3 backdrop-blur-md shadow-xl hover:border-rose-400 hover:bg-slate-800/90 transition-all flex items-center justify-between"
-        >
-          <div className="flex items-center space-x-2.5">
-            <div className="p-2 rounded-lg bg-rose-500/20 text-rose-400">
-              <Waves className="h-4 w-4" />
-            </div>
-            <div>
-              <span className="text-[10px] text-slate-400 uppercase font-bold block">{t("Salinity Intrusion Wedge", "Cunha Salina a Montante")}</span>
-              <span className="text-lg font-mono font-extrabold text-white">{currentMilestone.salinityIntrusionKm} km</span>
-            </div>
-          </div>
-          <div className="flex items-center space-x-1 text-rose-400 text-xs">
-            <span>{currentMilestone.aquaculturePondAreaHa} ha</span>
-            <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </div>
-        </div>
-
       </div>
 
       {/* BOTTOM FLUID TIME SLIDER DOCK */}
