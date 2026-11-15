@@ -75,19 +75,19 @@ const HOTSPOTS: HotspotScenario[] = [
       granule: "S1A_IW_GRDH_1SDV_20231122T081825_20231122T081850_rtc",
       product: "Radiometric Terrain Corrected (RTC) Gamma0 Backscatter",
       date: "2023-11-22",
-      polarizations: "Dual-Pol VV + VH (24 cm L-Band Analogous Mode)"
+      polarizations: "Dual-Pol VV + VH (C-Band, 5.6 cm)"
     },
     opticalObservationEn: "During prolonged dry season, the Caatinga drops 100% of leaves ('mata branca'). The parched ground looks completely dead and gray, misclassified by optical NDVI as barren degraded land.",
     opticalObservationPt: "Na estiagem severa, a Caatinga perde 100% das folhas ('mata branca'). O solo ressequido parece terra nua e cinzenta, gerando falso alerta óptico de degradação.",
-    sarDiscoveryEn: "Radar microwaves penetrate past the dry surface crust. Volume scattering (VH) confirms that living woody branches and trunks are 78% preserved, while dielectric backscatter detects root-zone moisture.",
-    sarDiscoveryPt: "As micro-ondas penetram a poeira e o ar seco. O espalhamento volumétrico (VH) comprova que 78% da biomassa lenhosa viva segue em pé, enquanto a permissividade detecta umidade radicular.",
+    sarDiscoveryEn: "Radar microwaves penetrate past the dry surface crust. Volume scattering (VH) helps identify that living woody branches and trunks are 78% preserved, while dielectric backscatter detects root-zone moisture.",
+    sarDiscoveryPt: "As micro-ondas penetram a poeira e o ar seco. O espalhamento volumétrico (VH) auxilia a identificar que 78% da biomassa lenhosa viva segue em pé, enquanto a permissividade detecta umidade radicular.",
     radarPhysicsPointers: [
       {
         labelEn: "Standing Woody Biomass",
         labelPt: "Biomassa Lenhosa em Pé",
         mechanism: "Cross-Polarization Volume Scattering (VH)",
-        descEn: "Multi-branched deciduous trunks depolarize the microwave signal, proving live structural integrity.",
-        descPt: "Troncos e galhos despolarizam o feixe de micro-ondas, provando integridade física da madeira viva.",
+        descEn: "Multi-branched deciduous trunks depolarize the microwave signal, helping distinguish living structure from deforested slash.",
+        descPt: "Troncos e galhos despolarizam o feixe de micro-ondas, auxiliando a diferenciar a estrutura lenhosa viva do corte raso.",
         color: "text-emerald-400 border-emerald-500/30 bg-emerald-950/20"
       },
       {

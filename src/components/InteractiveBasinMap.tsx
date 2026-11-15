@@ -572,8 +572,8 @@ const BIOME_POLYGONS = {
       [-6.25, -38.15], [-6.45, -38.75], [-6.15, -39.15], [-5.55, -39.25],
       [-4.85, -39.35], [-4.35, -38.65]
     ],
-    featuresEn: "Dominant biome covering 75% of the basin over shallow crystalline Precambrian bedrock. Complete seasonal deciduous defoliation during prolonged dry spells; volume scattering (HV/VH) tracks living woody stems.",
-    featuresPt: "Bioma dominante cobrindo 75% da bacia sobre embasamento cristalino pré-cambriano raso. Defoliação caducifólia total na seca; retroespalhamento volumétrico (HV/VH) comprova caules lenhosos vivos."
+    featuresEn: "Dominant biome covering 75% of the basin over shallow crystalline Precambrian bedrock. Complete seasonal deciduous defoliation during prolonged dry spells; volume scattering (HV/VH) helps distinguish living standing woody stems from clear-cutting.",
+    featuresPt: "Bioma dominante cobrindo 75% da bacia sobre embasamento cristalino pré-cambriano raso. Defoliação caducifólia total na seca; retroespalhamento volumétrico (HV/VH) auxilia a diferenciar caules lenhosos vivos de corte raso."
   },
   // 2. Caatinga dos Inhamuns & Alto Jaguaribe (Dry Southwestern Uplands)
   caatingaInhamuns: {
@@ -845,6 +845,70 @@ const ECOLOGICAL_MARKERS: EcologicalMarker[] = [
   }
 ];
 
+// BILINGUAL POPUP CONTENT GENERATORS
+const getEcologicalPopupContent = (rm: EcologicalMarker, isPt: boolean) => `
+  <div class="p-2.5 font-sans text-xs max-w-xs">
+    <div class="flex items-center space-x-1.5 text-amber-400 font-mono text-[10px] font-bold uppercase mb-1">
+      <span>⚠️ ${isPt ? "Ponto Crítico Ecológico" : "Ecological Critical Point"}</span>
+    </div>
+    <strong class="text-white text-sm block mb-1.5" style="color: ${rm.color}">
+      ${isPt ? rm.titlePt : rm.titleEn}
+    </strong>
+    <div class="mb-2 text-slate-300 leading-relaxed bg-black/40 p-2 rounded-lg border border-slate-800">
+      <strong class="text-amber-300 text-[10px] uppercase block mb-0.5">${isPt ? "Diagnóstico:" : "Diagnosis:"}</strong>
+      ${isPt ? rm.problemPt : rm.problemEn}
+    </div>
+    <div class="text-emerald-300 leading-relaxed bg-emerald-950/30 p-2 rounded-lg border border-emerald-500/30">
+      <strong class="text-emerald-400 text-[10px] uppercase block mb-0.5">${isPt ? "Medida de Correção:" : "Mitigation Measure:"}</strong>
+      ${isPt ? rm.mitigationPt : rm.mitigationEn}
+    </div>
+  </div>
+`;
+
+const getDamPopupContent = (dam: (typeof MAJOR_DAMS)[0], isPt: boolean) => `
+  <div class="p-2.5 font-sans text-xs max-w-xs">
+    <span class="text-[10px] uppercase font-bold text-cyan-400 block mb-0.5">${isPt ? "Barragem & Geodésia InSAR" : "Dam & InSAR Geodesy"}</span>
+    <strong class="text-white text-sm block mb-1">${dam.name}</strong>
+    <div class="grid grid-cols-2 gap-1.5 mb-2 font-mono text-[10px] bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+      <div>
+        <span class="text-slate-400 block text-[9px] uppercase">${isPt ? "Capacidade:" : "Capacity:"}</span>
+        <strong class="text-white">${dam.capacityMm3} mi m³</strong>
+      </div>
+      <div>
+        <span class="text-slate-400 block text-[9px] uppercase">${isPt ? "Coerência (γ):" : "Coherence (γ):"}</span>
+        <strong class="text-emerald-400">${dam.insarCoherence}</strong>
+      </div>
+      <div>
+        <span class="text-slate-400 block text-[9px] uppercase">${isPt ? "Deformação:" : "Deformation:"}</span>
+        <strong class="text-cyan-300">${dam.deformationMmYr} mm/${isPt ? "ano" : "yr"}</strong>
+      </div>
+      <div>
+        <span class="text-slate-400 block text-[9px] uppercase">${isPt ? "Extensão Crista:" : "Crest Length:"}</span>
+        <strong class="text-white">${(dam.crestLengthM / 1000).toFixed(1)} km</strong>
+      </div>
+    </div>
+    <p class="text-slate-300 leading-relaxed text-[11px] mb-2">${isPt ? dam.descriptionPt : dam.descriptionEn}</p>
+    <div class="mb-2 p-1.5 rounded bg-black/50 border border-slate-800 text-[10px] text-cyan-200/90 leading-tight">
+      <strong>${isPt ? "Contexto do Açude:" : "Hydrogeology Context:"}</strong> ${isPt ? "Barramento sobre embasamento cristalino impermeável para garantir armazenamento contra secas plurianuais." : "Reservoir anchored into impermeable crystalline bedrock to secure vital water storage through multi-year droughts."}
+    </div>
+    <div class="p-1.5 rounded bg-cyan-950/40 border border-cyan-500/30 text-[10px] text-cyan-300 font-mono">
+      ${isPt ? dam.rigidityStatusPt : dam.rigidityStatusEn}
+    </div>
+  </div>
+`;
+
+const getBiomePopupContent = (biomeData: any, isPt: boolean) => `
+  <div class="p-2.5 font-sans text-xs max-w-xs">
+    <span class="text-[10px] uppercase font-bold text-emerald-400 block mb-0.5">${isPt ? "Bioma Cearense & Radar SAR" : "Ceará Biome & SAR Radar"}</span>
+    <strong class="text-white text-sm block mb-1">${isPt ? biomeData.namePt : biomeData.nameEn}</strong>
+    <div class="mb-2 font-mono text-[11px] bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+      <span class="text-slate-400 block text-[9px] uppercase">${isPt ? "Classificação Fitofisionômica:" : "Phytophysiognomic Class:"}</span>
+      <strong class="text-emerald-300">${isPt ? biomeData.biomePt : biomeData.biomeEn}</strong>
+    </div>
+    <p class="text-slate-300 leading-relaxed text-[11px]">${isPt ? biomeData.featuresPt : biomeData.featuresEn}</p>
+  </div>
+`;
+
 type MetricType = "storage" | "biomass" | "dielectric" | "salinity";
 
 interface InteractiveBasinMapProps {
@@ -853,7 +917,7 @@ interface InteractiveBasinMapProps {
 }
 
 export default function InteractiveBasinMap({ externalSelectedYear, onYearChange }: InteractiveBasinMapProps) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const layersRef = useRef<{ [key: string]: any }>({});
@@ -866,9 +930,9 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
   // Selected Dam for Detailed Geotechnical & Coherence Inspection
   const [selectedDamId, setSelectedDamId] = useState<string>("castanhao");
 
-  // Map Layer Modes
+  // Map Layer Modes: Default to Satellite + Off as requested
   const [baseMapStyle, setBaseMapStyle] = useState<"dark" | "satellite" | "osm">("satellite");
-  const [sarOverlayMode, setSarOverlayMode] = useState<"none" | "sentinel1_rtc" | "vegetation_biomes">("vegetation_biomes");
+  const [sarOverlayMode, setSarOverlayMode] = useState<"none" | "sentinel1_rtc" | "vegetation_biomes">("none");
   const [showEcologicalRisks, setShowEcologicalRisks] = useState<boolean>(true);
   const [mapTilesLoading, setMapTilesLoading] = useState<boolean>(false);
 
@@ -1053,6 +1117,8 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
       }).addTo(map);
 
       // MAJOR DAMS PINS (With InSAR Coherence details)
+      // MAJOR DAMS PINS (With InSAR Coherence details)
+      layersRef.current.damMarkers = [];
       const damPins = MAJOR_DAMS.map((dam) => {
         const pin = L.circleMarker(dam.coords, {
           radius: 9,
@@ -1063,42 +1129,14 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
           fillOpacity: 0.95
         });
 
-        pin.bindPopup(`
-          <div class="p-2.5 font-sans text-xs max-w-xs">
-            <span class="text-[10px] uppercase font-bold text-cyan-400 block mb-0.5">Barragem & Geodésia InSAR</span>
-            <strong class="text-white text-sm block mb-1">${dam.name}</strong>
-            <div class="grid grid-cols-2 gap-1.5 mb-2 font-mono text-[10px] bg-slate-900/90 p-2 rounded-lg border border-slate-800">
-              <div>
-                <span class="text-slate-400 block text-[9px] uppercase">Capacidade:</span>
-                <strong class="text-white">${dam.capacityMm3} mi m³</strong>
-              </div>
-              <div>
-                <span class="text-slate-400 block text-[9px] uppercase">Coerência (γ):</span>
-                <strong class="text-emerald-400">${dam.insarCoherence}</strong>
-              </div>
-              <div>
-                <span class="text-slate-400 block text-[9px] uppercase">Deformação:</span>
-                <strong class="text-cyan-300">${dam.deformationMmYr} mm/ano</strong>
-              </div>
-              <div>
-                <span class="text-slate-400 block text-[9px] uppercase">Extensão Crista:</span>
-                <strong class="text-white">${(dam.crestLengthM / 1000).toFixed(1)} km</strong>
-              </div>
-            </div>
-            <p class="text-slate-300 leading-relaxed text-[11px] mb-2">${dam.descriptionPt}</p>
-            <div class="mb-2 p-1.5 rounded bg-black/50 border border-slate-800 text-[10px] text-cyan-200/90 leading-tight">
-              <strong>Contexto do Açude:</strong> Barramento de enrocamento sobre cristalino impermeável para garantir água nas secas plurianuais.
-            </div>
-            <div class="p-1.5 rounded bg-cyan-950/40 border border-cyan-500/30 text-[10px] text-cyan-300 font-mono">
-              ${dam.rigidityStatusPt}
-            </div>
-          </div>
-        `);
+        pin.bindPopup(getDamPopupContent(dam, lang === "pt"));
+        layersRef.current.damMarkers.push({ marker: pin, data: dam });
         return pin;
       });
       L.layerGroup(damPins).addTo(map);
 
       // ECOLOGICAL CHALLENGES & MITIGATION LAYER
+      layersRef.current.ecologicalMarkers = [];
       const riskMarkers = ECOLOGICAL_MARKERS.map((rm) => {
         const m = L.circleMarker(rm.coords, {
           radius: 11,
@@ -1109,24 +1147,8 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
           fillOpacity: 0.9
         });
 
-        m.bindPopup(`
-          <div class="p-2.5 font-sans text-xs max-w-xs">
-            <div class="flex items-center space-x-1.5 text-amber-400 font-mono text-[10px] font-bold uppercase mb-1">
-              <span>⚠️ Ponto Crítico Ecológico</span>
-            </div>
-            <strong class="text-white text-sm block mb-1.5" style="color: ${rm.color}">
-              ${rm.titlePt}
-            </strong>
-            <div class="mb-2 text-slate-300 leading-relaxed bg-black/40 p-2 rounded-lg border border-slate-800">
-              <strong class="text-amber-300 text-[10px] uppercase block mb-0.5">Diagnóstico:</strong>
-              ${rm.problemPt}
-            </div>
-            <div class="text-emerald-300 leading-relaxed bg-emerald-950/30 p-2 rounded-lg border border-emerald-500/30">
-              <strong class="text-emerald-400 text-[10px] uppercase block mb-0.5">Medida de Correção:</strong>
-              ${rm.mitigationPt}
-            </div>
-          </div>
-        `);
+        m.bindPopup(getEcologicalPopupContent(rm, lang === "pt"));
+        layersRef.current.ecologicalMarkers.push({ marker: m, data: rm });
         return m;
       });
 
@@ -1204,6 +1226,7 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
       // RENDER VEGETATION MASK WITH SENTINEL-1 SAR MOSAIC UNDERNEATH AND COHERENT BIOMES OVERLAY
       import("leaflet").then((L) => {
         const biomeLayers: any[] = [];
+        layersRef.current.biomeMarkers = [];
 
         // 1. Add Full SAR Radar Mosaic as base texture under the vegetation mask
         if (layersRef.current.sarMosaicGroup) {
@@ -1219,18 +1242,8 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
             fillOpacity: key === "manguezaisAracati" ? 0.70 : key === "mataCiliarJaguaribe" ? 0.65 : 0.48
           });
 
-          poly.bindPopup(`
-            <div class="p-2.5 font-sans text-xs max-w-xs">
-              <span class="text-[10px] uppercase font-bold text-emerald-400 block mb-0.5">Bioma Cearense & Radar SAR</span>
-              <strong class="text-white text-sm block mb-1">${biomeData.namePt}</strong>
-              <div class="mb-2 font-mono text-[11px] bg-slate-900/90 p-2 rounded-lg border border-slate-800">
-                <span class="text-slate-400 block text-[9px] uppercase">Classificação Fitofisionômica:</span>
-                <strong class="text-emerald-300">${biomeData.biomePt}</strong>
-              </div>
-              <p class="text-slate-300 leading-relaxed text-[11px]">${biomeData.featuresPt}</p>
-            </div>
-          `);
-
+          poly.bindPopup(getBiomePopupContent(biomeData, lang === "pt"));
+          layersRef.current.biomeMarkers.push({ marker: poly, data: biomeData });
           biomeLayers.push(poly);
         });
 
@@ -1241,7 +1254,27 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
     }
 
     map.invalidateSize();
-  }, [sarOverlayMode, currentMilestone]);
+  }, [sarOverlayMode, currentMilestone, lang]);
+
+  // Dynamically update popup contents when language switches
+  useEffect(() => {
+    const isPt = lang === "pt";
+    if (layersRef.current.damMarkers) {
+      layersRef.current.damMarkers.forEach(({ marker, data }: any) => {
+        marker.setPopupContent(getDamPopupContent(data, isPt));
+      });
+    }
+    if (layersRef.current.ecologicalMarkers) {
+      layersRef.current.ecologicalMarkers.forEach(({ marker, data }: any) => {
+        marker.setPopupContent(getEcologicalPopupContent(data, isPt));
+      });
+    }
+    if (layersRef.current.biomeMarkers) {
+      layersRef.current.biomeMarkers.forEach(({ marker, data }: any) => {
+        marker.setPopupContent(getBiomePopupContent(data, isPt));
+      });
+    }
+  }, [lang]);
 
   // Recalculate viewport size when entering/exiting fullscreen
   useEffect(() => {
@@ -1557,11 +1590,11 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
               >
                 <div>
                   <span className="text-[10px] font-bold text-cyan-400 block">{selectedDam.name.split("(")[0]}</span>
-                  <span className="text-[9px] text-slate-400 font-mono">{selectedDam.damTypePt.split(" com ")[0]}</span>
+                  <span className="text-[9px] text-slate-400 font-mono">{lang === "pt" ? selectedDam.damTypePt.split(" com ")[0] : selectedDam.damTypeEn.split(" with ")[0]}</span>
                 </div>
                 <div className="text-right font-mono">
                   <span className="text-[11px] font-bold text-emerald-300 block">γ = {selectedDam.insarCoherence}</span>
-                  <span className="text-[9px] text-slate-400">{selectedDam.deformationMmYr} mm/ano</span>
+                  <span className="text-[9px] text-slate-400">{selectedDam.deformationMmYr} mm/{lang === "pt" ? "ano" : "yr"}</span>
                 </div>
               </div>
 
@@ -1757,19 +1790,19 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
                     <strong className="text-white text-sm block mb-1">{selectedDam.name}</strong>
                     <div className="grid grid-cols-2 gap-2 text-[11px] font-mono mt-2">
                       <div>
-                        <span className="text-slate-400 block text-[9px]">Capacidade Total:</span>
-                        <span className="text-white font-bold">{selectedDam.capacityMm3} mi m³</span>
+                        <span className="text-slate-400 block text-[9px]">{t("Total Capacity:", "Capacidade Total:")}</span>
+                        <span className="text-white font-bold">{selectedDam.capacityMm3} {t("M m³", "mi m³")}</span>
                       </div>
                       <div>
-                        <span className="text-slate-400 block text-[9px]">Coerência InSAR (γ):</span>
+                        <span className="text-slate-400 block text-[9px]">{t("InSAR Coherence (γ):", "Coerência InSAR (γ):")}</span>
                         <span className="text-emerald-400 font-bold">{selectedDam.insarCoherence}</span>
                       </div>
                       <div>
-                        <span className="text-slate-400 block text-[9px]">Deformação Anual:</span>
-                        <span className="text-cyan-300 font-bold">{selectedDam.deformationMmYr} mm/ano</span>
+                        <span className="text-slate-400 block text-[9px]">{t("Annual Deformation:", "Deformação Anual:")}</span>
+                        <span className="text-cyan-300 font-bold">{selectedDam.deformationMmYr} mm/{lang === "pt" ? "ano" : "yr"}</span>
                       </div>
                       <div>
-                        <span className="text-slate-400 block text-[9px]">Comprimento Crista:</span>
+                        <span className="text-slate-400 block text-[9px]">{t("Crest Length:", "Comprimento Crista:")}</span>
                         <span className="text-white font-bold">{selectedDam.crestLengthM} m</span>
                       </div>
                     </div>
@@ -1818,8 +1851,8 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
                 <>
                   <p>
                     {t(
-                      "During severe droughts, the Caatinga drops 100% of its leaves. Optical satellites see dry gray land (NDVI drops to zero), falsely flagging deforestation. NISAR L-band (24 cm wavelength) penetrates past the missing leaves and measures volume scattering (HV/VH) of standing woody trunks, proving physiological dormancy.",
-                      "Na seca severa, a Caatinga perde 100% das folhas. Satélites ópticos veem terra seca (NDVI zera), sugerindo desmatamento. A banda L do NISAR (24 cm) penetra a copa vazia e mede o espalhamento volumétrico (HV/VH) dos troncos lenhosos, comprovando dormência viva."
+                      "During severe droughts, the Caatinga drops 100% of its leaves. Optical satellites see dry gray land (NDVI drops to zero), falsely flagging deforestation. NISAR L-band (24 cm wavelength) penetrates past the missing leaves and measures volume scattering (HV/VH) of standing woody trunks, helping differentiate physiological dormancy from clear-cut deforestation.",
+                      "Na seca severa, a Caatinga perde 100% das folhas. Satélites ópticos veem terra seca (NDVI zera), sugerindo desmatamento. A banda L do NISAR (24 cm) penetra a copa vazia e mede o espalhamento volumétrico (HV/VH) dos troncos lenhosos, auxiliando na identificação da dormência fisiológica frente ao corte raso."
                     )}
                   </p>
                   <div className="rounded-xl bg-slate-900 border border-slate-800 p-3 font-mono text-[11px] text-emerald-300">

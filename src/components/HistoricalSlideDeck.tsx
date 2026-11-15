@@ -208,8 +208,8 @@ export const HISTORICAL_ERAS: HistoricalEra[] = [
     ecologicalImpactPt: "Eutrofização estuarina crítica; mortandade da vegetação ciliar de água doce; colapso de barrancos ressequidos nas chuvas isoladas.",
     mitigationEn: "Floating pumps deployed in reservoir dead volume; emergency trucking of potable water; coordinated pulse releases from Trussu/Orós.",
     mitigationPt: "Instalação de bombas flutuantes no volume morto; comboios de caminhões-pipa; descargas de socorro a partir do Açude Trussu e Orós.",
-    sarContextEn: "InSAR phase coherence reveals centimeter-scale subsidence in dried lakebed muds; specular radar waterline confirms 88% reduction in reservoir area.",
-    sarContextPt: "Interferometria InSAR mede subsidência no solo seco do açude; radar especular comprova retração de 88% do espelho d'água."
+    sarContextEn: "InSAR phase coherence reveals centimeter-scale subsidence in dried lakebed muds; specular radar waterline quantifies an 88% reduction in reservoir area.",
+    sarContextPt: "Interferometria InSAR mede subsidência no solo seco do açude; radar especular quantifica a retração de 88% do espelho d'água."
   },
   {
     period: "2021–2026",
