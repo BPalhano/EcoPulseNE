@@ -1,0 +1,92 @@
+{
+  "aracati": {
+    "title": "Aracati / Fortim - Estu\u00e1rio do Jaguaribe",
+    "bbox": [
+      -37.85,
+      -4.5,
+      -37.7,
+      -4.35
+    ],
+    "optical": {
+      "granule": "S2A_MSIL2A_20231101T125311_R052_T24MXA_20241016T223907",
+      "mission": "Copernicus Sentinel-2B / MSI (ESA)",
+      "datetime": "2023-11-01T12:53:11.024000Z",
+      "clouds": 12.987626,
+      "product": "Level-2A BOA Surface Reflectance",
+      "file": "/images/real_satellite/aracati_optical_real.png",
+      "tile_url": "https://planetarycomputer.microsoft.com/api/data/v1/item/tilejson.json?collection=sentinel-2-l2a&item=S2A_MSIL2A_20231101T125311_R052_T24MXA_20241016T223907&assets=visual&asset_bidx=visual%7C1,2,3&nodata=0&format=png"
+    },
+    "sar": {
+      "granule": "S1A_IW_GRDH_1SDV_20231024T080949_20231024T081014_050904_0622D4_rtc",
+      "mission": "Copernicus Sentinel-1A / C-SAR (ESA/ASF/OPERA)",
+      "datetime": "2023-10-24T08:10:02.082376Z",
+      "polarizations": [
+        "VV",
+        "VH"
+      ],
+      "product": "Radiometric Terrain Corrected (RTC) Gamma0 Backscatter",
+      "file": "/images/real_satellite/aracati_sar_real.png",
+      "tile_url": "https://planetarycomputer.microsoft.com/api/data/v1/item/tilejson.json?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231024T080949_20231024T081014_050904_0622D4_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png"
+    }
+  },
+  "inhamuns": {
+    "title": "Sert\u00e3o dos Inhamuns / Tau\u00e1 - Caatinga e Mata Branca",
+    "bbox": [
+      -40.35,
+      -5.95,
+      -40.2,
+      -5.8
+    ],
+    "optical": {
+      "granule": "S2A_MSIL2A_20231124T130241_R095_T24MUU_20241020T210328",
+      "mission": "Copernicus Sentinel-2B / MSI (ESA)",
+      "datetime": "2023-11-24T13:02:41.024000Z",
+      "clouds": 14.728798,
+      "product": "Level-2A BOA Surface Reflectance",
+      "file": "/images/real_satellite/inhamuns_optical_real.png",
+      "tile_url": "https://planetarycomputer.microsoft.com/api/data/v1/item/tilejson.json?collection=sentinel-2-l2a&item=S2A_MSIL2A_20231124T130241_R095_T24MUU_20241020T210328&assets=visual&asset_bidx=visual%7C1,2,3&nodata=0&format=png"
+    },
+    "sar": {
+      "granule": "S1A_IW_GRDH_1SDV_20231122T081825_20231122T081850_051327_06316D_rtc",
+      "mission": "Copernicus Sentinel-1A / C-SAR (ESA/ASF/OPERA)",
+      "datetime": "2023-11-22T08:18:38.086124Z",
+      "polarizations": [
+        "VV",
+        "VH"
+      ],
+      "product": "Radiometric Terrain Corrected (RTC) Gamma0 Backscatter",
+      "file": "/images/real_satellite/inhamuns_sar_real.png",
+      "tile_url": "https://planetarycomputer.microsoft.com/api/data/v1/item/tilejson.json?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231122T081825_20231122T081850_051327_06316D_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png"
+    }
+  },
+  "castanhao": {
+    "title": "A\u00e7ude Castanh\u00e3o - Barragem & Espelho d'\u00c1gua",
+    "bbox": [
+      -38.55,
+      -5.6,
+      -38.35,
+      -5.4
+    ],
+    "optical": {
+      "granule": "S2B_MSIL2A_20231030T130249_R095_T24MWV_20231030T210400",
+      "mission": "Copernicus Sentinel-2B / MSI (ESA)",
+      "datetime": "2023-10-30T13:02:49.024000Z",
+      "clouds": 8.731823,
+      "product": "Level-2A BOA Surface Reflectance",
+      "file": "/images/real_satellite/castanhao_optical_real.png",
+      "tile_url": "https://planetarycomputer.microsoft.com/api/data/v1/item/tilejson.json?collection=sentinel-2-l2a&item=S2B_MSIL2A_20231030T130249_R095_T24MWV_20231030T210400&assets=visual&asset_bidx=visual%7C1,2,3&nodata=0&format=png"
+    },
+    "sar": {
+      "granule": "S1A_IW_GRDH_1SDV_20231024T080949_20231024T081014_050904_0622D4_rtc",
+      "mission": "Copernicus Sentinel-1A / C-SAR (ESA/ASF/OPERA)",
+      "datetime": "2023-10-24T08:10:02.082376Z",
+      "polarizations": [
+        "VV",
+        "VH"
+      ],
+      "product": "Radiometric Terrain Corrected (RTC) Gamma0 Backscatter",
+      "file": "/images/real_satellite/castanhao_sar_real.png",
+      "tile_url": "https://planetarycomputer.microsoft.com/api/data/v1/item/tilejson.json?collection=sentinel-1-rtc&item=S1A_IW_GRDH_1SDV_20231024T080949_20231024T081014_050904_0622D4_rtc&assets=vv&assets=vh&tile_format=png&expression=0.03%20%2B%20log%20(10e-4%20-%20log%20(0.05%20%2F%20(0.02%20%2B%202%20*%20vv)));0.05%20%2B%20exp%20(0.25%20*%20(log%20(0.01%20%2B%202%20*%20vv)%20%2B%20log%20(0.02%20%2B%205%20*%20vh)));1%20-%20log%20(0.05%20%2F%20(0.045%20-%200.9%20*%20vv))&asset_as_band=True&rescale=0,.8000&rescale=0,1.000&rescale=0,1.000&format=png"
+    }
+  }
+}
