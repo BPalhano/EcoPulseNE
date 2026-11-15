@@ -7,7 +7,11 @@ export const metadata: Metadata = {
   title: "EcoPulse NE | The Drought & Tidal Waltz",
   description: "NASA Space Apps Challenge 2026 - Tracking extreme droughts in Caatinga and coastal mangrove transformation using NISAR SAR radar remote sensing.",
   keywords: ["NISAR", "SAR", "Caatinga", "Mangrove", "Space Apps Challenge", "NASA", "Remote Sensing", "Carcinicultura", "Jaguaribe"],
-  authors: [{ name: "EcoPulse NE Team" }],
+  icons: {
+    icon: "/logo_icon.png",
+    shortcut: "/logo_icon.png",
+    apple: "/logo_icon.png",
+  },
   openGraph: {
     title: "EcoPulse NE - The Drought & Tidal Waltz",
     description: "Multi-sensor radar observatory bridging Caatinga megadroughts and coastal mangrove crises.",

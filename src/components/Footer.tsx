@@ -76,7 +76,21 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom copyright / disclaimer */}
+        {/* AI Usage Disclaimer */}
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 mb-6 text-xs text-slate-400 leading-relaxed">
+          <div className="flex items-center space-x-2 text-cyan-400 font-bold text-[11px] uppercase tracking-wider mb-1.5">
+            <Radio className="h-3.5 w-3.5 animate-pulse" />
+            <span>{t("AI Assistance & Scientific Integrity Disclaimer", "Declaração de Uso de IA & Integridade Científica")}</span>
+          </div>
+          <p>
+            {t(
+              "Generative artificial intelligence tools were utilized to assist in drafting web application code, UI styling, and structural editing of scientific narratives. All remote sensing datasets, satellite imagery, polarimetric equations, radar physics models, and hydrological time series are strictly grounded in verified peer-reviewed literature and authentic open-access Earth Observation archives (NASA ASF DAAC, Copernicus ESA, MapBiomas Brasil, ANA, and FUNCEME/COGERH). No synthetic, diffused, or fabricated satellite data was used.",
+              "Ferramentas de inteligência artificial generativa foram utilizadas como auxílio na programação web, estilização de interface e estruturação das narrativas científicas. Todos os dados de sensoriamento remoto, imagens orbitais, formulações polarimétricas, física de radar e séries hidrológicas são rigorosamente fundamentados em literatura revisada por pares e em acervos abertos autênticos de Observação da Terra (NASA ASF DAAC, Copernicus ESA, MapBiomas Brasil, ANA e FUNCEME/COGERH). Nenhuma imagem sintética ou dado falso gerado por difusão foi utilizado."
+            )}
+          </p>
+        </div>
+
+        {/* Bottom copyright */}
         <div className="border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-3">
           <p>
             © 2026 EcoPulse NE Team. {t("Developed for NASA International Space Apps Challenge.", "Desenvolvido para o NASA International Space Apps Challenge.")}

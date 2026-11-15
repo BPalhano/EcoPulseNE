@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Radar, Waves, Activity, Menu, X, Globe, Layers, BookOpen, Home } from "lucide-react";
+import Image from "next/image";
+import { Waves, Activity, Menu, X, Globe, Layers, BookOpen, Home } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Header() {
@@ -23,10 +24,17 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-[#050B14]/95 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         
-        {/* Brand */}
+        {/* Brand with Transparent Logo */}
         <Link href="/" className="flex items-center space-x-3 group">
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 via-blue-600/30 to-emerald-500/20 border border-cyan-500/40 shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-transform group-hover:scale-105">
-            <Radar className="h-5 w-5 text-cyan-400 animate-spin" style={{ animationDuration: "14s" }} />
+          <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/20 via-cyan-600/30 to-blue-500/20 border border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-transform group-hover:scale-105 p-1.5">
+            <Image 
+              src="/logo_icon.png" 
+              alt="EcoPulse NE Logo" 
+              width={34} 
+              height={34} 
+              className="object-contain drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]" 
+              priority 
+            />
           </div>
           <div>
             <div className="flex items-center space-x-2">
@@ -37,14 +45,14 @@ export default function Header() {
                 NE
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 tracking-wider uppercase font-mono">
+            <p className="text-[11px] text-slate-400 tracking-wider uppercase font-mono">
               NASA Space Apps 2026 · NISAR SAR
             </p>
           </div>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center space-x-1.5 text-sm font-medium">
+        <nav className="hidden lg:flex items-center space-x-2 text-sm lg:text-[15px] font-semibold">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -52,7 +60,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center space-x-1.5 rounded-lg px-3 py-1.5 transition-all ${
+                className={`flex items-center space-x-2 rounded-lg px-3.5 py-2 transition-all ${
                   isActive
                     ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm"
                     : "text-slate-300 hover:text-white hover:bg-slate-800/60"

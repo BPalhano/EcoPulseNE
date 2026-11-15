@@ -89,9 +89,21 @@ This project proudly integrates open-access datasets from:
 
 ---
 
-## 👥 Authors & Collaborators
+## 👥 Authors & Scientific Investigators
 
-* **Igor Braga Palhano** ([@BPalhano](https://github.com/BPalhano)) — Project Lead & Data Engineering
-* **Ruan Pereira** ([@ruanpereira](https://github.com/ruanpereira)) — Core Developer
+* **Igor Braga Palhano** ([@BPalhano](https://github.com/BPalhano)) — Project Lead, Remote Sensing & Optimization ([Google Scholar](https://scholar.google.com/citations?user=kWYVL0cAAAAJ))  
+  *Wireless Telecommunications Research Group (GTEL) / Federal University of Ceará (UFC)*
+* **Ruan Pereira Alves** ([@ruanpereira](https://github.com/ruanpereira)) — Core Developer, Scientific Systems Architecture ([Google Scholar](https://scholar.google.com/citations?user=327pTpUAAAAJ))  
+  *Federal University of Ceará (UFC)*
 
-Developed for the **2026 NASA International Space Apps Challenge**. Distributed under the **MIT License**.
+---
+
+## 🤖 AI Usage & Scientific Integrity Disclaimer
+
+Generative artificial intelligence tools were employed as development assistants to draft web application components, UI styling, and structural editing of scientific narratives. 
+
+All remote sensing datasets, orbital radar physics formulations (Pauli decomposition, Topp's dielectric model, DInSAR interferometric phase), and multidecadal hydrological time series are strictly grounded in verified peer-reviewed scientific literature and authentic open-access Earth Observation archives (NASA ASF DAAC, ESA Copernicus, MapBiomas Brasil, ANA, and FUNCEME/COGERH). **No synthetic, diffused, or fabricated satellite data was used.**
+
+---
+
+Developed for the **2026 NASA International Space Apps Challenge** (*Dancing with the SARs*). Distributed under the **MIT License**.

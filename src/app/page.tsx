@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import Header from "@/components/Header";
 import EducationalGuide from "@/components/EducationalGuide";
@@ -17,7 +18,7 @@ import {
   Droplet, 
   Compass, 
   ShieldCheck, 
-  ExternalLink,
+  ExternalLink, 
   Flame,
   Globe
 } from "lucide-react";
@@ -76,51 +77,65 @@ export default function Home() {
     <main className="min-h-screen flex flex-col bg-[#050B14] text-slate-100 selection:bg-cyan-500 selection:text-black">
       <Header />
 
-      {/* Hero Storytelling Section */}
-      <section className="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-[#0A1428] via-[#050B14] to-[#050B14] py-20 lg:py-28">
+      {/* Hero Storytelling Section - Fully Centered with Large Typography & Logo */}
+      <section className="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-[#0A1428] via-[#050B14] to-[#050B14] py-20 lg:py-32">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
           
-          <div className="max-w-3xl">
+          <div className="max-w-4xl mx-auto flex flex-col items-center">
             {/* NASA Space Apps Badge */}
-            <div className="inline-flex items-center space-x-2 rounded-full border border-cyan-500/40 bg-cyan-950/40 px-3.5 py-1.5 text-xs font-semibold text-cyan-300 mb-6 backdrop-blur-md">
-              <Radar className="h-3.5 w-3.5 text-cyan-400 animate-spin" style={{ animationDuration: "12s" }} />
+            <div className="inline-flex items-center space-x-2.5 rounded-full border border-cyan-500/40 bg-cyan-950/40 px-4 py-2 text-xs sm:text-sm font-semibold text-cyan-300 mb-8 backdrop-blur-md shadow-lg shadow-cyan-950/40">
+              <Radar className="h-4 w-4 text-cyan-400 animate-spin" style={{ animationDuration: "12s" }} />
               <span>NASA International Space Apps Challenge 2026 · Dancing with the SARs</span>
             </div>
 
-            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl leading-[1.1]">
-              EcoPulse <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">NE</span>
-            </h1>
+            {/* Title with Logo Icon beside it */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-3">
+              <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/20 via-cyan-600/30 to-blue-500/20 border border-emerald-500/40 shadow-[0_0_30px_rgba(16,185,129,0.35)] p-2 shrink-0">
+                <Image 
+                  src="/logo_icon.png" 
+                  alt="EcoPulse NE Logo" 
+                  width={68} 
+                  height={68} 
+                  className="object-contain drop-shadow-[0_0_12px_rgba(74,222,128,0.6)]" 
+                  priority 
+                />
+              </div>
+              <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-7xl lg:text-8xl leading-[1.05]">
+                EcoPulse <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">NE</span>
+              </h1>
+            </div>
 
-            <p className="mt-4 text-xl sm:text-2xl font-light text-slate-300 tracking-wide">
+            {/* Subtitle / Lead - Enlarged and Centered */}
+            <p className="mt-4 text-2xl sm:text-3xl lg:text-4xl font-normal text-slate-100 tracking-wide text-center">
               {t("The Drought & Tidal Waltz: From Sertão to Mangroves", "A Dança da Seca e da Maré: Do Sertão ao Manguezal")}
             </p>
 
-            <p className="mt-6 text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl">
+            <p className="mt-6 text-base sm:text-lg lg:text-xl text-slate-300 leading-relaxed max-w-3xl text-center">
               {t(
                 "Bridging the unseen climate teleconnection between multi-year megadroughts in the semi-arid Caatinga and downstream coastal crises in estuarine mangroves through NASA-ISRO NISAR and Copernicus active microwave radar remote sensing.",
                 "Revelando a teleconexão oculta entre as megassecas na Caatinga semiárida e as crises a jusante nos manguezais costeiros por meio do sensoriamento remoto ativo por radar de micro-ondas (NISAR e Copernicus SAR)."
               )}
             </p>
 
-            {/* Quick Action Buttons */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            {/* Quick Action Buttons - Centered */}
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/map"
-                className="flex items-center space-x-2 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-400 px-5 py-3 font-bold text-black shadow-lg shadow-cyan-950/50 hover:brightness-110 transition-all"
+                className="flex items-center space-x-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-400 px-6 py-3.5 text-base font-bold text-black shadow-lg shadow-cyan-950/50 hover:brightness-110 transition-all hover:scale-[1.02]"
               >
-                <Waves className="h-4 w-4" />
+                <Waves className="h-5 w-5" />
                 <span>{t("Launch Observatory Map", "Abrir Mapa da Bacia")}</span>
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-5 w-5" />
               </Link>
               
               <Link
                 href="/comparator"
-                className="flex items-center space-x-2 rounded-xl border border-slate-700 bg-slate-900/80 px-5 py-3 font-bold text-white hover:bg-slate-800 transition-all"
+                className="flex items-center space-x-2.5 rounded-xl border border-slate-700 bg-slate-900/80 px-6 py-3.5 text-base font-bold text-white hover:bg-slate-800 transition-all hover:border-slate-500"
               >
-                <Layers className="h-4 w-4 text-amber-400" />
+                <Layers className="h-5 w-5 text-amber-400" />
                 <span>{t("SAR X-Ray Lab", "Laboratório Raio-X SAR")}</span>
               </Link>
             </div>

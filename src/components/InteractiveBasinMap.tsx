@@ -27,7 +27,8 @@ import {
   Home,
   Fish,
   Crosshair,
-  Satellite
+  Satellite,
+  Loader2
 } from "lucide-react";
 import {
   AreaChart,
@@ -554,6 +555,86 @@ const WATER_BODY_POLYGONS = {
   ]
 };
 
+// BIOME POLYGONS (DISCRIMINATING CAATINGA, MANGROVES, GALLERY RIPARIAN FOREST, AND APICUNS)
+const BIOME_POLYGONS = {
+  // 1. Caatinga Arbustiva-Arbórea dos Inhamuns (Sertão Ocidental)
+  caatingaInhamuns: {
+    nameEn: "Inhamuns Arboreal & Thorny Caatinga",
+    namePt: "Caatinga Arbustiva-Arbórea dos Inhamuns",
+    biomeEn: "Semi-Arid Caatinga (Deciduous Scrub)",
+    biomePt: "Caatinga Semiárida (Mata Branca Decidual)",
+    color: "#22C55E",
+    borderColor: "#15803D",
+    coords: [
+      [-5.55, -40.55], [-5.80, -40.05], [-6.38, -39.95], [-6.62, -40.35],
+      [-6.35, -40.75], [-5.75, -40.72]
+    ],
+    featuresEn: "Deciduous thorny scrub & dry arboreal Caatinga. Volume scattering (HV/VH) confirms living woody branches during severe dry seasons.",
+    featuresPt: "Caatinga arbustiva espinhosa e arbórea decidual. Espalhamento volumétrico (HV/VH) comprova madeira lenhosa viva na seca."
+  },
+  // 2. Caatinga do Médio Jaguaribe & Sertão Central
+  caatingaSertaoCentral: {
+    nameEn: "Middle Jaguaribe & Sertão Central Caatinga",
+    namePt: "Caatinga do Médio Jaguaribe & Sertão Central",
+    biomeEn: "Crystalline Basement Caatinga",
+    biomePt: "Caatinga sobre Cristalino Raso",
+    color: "#16A34A",
+    borderColor: "#14532D",
+    coords: [
+      [-4.78, -39.32], [-5.08, -38.58], [-5.62, -38.78], [-5.82, -39.18],
+      [-5.42, -39.62], [-4.88, -39.52]
+    ],
+    featuresEn: "Dense crystalline Caatinga over shallow Precambrian rock. High sensitivity to prolonged precipitation deficits.",
+    featuresPt: "Caatinga densa sobre embasamento cristalino pré-cambriano raso. Alta sensibilidade a déficits hídricos plurianuais."
+  },
+  // 3. Mata Ciliar Ripária do Rio Jaguaribe (APP Fluvial)
+  mataCiliarJaguaribe: {
+    nameEn: "Jaguaribe Riparian Gallery Forest (River Corridor APP)",
+    namePt: "Mata Ciliar Ripária do Rio Jaguaribe (Corredor APP)",
+    biomeEn: "Riparian Gallery Forest",
+    biomePt: "Floresta Ciliar Ripária",
+    color: "#84CC16",
+    borderColor: "#4D7C0F",
+    coords: [
+      [-4.48, -37.84], [-4.78, -38.08], [-5.12, -38.24], [-5.48, -38.44],
+      [-5.78, -38.68], [-6.08, -38.90], [-6.14, -38.86], [-5.82, -38.62],
+      [-5.42, -38.38], [-5.08, -38.18], [-4.72, -38.02], [-4.46, -37.78]
+    ],
+    featuresEn: "Linear riparian gallery corridor buffering sediment runoff, stabilizing riverbank terraces, and mitigating siltation into Castanhão.",
+    featuresPt: "Corredor ripário linear que retém sedimentos, estabiliza barrancos contra deslizamentos e atenua assoreamento no Castanhão."
+  },
+  // 4. Manguezais Estuarinos de Aracati & Fortim
+  manguezaisAracati: {
+    nameEn: "Aracati & Fortim Estuarine Mangroves",
+    namePt: "Manguezais Estuarinos de Aracati & Fortim",
+    biomeEn: "Tidal Marine Mangrove",
+    biomePt: "Manguezal Estuarino de Maré",
+    color: "#10B981",
+    borderColor: "#047857",
+    coords: [
+      [-4.36, -37.70], [-4.41, -37.73], [-4.45, -37.77], [-4.49, -37.81],
+      [-4.46, -37.83], [-4.40, -37.78], [-4.37, -37.73]
+    ],
+    featuresEn: "Tidal fringe forest (Rhizophora mangle, Avicennia germinans). Displays massive double-bounce dihedral scattering (+8 dB) during high-tide flooding.",
+    featuresPt: "Manguezal de maré (Rhizophora mangle, Avicennia germinans). Apresenta reflexão dupla diédrica massiva (+8 dB) na preamar sob o dossel."
+  },
+  // 5. Apicuns e Planícies Hipersalinas Costeiras
+  apicunsCosteiros: {
+    nameEn: "Aracati Coastal Apicuns & Salt Flats",
+    namePt: "Apicuns & Salgados Costeiros de Aracati",
+    biomeEn: "Hypersaline Coastal Supratidal Flat",
+    biomePt: "Planície Hipersalina Supramareal (Apicum)",
+    color: "#EAB308",
+    borderColor: "#A16207",
+    coords: [
+      [-4.42, -37.71], [-4.46, -37.75], [-4.50, -37.78], [-4.48, -37.80],
+      [-4.44, -37.76], [-4.40, -37.72]
+    ],
+    featuresEn: "Supratidal hypersaline flats bordering mangroves. Low biomass and high surface radar backscatter; primary conversion area for shrimp ponds.",
+    featuresPt: "Planícies hipersalinas na retaguarda do manguezal. Baixa biomassa e reflexão de superfície; área de expansão de viveiros."
+  }
+};
+
 // APPROXIMATED WATER CONCENTRATION & ALLUVIAL MOISTURE POINTS
 interface WaterConcentrationPoint {
   id: string;
@@ -767,8 +848,9 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
 
   // Map Layer Modes
   const [baseMapStyle, setBaseMapStyle] = useState<"dark" | "satellite" | "osm">("satellite");
-  const [sarOverlayMode, setSarOverlayMode] = useState<"none" | "sentinel1_rtc" | "dielectric_heatmap">("sentinel1_rtc");
+  const [sarOverlayMode, setSarOverlayMode] = useState<"none" | "sentinel1_rtc" | "water_mask" | "vegetation_biomes">("vegetation_biomes");
   const [showEcologicalRisks, setShowEcologicalRisks] = useState<boolean>(true);
+  const [mapTilesLoading, setMapTilesLoading] = useState<boolean>(false);
 
   // Off-Canvas Sidebar State
   const [activeMetricDrawer, setActiveMetricDrawer] = useState<MetricType | null>(null);
@@ -865,6 +947,13 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         { attribution: "&copy; OpenStreetMap contributors" }
       );
+
+      darkTile.on("loading", () => setMapTilesLoading(true));
+      darkTile.on("load", () => setMapTilesLoading(false));
+      satelliteTile.on("loading", () => setMapTilesLoading(true));
+      satelliteTile.on("load", () => setMapTilesLoading(false));
+      osmTile.on("loading", () => setMapTilesLoading(true));
+      osmTile.on("load", () => setMapTilesLoading(false));
 
       layersRef.current.dark = darkTile;
       layersRef.current.satellite = satelliteTile;
@@ -1083,7 +1172,39 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
     if (sarOverlayMode === "sentinel1_rtc" && layersRef.current.sarMosaicGroup) {
       layersRef.current.sarMosaicGroup.addTo(map);
       layersRef.current.activeSar = layersRef.current.sarMosaicGroup;
-    } else if (sarOverlayMode === "dielectric_heatmap") {
+    } else if (sarOverlayMode === "vegetation_biomes") {
+      // RENDER VEGETATION MASK DISCRIMINATING CAATINGA, MANGROVES, RIPARIAN GALLERY FOREST, AND APICUNS
+      import("leaflet").then((L) => {
+        const biomeLayers: any[] = [];
+
+        Object.entries(BIOME_POLYGONS).forEach(([key, biomeData]) => {
+          const poly = L.default.polygon(biomeData.coords as [number, number][], {
+            color: biomeData.borderColor,
+            weight: 2.5,
+            fillColor: biomeData.color,
+            fillOpacity: key === "manguezaisAracati" ? 0.70 : key === "mataCiliarJaguaribe" ? 0.60 : 0.45
+          });
+
+          poly.bindPopup(`
+            <div class="p-2.5 font-sans text-xs max-w-xs">
+              <span class="text-[10px] uppercase font-bold text-emerald-400 block mb-0.5">Mapeamento de Bioma & Radar SAR</span>
+              <strong class="text-white text-sm block mb-1">${biomeData.namePt}</strong>
+              <div class="mb-2 font-mono text-[11px] bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                <span class="text-slate-400 block text-[9px] uppercase">Classificação Ecológica:</span>
+                <strong class="text-emerald-300">${biomeData.biomePt}</strong>
+              </div>
+              <p class="text-slate-300 leading-relaxed text-[11px]">${biomeData.featuresPt}</p>
+            </div>
+          `);
+
+          biomeLayers.push(poly);
+        });
+
+        const biomeGroup = L.default.layerGroup(biomeLayers);
+        biomeGroup.addTo(map);
+        layersRef.current.activeSar = biomeGroup;
+      });
+    } else if (sarOverlayMode === "water_mask") {
       // RENDER REAL WATER MASK OVERLAYS ON TOP OF THE ORIGINAL SAR RADAR MAP TOGETHER WITH THE BLUE INDICATOR POINTS
       import("leaflet").then((L) => {
         const maskLayers: any[] = [];
@@ -1307,37 +1428,53 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
           </button>
         </div>
 
-        {/* SAR Sensor Overlay Selector */}
+        {/* SAR Sensor & Mask Overlay Selector */}
         <div className="flex items-center rounded-xl border border-slate-700/80 bg-slate-900/90 p-1 backdrop-blur-md shadow-xl text-xs">
           <span className="text-[10px] font-bold text-emerald-400 uppercase px-2 flex items-center space-x-1">
             <Radio className="h-3 w-3 animate-pulse" />
-            <span>{t("SAR Layer:", "Modo SAR:")}</span>
+            <span>{t("SAR Masks / Layers:", "Máscaras SAR / Modos:")}</span>
           </span>
+          <button
+            onClick={() => setSarOverlayMode("vegetation_biomes")}
+            className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
+              sarOverlayMode === "vegetation_biomes" ? "bg-emerald-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
+            }`}
+          >
+            🌿 {t("Vegetation (Biomes)", "Vegetação (Biomas)")}
+          </button>
+          <button
+            onClick={() => setSarOverlayMode("water_mask")}
+            className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
+              sarOverlayMode === "water_mask" ? "bg-cyan-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
+            }`}
+          >
+            💧 {t("Water Mask (Water Bodies)", "Máscara Hídrica (Água)")}
+          </button>
           <button
             onClick={() => setSarOverlayMode("sentinel1_rtc")}
             className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
               sarOverlayMode === "sentinel1_rtc" ? "bg-emerald-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
             }`}
           >
-            {t("Full Ceará Radar Mosaic", "Mosaico Radar Ceará Todo")}
-          </button>
-          <button
-            onClick={() => setSarOverlayMode("dielectric_heatmap")}
-            className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
-              sarOverlayMode === "dielectric_heatmap" ? "bg-emerald-500 text-black shadow-sm font-bold" : "text-slate-300 hover:text-white"
-            }`}
-          >
-            {t("Water Mask & Dielectric ε", "Máscara Hídrica & Dielétrico ε")}
+            📡 {t("Full Radar Mosaic", "Mosaico Radar Ceará")}
           </button>
           <button
             onClick={() => setSarOverlayMode("none")}
             className={`rounded-lg px-2.5 py-1 font-semibold transition-all ${
-              sarOverlayMode === "none" ? "bg-slate-700 text-white" : "text-slate-400 hover:text-white"
+              sarOverlayMode === "none" ? "bg-slate-700 text-white font-bold" : "text-slate-400 hover:text-white"
             }`}
           >
             {t("Off", "Desativar")}
           </button>
         </div>
+
+        {/* Tile Loading Indicator */}
+        {mapTilesLoading && (
+          <div className="flex items-center space-x-1.5 rounded-xl border border-cyan-500/40 bg-slate-900/95 px-2.5 py-1 text-xs font-mono text-cyan-300 shadow-xl backdrop-blur-md animate-pulse">
+            <Loader2 className="h-3.5 w-3.5 animate-spin text-cyan-400" />
+            <span>{t("Streaming Tiles...", "Carregando Camadas...")}</span>
+          </div>
+        )}
 
         {/* Ecological Risks Layer Toggle */}
         <button
@@ -1383,6 +1520,77 @@ export default function InteractiveBasinMap({ externalSelectedYear, onYearChange
           {t(currentMissionEra.contextEn, currentMissionEra.contextPt)}
         </div>
       </div>
+
+      {/* FLOATING BIOME DISCRIMINATION LEGEND */}
+      {sarOverlayMode === "vegetation_biomes" && (
+        <div className="absolute top-[175px] left-4 z-10 max-w-sm rounded-2xl border border-emerald-500/40 bg-slate-900/95 p-3.5 backdrop-blur-md shadow-2xl animate-in fade-in duration-300">
+          <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800">
+            <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase flex items-center space-x-1.5">
+              <TreePine className="h-3.5 w-3.5" />
+              <span>{t("Vegetation Mask (Biomes)", "Máscara de Vegetação (Biomas)")}</span>
+            </span>
+            <span className="text-[9px] font-mono bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded">
+              {t("L+C Band SAR", "Radar Banda L+C")}
+            </span>
+          </div>
+          <div className="space-y-1.5 text-[11px]">
+            <div className="flex items-center space-x-2">
+              <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#22C55E" }} />
+              <span className="text-white font-medium">{t("Inhamuns Thorny Caatinga", "Caatinga dos Inhamuns")}</span>
+              <span className="text-[9px] text-slate-400 font-mono ml-auto">(HV Vol.)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#16A34A" }} />
+              <span className="text-white font-medium">{t("Sertão Central Caatinga", "Caatinga do Sertão Central")}</span>
+              <span className="text-[9px] text-slate-400 font-mono ml-auto">(Crystalline)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#84CC16" }} />
+              <span className="text-white font-medium">{t("Jaguaribe Riparian Gallery (APP)", "Mata Ciliar Ripária (APP)")}</span>
+              <span className="text-[9px] text-slate-400 font-mono ml-auto">(Anti-erosion)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#10B981" }} />
+              <span className="text-white font-medium">{t("Aracati Estuarine Mangroves", "Manguezais de Aracati")}</span>
+              <span className="text-[9px] text-slate-400 font-mono ml-auto">(HH-VV Dbl.)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#EAB308" }} />
+              <span className="text-white font-medium">{t("Hypersaline Flats / Apicuns", "Apicuns & Planícies Salgadas")}</span>
+              <span className="text-[9px] text-slate-400 font-mono ml-auto">(Surface)</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* FLOATING WATER MASK LEGEND */}
+      {sarOverlayMode === "water_mask" && (
+        <div className="absolute top-[175px] left-4 z-10 max-w-sm rounded-2xl border border-cyan-500/40 bg-slate-900/95 p-3.5 backdrop-blur-md shadow-2xl animate-in fade-in duration-300">
+          <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800">
+            <span className="text-[10px] font-mono text-cyan-400 font-bold uppercase flex items-center space-x-1.5">
+              <Droplet className="h-3.5 w-3.5" />
+              <span>{t("Water Mask & Specular Lows", "Máscara Hídrica Especular")}</span>
+            </span>
+            <span className="text-[9px] font-mono bg-cyan-950/80 text-cyan-300 border border-cyan-500/30 px-1.5 py-0.5 rounded">
+              σ⁰ &lt; -22 dB
+            </span>
+          </div>
+          <div className="space-y-1.5 text-[11px]">
+            <div className="flex items-center space-x-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#00E5FF] flex-shrink-0" />
+              <span className="text-white font-medium">{t("Mega-Reservoirs (Castanhão, Orós, etc.)", "Grandes Açudes (Castanhão, Orós, Banabuiú)")}</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#38BDF8] flex-shrink-0" />
+              <span className="text-white font-medium">{t("Riverbed Channel & Alluvial Aquifers", "Calha do Jaguaribe & Várzeas Aluviais")}</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#06B6D4] flex-shrink-0" />
+              <span className="text-white font-medium">{t("Aracati Estuary & Aquaculture Ponds", "Estuário de Aracati & Viveiros Aquícolas")}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* DAM SELECTOR QUICK BAR (Center-Top) */}
       <div className="hidden md:flex absolute top-4 right-80 z-10 items-center rounded-xl border border-slate-700/80 bg-slate-900/90 p-1 backdrop-blur-md shadow-xl text-xs">

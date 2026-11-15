@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import ProjectDescription from "@/components/ProjectDescription";
 import EcologicalProblematization from "@/components/EcologicalProblematization";
 import EducationalGuide from "@/components/EducationalGuide";
+import AuthorshipSection from "@/components/AuthorshipSection";
 import Footer from "@/components/Footer";
 
 export default function StoryPage() {
@@ -15,6 +16,7 @@ export default function StoryPage() {
         <ProjectDescription />
         <EcologicalProblematization />
         <EducationalGuide />
+        <AuthorshipSection />
       </div>
       <Footer />
     </main>
