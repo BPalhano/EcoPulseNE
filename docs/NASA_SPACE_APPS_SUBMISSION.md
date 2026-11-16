@@ -23,7 +23,7 @@ EcoPulse NE is an interactive environmental intelligence platform engineered to 
 ### Versão em Português
 O EcoPulse NE funciona como um observatório geoespacial ativo que conecta duas realidades ecológicas distantes, mas intimamente articuladas: o sertão semiárido da Caatinga e os manguezais da zona costeira cearense. A plataforma ingere produtos de radar de abertura sintética em banda L e banda C, aplicando correção radiométrica de terreno e modelos de inversão biofísica para extrair variáveis invisíveis a olho nu. O sistema quantifica a constante dielétrica do solo para medir o teor de água em profundidade radicular, avalia a coerência interferométrica para identificar deformações milimétricas na crista de açudes estratégicos como Castanhão e Orós, e processa dados polarimétricos para detectar o reflexo característico de marés altas sob o dossel de manguezais.
 
-Os benefícios do projeto residem na capacidade de enxergar o território em qualquer condição climática, dia ou noite, atravessando nuvens costeiras e tempestades de poeira que comumente cegam satélites convencionais. Enquanto sensores ópticos geram frequentes falsos alertas de degradação quando a vegetação da Caatinga perde suas folhas na estiagem, o radar comprova que a estrutura lenhosa das árvores permanece viva e em pé. Além disso, o sistema alerta sobre o avanço perigoso da água salgada rio acima durante secas prolongadas, período em que as comportas das barragens são fechadas e a ausência de correnteza doce sobrecarrega o estuário com efluentes da carcinicultura.
+Os benefícios do projeto residem na capacidade de enxergar o território em qualquer condição climática, dia ou noite, atravessando nuvens costeiras e tempestades de poeira que comumente cegam satélites convencionais. Enquanto sensores ópticos geram frequentes falsos alertas de degradação quando a vegetação da Caatinga perde suas folhas na estiagem, o radar auxilia a identificar que a estrutura lenhosa das árvores permanece viva e em pé. Além disso, o sistema alerta sobre o avanço perigoso da água salgada rio acima durante secas prolongadas, período em que as comportas das barragens são fechadas e a ausência de correnteza doce sobrecarrega o estuário com efluentes da carcinicultura.
 
 O impacto almejado é democratizar o acesso a dados espaciais de ponta para tomadores de decisão, comitês de bacia hidrográfica, pesquisadores, agricultores familiares e comunidades tradicionais que dependem das águas do Jaguaribe. Para construir a aplicação, utilizamos Next.js com React e TypeScript no desenvolvimento da interface interativa, Tailwind CSS para a estilização fluida, Recharts e Leaflet para renderização de dados temporais e mapas geoespaciais, e Python para processamento numérico de matrizes de covariância polarimétrica e calibração de dados SAR.
 
@@ -32,7 +32,7 @@ A criatividade da proposta está na abordagem da teleconexão hidroecológica, t
 ### Versão em Inglês (Official NASA Portal Submission)
 EcoPulse NE operates as an active multi-sensor radar observatory bridging two connected yet geographically distant realities: the semi-arid Caatinga scrublands and the coastal estuarine mangroves of Northeast Brazil. The platform ingests L-band and C-band Synthetic Aperture Radar granules, applying Radiometric Terrain Correction and biophysical inversion models to extract environmental indicators invisible to passive optical sensors. It derives root-zone soil moisture from dielectric permittivity, tracks millimeter-scale crest deformation on major earthen dams through repeat-pass InSAR coherence, and processes polarimetric decompositions to detect sub-canopy tidal inundation in mangrove root systems.
 
-The core benefit of the platform is uninterrupted monitoring regardless of weather or illumination conditions, cutting through persistent coastal trade-wind clouds and dry-season dust. While conventional optical NDVI misidentifies deciduous Caatinga defoliation during seasonal droughts as dead land, SAR active microwaves confirm structural volume backscatter from living woody trunks. Furthermore, the tool monitors estuarine hypersalinization and effluent stagnation when upstream river gates are curtailed to preserve metropolitan drinking water reserves.
+The core benefit of the platform is uninterrupted monitoring regardless of weather or illumination conditions, cutting through persistent coastal trade-wind clouds and dry-season dust. While conventional optical NDVI misidentifies deciduous Caatinga defoliation during seasonal droughts as dead land, SAR active microwaves confirm structural volume backscatter from living woody trunks, helping differentiate physiological dormancy from clear-cut deforestation. Furthermore, the tool monitors estuarine hypersalinization and effluent stagnation when upstream river gates are curtailed to preserve metropolitan drinking water reserves.
 
 The intended impact is to provide actionable environmental intelligence for water authorities, river basin committees, conservation agencies, and rural communities along the Jaguaribe River. The software architecture was developed using Next.js, React, and TypeScript for responsive interface state management, Leaflet and Recharts for spatial and time-series geovisualization, Tailwind CSS for scientific UI styling, and Python for SAR calibration, radiometric correction, and polarimetric matrix decomposition.
 
@@ -69,43 +69,88 @@ The project is creative in formulating and proving the hydro-ecological teleconn
 
 ---
 
-## 5. Roteiro do Vídeo de Apresentação (30 Segundos)
-*(Estrutura obrigatória de 30 segundos solicitada para a submissão)*
+## 5. Roteiro Oficial do Vídeo de Apresentação (30 Segundos)
+* **Título do Vídeo:** EcoPulse NE — The Drought & Tidal Waltz
+* **Duração Máxima:** Exatamente 30 segundos
+* **Fio Condutor:** Como distinguir a Caatinga que perde folhas na seca da vegetação que foi removida?
+* **Arquivo Gerado:** `EcoPulseNE_30s_pitch.mp4`
 
-### Roteiro em Português
-* **00:00 – 00:05 (5 segundos) — Apresentação do Bioma Caatinga**
-  * *Visual:* Panorâmica aérea da Caatinga verde contrastando com sua fase seca de "mata branca", com números em destaque na tela: 840.000 km² e 28 milhões de vidas.
-  * *Locução / Narração:* "A Caatinga é o único bioma exclusivamente brasileiro, rica em biodiversidade e lar de 28 milhões de pessoas que dependem de cada gota de água."
+### Estrutura de Cenas & Locução
 
-* **00:05 – 00:18 (13 segundos) — Risco Atual e Desafio da Fiscalização**
-  * *Visual:* Mancha de desertificação avançando sobre o solo ressequido; satélite óptico comum mostrando imagem com nuvens e terra cinzenta; zoom em clareiras de desmatamento ilegal camufladas entre os galhos secos.
-  * *Locução / Narração:* "Hoje, a desertificação já ameaça 126 mil quilômetros quadrados. Na estiagem, a mata perde todas as folhas, e o desmatamento ilegal se camufla na paisagem cinzenta, criando pontos cegos onde satélites comuns não conseguem fiscalizar."
+#### Cena 1 (0:00 – 0:05) — A Caatinga e o paradoxo da seca
+* **Visual:** Imagens da Caatinga na estação seca — galhos cinzentos, aparência árida e desértica.
+* **Texto na Tela:** *Caatinga: 100% brasileira. Na seca, as folhas caem. A floresta dorme.*
+* **Locução (PT):**
+  > "A Caatinga é o único bioma exclusivamente brasileiro. Na seca severa, ela perde todas as folhas para sobreviver."
+* **Voiceover (EN - Official Video):**
+  > "The Caatinga is South America's only exclusively Brazilian biome. In severe drought, trees drop all leaves to survive."
 
-* **00:18 – 00:30 (12 segundos) — Contribuição da Tecnologia SAR**
-  * *Visual:* Transição dinâmica para o feixe de radar do satélite NISAR/Sentinel atravessando nuvens e a escuridão; visualizador do EcoPulse NE iluminando em verde vibrante a biomassa viva e destacando a umidade profunda e a estabilidade das barragens em tempo real.
-  * *Locução / Narração:* "O EcoPulse NE usa o radar SAR da NASA para atravessar nuvens, medir a umidade das raízes e diferenciar madeira viva de desmatamento real. É vigilância ambiental 24 horas por dia para proteger a Caatinga e garantir nosso futuro hídrico."
+#### Cena 2 (0:05 – 0:18) — O risco e o desafio da fiscalização
+* **Visual:** Transição para imagem de satélite óptico (falso alerta de desmatamento: tudo parece solo nu). Inserção de dados: desmatamento real, perda de mata ciliar, risco de assoreamento dos açudes e avanço da salinidade no Baixo Jaguaribe.
+* **Texto na Tela:**
+  * *Satélite óptico: solo exposto?*
+  * *Desmatamento ou dormência?*
+  * *Mata ciliar em risco — reservatórios ameaçados*
+* **Locução (PT):**
+  > "Para satélites ópticos, a floresta dormente parece solo exposto. Como fiscalizar sem gerar falsos alertas? Enquanto isso, o desmatamento real avança, ameaçando matas ciliares e acelerando o assoreamento dos grandes açudes."
+* **Voiceover (EN - Official Video):**
+  > "To optical satellites, the dormant forest looks like bare soil, creating blind spots. Meanwhile, real clearing advances, threatening reservoirs and rivers."
 
----
-
-### English Version (30-Second Video Script)
-* **00:00 – 00:05 (5s) — The Caatinga Biome**
-  * *Visual:* Aerial sweep of the Caatinga transitioning between wet green and dry season, highlighting 840,000 km² and 28 million people.
-  * *Voiceover:* "The Caatinga is South America's only exclusively Brazilian biome, home to 28 million people and unique biodiversity."
-
-* **00:05 – 00:18 (13s) — Current Risks & Enforcement Dilemma**
-  * *Visual:* Desertification maps; optical satellite view blocked by persistent cloud cover and dry leaf shedding masking illegal clear-cutting.
-  * *Voiceover:* "Desertification now threatens 126,000 square kilometers. When trees drop their leaves in the dry season, illegal deforestation blends into the parched landscape, blinding conventional satellites."
-
-* **00:18 – 00:30 (12s) — SAR Technology Contribution**
-  * *Visual:* Active SAR microwave beam piercing clouds and darkness; EcoPulse NE dashboard highlighting living biomass in vibrant green and root-zone dielectric moisture down to 30 cm.
-  * *Voiceover:* "EcoPulse NE harnesses NASA SAR radar to pierce clouds, probe root moisture, and distinguish living wood from deforestation in real time, delivering round-the-clock protection for the Caatinga."
+#### Cena 3 (0:18 – 0:30) — A solução: radar SAR e conservação integrada
+* **Visual:** Transição da imagem óptica para imagem SAR (retroespalhamento revelando os troncos e galhos em pé). Destaque para o espelho d'água dos açudes (reflexão especular) e o monitoramento da bacia do Jaguaribe. Fechamento com o logo e nome do projeto: **EcoPulse NE**.
+* **Texto na Tela:**
+  * *SAR: as micro-ondas enxergam a estrutura lenhosa*
+  * *Monitoramento de açudes e controle da salinidade*
+  * *EcoPulse NE — Tecnologia espacial para a Caatinga*
+* **Locução (PT):**
+  > "O radar SAR atravessa a poeira e interage com os troncos e galhos em pé, ajudando a distinguir dormência de desmatamento. Com o SAR, monitoramos da água dos reservatórios à vegetação da Caatinga."
+* **Voiceover (EN - Official Video):**
+  > "Synthetic Aperture Radar pierces dust and dry air, revealing standing woody trunks. With SAR, EcoPulse NE tracks living biomass and reservoir water. EcoPulse NE. Space intelligence for the Caatinga."
 
 ---
 
 ## 6. Scientific Authors & Affiliations
 * **Igor Braga Palhano** — Lead Author & Scientific Investigator  
   * *Affiliation:* Wireless Telecommunications Research Group (GTEL) / Federal University of Ceará (UFC)  
+  * *Expertise:* Digital Signal Processing, Microwave Modeling & Optimization  
   * *Scholar:* https://scholar.google.com/citations?user=kWYVL0cAAAAJ  
+
 * **Ruan Pereira Alves** — Co-Author & Scientific Systems Developer  
   * *Affiliation:* Federal University of Ceará (UFC)  
-  * *Scholar:* https://scholar.google.com/citations?user=GeFWM58AAAAJ
+  * *Expertise:* Software-Defined Radio (SDR), Cybernetics & Distributed Systems  
+  * *Scholar:* https://scholar.google.com/citations?user=GeFWM58AAAAJ  
+
+* **Lucas Oliveira Furtado** — Co-Author, Screenwriter & Creative Director  
+  * *Affiliation:* Federal University of Ceará (UFC)  
+  * *Expertise:* Audiovisual Narrative, Science Communication & Scriptwriting  
+  * *Role:* Roteiro e Direção do Pitch Audiovisual Oficial de 30 Segundos  
+
+---
+
+## 7. Use of Super Intelligence (SI) *
+*(NASA Space Apps Challenge 2026 Submission Field)*
+
+### Pergunta Oficial da Submissão:
+> **Did your project use Super Intelligence (SI) in its design, development, or execution?**  
+> **Yes / No**  
+> **If yes, please briefly describe how and where SI was used, and explain your strategy for validating that the output was accurate, unbiased, and compliant with NASA guidelines.**
+
+### Resposta Oficial (English / NASA Portal):
+**Yes.**
+
+**How and Where SI Was Used:**  
+Super Intelligence (SI) tools were utilized as an assistive accelerator during project development:
+1. **Full-Stack Web Engineering:** Assisting in structuring Next.js/React/TypeScript components, Tailwind CSS design layouts, Leaflet map overlays, and Recharts interactive telemetry curves.
+2. **Biophysical Formula Verification:** Validating numerical implementations of Pauli and Freeman-Durden polarimetric decomposition matrices, InSAR coherence thresholds ($\gamma > 0.85$), and dielectric permittivity bounds ($arepsilon pprox 3.5$ for dry crust vs $arepsilon pprox 80$ for liquid water).
+3. **Bilingual Translation & Documentation:** Assisting in refining technical and scientific text consistency between Brazilian Portuguese and English across the web platform and project dossier.
+4. **Automated Media Synthesis Pipeline:** Scripting the 30-second presentation video assembly via Python and FFmpeg, applying smooth pan/wipe transitions, generating ambient audio beds, and rendering synchronized captions.
+
+**Strategy for Validating Accuracy, Neutrality, and Non-Bias:**  
+- **Ground-Truth Validation:** Every synthetic data point and physical assertion was cross-referenced and verified against published peer-reviewed remote sensing literature (e.g., ASF DAAC guides, ESA Copernicus Sentinel-1 user handbooks, NASA NISAR science handbook), empirical hydrographic datasets from the Ceará Water Management Company (COGERH), and historical land-use classifications from MapBiomas Brasil (1985–2024).
+- **Scientific Tone Calibration:** Rigorous manual review ensured that no unverified or absolute claims were made; for example, tone was strictly calibrated to emphasize that SAR *assists in distinguishing* deciduous dormancy from clear-cutting, rather than acting as an infallible absolute identifier.
+- **Data Integrity:** No synthetic or AI-fabricated satellite data was presented as genuine radar granules; genuine Copernicus Sentinel-1 RTC GeoTIFF tiles and official cartographic vectors of the Jaguaribe River (3,250 vertices) were utilized.
+
+**Compliance with NASA Guidelines:**  
+- **No NASA Branding on Generated Media:** In strict adherence to NASA Space Apps regulations, no NASA meatball logo, NASA worm insignia, national flags, or official agency badges were used on any SI-generated visual assets or video materials.
+- **Visible Watermark:** All SI-assisted generated video media prominently displays a transparent, persistent lower watermark: `SI-Assisted Production · NASA Space Apps Challenge 2026`.
+- **Open Transparency:** Full disclosure of SI tools, open-source code, and methodological workflows is documented directly in the public GitHub repository and project submission.
